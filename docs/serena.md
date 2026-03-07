@@ -12,6 +12,27 @@
 
 Serena is a governed refactor program for AUTOMATIC1111/stable-diffusion-webui. The goal is to transform the codebase from its current state (audit score ~2.4–2.6/5) to a 5/5 architecture with clear separation of concerns, testable runtime, and stable extension API.
 
+### Serena Refactor Principles
+
+This refactor program follows strict **behavior-preserving governance**.
+
+Core principles:
+
+1. **Behavior preservation by default**
+   Existing runtime behavior must remain stable unless explicitly changed.
+
+2. **Small milestones**
+   Each milestone introduces minimal surface change.
+
+3. **Runtime seams before architecture changes**
+   Isolation is introduced before structural refactors.
+
+4. **Extension compatibility**
+   The extension ecosystem must remain functional unless explicitly versioned.
+
+5. **Evidence-based closeout**
+   Each milestone must end with verifiable CI evidence.
+
 **Source-of-truth hierarchy:**
 1. `docs/serena.md` — This ledger (phases, milestones, invariants)
 2. `docs/sdwebuirefactoraudit.md` — Baseline audit (architecture, modularity, refactor strategy)
@@ -108,7 +129,7 @@ Serena is a governed refactor program for AUTOMATIC1111/stable-diffusion-webui. 
 
 | Milestone | Title | Status | Branch | PR | Commit | CI Run(s) | Audit Score / Notes | Completed At |
 |-----------|-------|--------|--------|-----|--------|-----------|---------------------|--------------|
-| M00 | Program kickoff, baseline freeze, phase map, E2E verification | Active | m00-kickoff-baseline-e2e | — | — | — | Baseline 2.4/5 | — |
+| M00 | Program kickoff, baseline freeze, phase map, E2E verification | Completed | m00-kickoff-baseline-e2e | — | bc47d666 | Linter 22790940335 ✓; Tests 22790940333 ✗ (pre-existing) | Baseline 2.4/5 | 2025-03-07 |
 
 ---
 
@@ -121,3 +142,25 @@ Repo-wide non-negotiables for this program:
 - **Preserve extension behavior** — Unless intentionally versioned in a milestone
 - **Preserve API/UI semantics** — Unless milestone explicitly approves change
 - **Evidence-first closeout** — Every milestone closes with documented evidence
+
+---
+
+## 6. Invariant Registry
+
+These invariants must remain stable throughout the Serena refactor program unless explicitly revised by a milestone.
+
+This registry provides **cross-milestone contract stability**.
+
+| Surface              | Description                                             | Verification                |
+| -------------------- | ------------------------------------------------------- | --------------------------- |
+| CLI                  | Command flags and output behavior remain stable         | Snapshot tests              |
+| API                  | JSON response schemas remain compatible                 | Contract tests              |
+| File formats         | Serialized artifacts and saved images remain compatible | Schema validation           |
+| Public modules       | Import surfaces remain available unless versioned       | API compatibility tests     |
+| Extension API        | Extension loading behavior and hooks remain stable      | Extension integration tests |
+| Generation semantics | txt2img / img2img parameter behavior preserved          | E2E smoke tests             |
+
+Notes:
+
+* Any invariant modification must be documented in the milestone plan.
+* Regression verification must be automated where possible.
