@@ -43,6 +43,7 @@ jobs:
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
+          PIP_NO_BUILD_ISOLATION: "1"
           TORCH_INDEX_URL: https://download.pytorch.org/whl/cpu
           WEBUI_LAUNCH_LIVE_OUTPUT: "1"
           PYTHONUNBUFFERED: "1"
