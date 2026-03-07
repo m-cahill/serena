@@ -2,19 +2,18 @@
 
 ## Intent
 
-Baseline freeze and refactor program initialization. Establish Serena as a governed refactor program with a living ledger, phase map, and E2E verification path—without any structural or runtime changes.
+Initialize the Serena refactor program and freeze the audited baseline.
 
 ---
 
 ## Key Outcomes
 
-- **Baseline tag created:** `baseline-pre-refactor` (annotated, immutable)
-- **Audit documents added:** docs/sdwebuirefactoraudit.md, docs/sdwebuiaudit.md
-- **Phase map established:** Seven-phase roadmap (M00–M32) in docs/serena.md
-- **E2E verification path documented:** M00_e2e_baseline.md with exact commands
-- **CI inventory completed:** M00_ci_inventory.md (workflows, gaps, fork behavior)
-- **Serena program ledger created:** docs/serena.md with identity, invariants, registry
-- **Helper scripts added:** scripts/dev/run_m00_baseline_e2e.ps1, .sh
+- **Immutable baseline tag created:** `baseline-pre-refactor`
+- **Serena governance ledger created:** docs/serena.md
+- **Phase and milestone map defined:** Seven-phase roadmap (M00–M32)
+- **CI architecture documented:** M00_ci_inventory.md
+- **Preflight surface map created:** M00_preflight.md
+- **E2E verification commands documented:** M00_e2e_baseline.md
 
 ---
 
@@ -29,26 +28,23 @@ Baseline freeze and refactor program initialization. Establish Serena as a gover
 
 ---
 
-## Verification Evidence
+## CI Evidence
 
-| Check | Run ID | Result |
-|-------|--------|--------|
-| Linter | 22790940335 | PASS |
-| Tests | 22790940333 | FAIL (pre-existing: CLIP/pkg_resources) |
+| Workflow | Run ID | Status |
+|----------|--------|--------|
+| Linter | 22794525690 | PASS |
+| Tests | 22794525698 | FAIL (pre-existing dependency issue) |
+
+**Test failure root cause:** `ModuleNotFoundError: pkg_resources` during CLIP install in `python launch.py --skip-torch-cuda-test --exit`. Pre-existing CI dependency issue, not introduced by M00.
 
 ---
 
 ## Behavior Impact
 
-**None.** This milestone introduces no runtime changes. All deliverables are documentation and thin verification scripts that wrap existing commands.
+**None.** M00 introduces no runtime changes.
 
 ---
 
 ## Next Milestone
 
-**M01 — CI truthfulness, SHA pinning, smoke path**
-
-- Fix CI fork condition (same-repo PRs skip lint/tests)
-- Address CLIP/pkg_resources install failure
-- Add smoke test path
-- Pin actions to SHA
+**M01 — CI Truthfulness and Guardrails**
