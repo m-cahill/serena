@@ -10,4 +10,5 @@
 | 2025-03-07 | write | Create .gitattributes | .gitattributes | done |
 | 2025-03-07 | search_replace | Update milestone ledger | docs/serena.md | done |
 | 2025-03-07 | run | git push, CI run 22809624907 | Tests failed at Setup env (CLIP pkg_resources) | done |
-| 2025-03-07 | search_replace | Add PIP_NO_BUILD_ISOLATION for CLIP build | .github/workflows/run_tests.yaml | in_progress |
+| 2025-03-07 | search_replace | Add PIP_NO_BUILD_ISOLATION for CLIP build | .github/workflows/run_tests.yaml | done (reverted - env not passed to pip subprocess) |
+| 2025-03-07 | search_replace | Add --no-build-isolation to clip install in launch_utils | modules/launch_utils.py | done |

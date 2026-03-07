@@ -16,7 +16,7 @@ Stabilize CI before any refactor work begins. Make CI a trustworthy signal for s
 
 ## Scope
 
-1. **Fix CI environment failure** — CLIP/pkg_resources: install setuptools before env setup; add `--do-not-download-clip` to setup step
+1. **Fix CI environment failure** — CLIP/pkg_resources: install setuptools before env setup; add `--no-build-isolation` to clip pip install in launch_utils (avoids isolated build env lacking pkg_resources)
 2. **Ensure CI runs on all PRs** — Remove same-repo PR skip condition from both workflows
 3. **Introduce smoke validation** — Fast startup check before full test suite
 4. **Add minimal coverage gate** — `--cov-fail-under=60`
