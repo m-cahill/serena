@@ -129,7 +129,7 @@ Core principles:
 
 | Milestone | Title | Status | Branch | PR | Commit | CI Run(s) | Audit Score / Notes | Completed At |
 |-----------|-------|--------|--------|-----|--------|-----------|---------------------|--------------|
-| M00 | Program kickoff, baseline freeze, phase map, E2E verification | Completed | m00-kickoff-baseline-e2e | — | bc47d666 | Linter 22790940335 ✓; Tests 22790940333 ✗ (pre-existing) | Baseline 2.4/5 | 2025-03-07 |
+| M00 | Program kickoff, baseline freeze, phase map, E2E verification | Completed | m00-kickoff-baseline-e2e | — | cdfe1285 | Linter 22790940335 ✓; Tests 22790940333 ✗ (pre-existing) | Baseline 2.4/5 | 2025-03-07 |
 
 ---
 
