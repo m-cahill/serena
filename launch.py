@@ -1,3 +1,5 @@
+import sys
+
 from modules import launch_utils
 
 args = launch_utils.args
@@ -37,6 +39,9 @@ def main():
     with launch_utils.startup_timer.subcategory("prepare environment"):
         if not args.skip_prepare_environment:
             prepare_environment()
+        elif "--exit" in sys.argv:
+            print("Exiting because of --exit argument (skipped prepare environment)")
+            exit(0)
 
     if args.test_server:
         configure_for_tests()

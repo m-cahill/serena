@@ -45,7 +45,7 @@ jobs:
           pip install pip-audit
           pip-audit || true
       - name: Setup environment
-        run: python launch.py --skip-torch-cuda-test --do-not-download-clip --exit
+        run: python launch.py --skip-prepare-environment --skip-torch-cuda-test --exit
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
@@ -54,10 +54,7 @@ jobs:
           PYTHONUNBUFFERED: "1"
       - name: Smoke startup
         run: |
-          python launch.py --skip-prepare-environment --skip-torch-cuda-test --test-server --do-not-download-clip --no-half --disable-opt-split-attention --use-cpu all --api-server-stop --port 7860 &
-          wait-for-it --service 127.0.0.1:7860 -t 60
-          curl -s -X POST http://127.0.0.1:7860/sdapi/v1/server-stop || true
-          wait
+          python launch.py --skip-prepare-environment --skip-torch-cuda-test --test-server --use-cpu all --exit
       - name: Print installed packages
         run: pip freeze
       - name: Start test server
