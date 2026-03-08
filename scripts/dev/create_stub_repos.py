@@ -29,7 +29,10 @@ def main() -> None:
     # ldm.util: default, instantiate_from_config, ismap, etc. (sd_hijack_optimizations, etc.)
     touch(os.path.join(REPOS, sd, "ldm", "util.py"), "def default(a, b): return b if a is None else a\n")
     touch(os.path.join(REPOS, sd, "ldm", "__init__.py"))
-    touch(os.path.join(REPOS, sd, "ldm", "modules", "__init__.py"))
+    touch(
+        os.path.join(REPOS, sd, "ldm", "modules", "__init__.py"),
+        "from . import distributions\n",
+    )
     touch(os.path.join(REPOS, sd, "ldm", "modules", "encoders", "__init__.py"))
     # ldm.modules.encoders.modules: FrozenCLIPEmbedder, FrozenOpenCLIPEmbedder, CLIPTextModel
     ldm_modules = (
