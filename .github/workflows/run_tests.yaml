@@ -44,6 +44,15 @@ jobs:
         run: |
           pip install pip-audit
           pip-audit || true
+      - name: Install runtime dependencies
+        run: |
+          pip install torch==2.1.2 torchvision==0.16.2 --extra-index-url https://download.pytorch.org/whl/cpu
+          pip install https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip --no-build-isolation
+          pip install https://github.com/mlfoundations/open_clip/archive/bb6e834e9c70d9c27d0dc3ecedeebeaeb1ffad6b.zip
+          pip install -r requirements_versions.txt
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+          PIP_PROGRESS_BAR: "off"
       - name: Setup environment
         run: python launch.py --skip-prepare-environment --skip-torch-cuda-test --exit
         env:
