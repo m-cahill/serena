@@ -130,7 +130,7 @@ Core principles:
 | Milestone | Title | Status | Branch | PR | Commit | CI Run(s) | Audit Score / Notes | Completed At |
 |-----------|-------|--------|--------|-----|--------|-----------|---------------------|--------------|
 | M00 | Program kickoff, baseline freeze, phase map, E2E verification | Completed | m00-kickoff-baseline-e2e | — | cdfe1285 | Linter 22794525690 ✓; Tests 22794525698 ✗ (pre-existing CLIP/pkg_resources) | Baseline 2.4/5 | 2025-03-07 |
-| M01 | CI truthfulness, SHA pinning, smoke path | In Progress | m01-ci-truthfulness | — | — | — | — | — |
+| M01 | CI truthfulness, SHA pinning, smoke path | Completed | m01-ci-truthfulness | — | 2f664049 | Linter 22814396752 ✓; Tests 22814850488 (server ✓, 17 pass, img2img/txt2img 500) | 4.7 / 5 | 2026-03-08 |
 
 ---
 

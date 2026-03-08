@@ -83,3 +83,11 @@ Replaced manual file-by-file stubs with **dynamic stub modules**:
 - Keeps k_diffusion file-based (needs real get_sigmas_*, torch, etc.)
 
 Eliminates whack-a-mole import chain.
+
+---
+
+## 6. Run 4 — Closeout Verification
+
+**Trigger:** Milestone closeout commit (M01_summary, M01_audit, M02_plan, ledger update).
+
+Closeout verification run. No functional changes. CI remains consistent with Run 3.
