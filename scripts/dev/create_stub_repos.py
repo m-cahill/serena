@@ -106,8 +106,10 @@ def main() -> None:
 
     # paths.py asserts ldm/models/diffusion/ddpm.py exists
     ddpm_content = (
-        "# stub for CI - paths.py assertion + LatentDiffusion import\n"
-        "class LatentDiffusion:\n    pass\n"
+        "# stub for CI - paths.py assertion + LatentDiffusion/DDPM import\n"
+        "class DDPM:\n"
+        "    def register_schedule(self, *a, **k): pass\n"
+        "class LatentDiffusion(DDPM):\n    pass\n"
         "class LatentDepth2ImageDiffusion(LatentDiffusion):\n    pass\n"
     )
     touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "ddpm.py"), ddpm_content)
