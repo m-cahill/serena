@@ -25,12 +25,6 @@ jobs:
         with:
           path: models
           key: "2023-12-30"
-      - name: Cache repositories
-        id: cache-repos
-        uses: actions/cache@0057852bfaa89a56745cba8c7296529d2fc39830
-        with:
-          path: repositories
-          key: "repos-2023-12-30"
       - name: Install test dependencies
         run: pip install wait-for-it -r requirements-test.txt
         env:
@@ -53,6 +47,8 @@ jobs:
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
+      - name: Create stub repositories
+        run: python scripts/dev/create_stub_repos.py
       - name: Setup environment
         run: python launch.py --skip-prepare-environment --skip-torch-cuda-test --exit
         env:
