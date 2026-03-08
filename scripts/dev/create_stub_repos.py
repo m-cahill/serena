@@ -46,10 +46,17 @@ def main() -> None:
         os.path.join(REPOS, sd, "ldm", "modules", "attention", "__init__.py"),
         "class CrossAttention:\n    def forward(self, *a, **k): pass\n",
     )
-    touch(os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "__init__.py"))
+    touch(
+        os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "__init__.py"),
+        "from . import model, openaimodel\n",
+    )
     touch(
         os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "model.py"),
         "class AttnBlock:\n    def forward(self, *a, **k): pass\n",
+    )
+    touch(
+        os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "openaimodel.py"),
+        "# stub\n",
     )
     # ldm.modules.midas (sd_models)
     touch(os.path.join(REPOS, sd, "ldm", "modules", "midas", "__init__.py"))
