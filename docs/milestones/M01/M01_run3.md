@@ -2,16 +2,16 @@
 
 **Date:** 2026-03-08  
 **Branch:** m01-ci-truthfulness  
-**Trigger:** Stub repository approach (ac965561 → 1d3c4dcb)
+**Trigger:** Stub repository approach (ac965561 → f013e553)
 
 ---
 
 ## 1. Workflow Identity
 
-| Workflow | Run ID | Status |
-|----------|--------|--------|
-| Linter | 22810292142 | ✓ success |
-| Tests | 22810292144 | ✗ failure |
+| Workflow | Latest Run | Status |
+|----------|------------|--------|
+| Linter | 22812483655 | ✓ success |
+| Tests | 22812483662 | ✗ failure (iterating) |
 
 ---
 
@@ -27,14 +27,17 @@
 
 ## 3. Stub Progression (by run)
 
-| Run | Blocker | Fix |
-|-----|---------|-----|
-| 22810169638 | `paths.py` assert (ddpm.py) | Add ddpm.py stub |
-| 22810208301 | `LatentDiffusion` import | Add LatentDiffusion, LatentDepth2ImageDiffusion to ddpm |
-| 22810246639 | `ldm.util` | Add ldm.util.default |
-| 22810246639 | `ldm.modules.midas` | Add ldm.modules.midas |
-| 22810292144 | `sgm.models` | Add sgm.models.diffusion |
-| 22810326719 | `sgm.modules.diffusionmodules.denoiser_scaling` | Add denoiser_scaling, discretizer, DiffusionEngine, GeneralConditioner |
+| Blocker | Fix |
+|---------|-----|
+| `paths.py` assert (ddpm.py) | Add ddpm.py stub |
+| `LatentDiffusion` import | Add LatentDiffusion, LatentDepth2ImageDiffusion |
+| `ldm.util` | Add ldm.util.default |
+| `ldm.modules.midas` | Add ldm.modules.midas |
+| `ldm.modules.distributions` | Add distributions, DiagonalGaussianDistribution |
+| `ldm.modules.diffusionmodules.openaimodel` | Add openaimodel, explicit __init__ imports |
+| `sgm.models`, `sgm.modules.*` | Add sgm stubs (attention, diffusionmodules, encoders, conditioner) |
+| `k_diffusion.external`, `k_diffusion.utils` | Add external, utils, sampling stubs |
+| `k_diffusion.sampling.get_sigmas_*` | Add get_sigmas_karras, exponential, polyexponential |
 
 ---
 
@@ -44,41 +47,28 @@
 repositories/
   stable-diffusion-stability-ai/
     ldm/
-      models/diffusion/ddpm.py (LatentDiffusion, LatentDepth2ImageDiffusion)
-      util.py (default)
+      models/diffusion/ddpm.py
+      util.py
       modules/
-        encoders/modules.py (FrozenCLIPEmbedder, FrozenOpenCLIPEmbedder, CLIPTextModel)
-        attention/ (CrossAttention)
-        diffusionmodules/model.py (AttnBlock)
+        __init__.py (imports distributions, diffusionmodules)
+        encoders/modules.py
+        attention/, diffusionmodules/ (model, openaimodel)
+        distributions/distributions.py (DiagonalGaussianDistribution)
         midas/
   generative-models/
     sgm/
       models/diffusion/ (DiffusionEngine)
-      modules/
-        encoders/modules.py
-        attention/ (CrossAttention, SDP_IS_AVAILABLE, XFORMERS_IS_AVAILABLE)
-        diffusionmodules/ (model, denoiser_scaling, discretizer, openaimodel)
-        conditioner.py (GeneralConditioner)
+      modules/ (attention, diffusionmodules, encoders, conditioner)
   k-diffusion/
+    k_diffusion/
+      __init__.py (imports utils, sampling, external)
+      utils.py, external.py, sampling.py
   BLIP/
   stable-diffusion-webui-assets/
 ```
 
 ---
 
-## 5. Remaining Blocker (Run 22810326719)
+## 5. Status
 
-```
-ModuleNotFoundError: No module named 'sgm.modules.diffusionmodules.denoiser_scaling'
-```
-
-Fix applied in next commit: add denoiser_scaling, discretizer, DiffusionEngine, GeneralConditioner, openaimodel stubs.
-
----
-
-## 6. Next Steps
-
-- Push stub additions
-- Run CI
-- If more import errors: add stubs iteratively
-- When server starts: verify pytest and coverage pass
+Iterative stub addition continues. Each CI run reveals the next missing import. Latest commit: f013e553 (explicit ldm.modules.diffusionmodules import).
