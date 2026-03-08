@@ -45,7 +45,29 @@ CI uses stub repositories to satisfy import paths without cloning large external
 
 1. Create a branch from `main`
 2. Make changes; run `ruff .` and `pytest test` locally
-3. Open a PR; CI runs linter, tests, and coverage
+3. Open a PR targeting `m-cahill/serena:main`; CI runs linter, tests, and coverage
 4. Do not push directly to `main`; merge via PR after CI passes
 
 For milestone-specific workflow, see `docs/serena.md` and `docs/milestones/`.
+
+---
+
+## Serena repository workflow
+
+Serena operates as an **independent governed fork** of AUTOMATIC1111/stable-diffusion-webui. The upstream repository is used only as a **reference baseline** for audit comparisons.
+
+All development must occur within the Serena repository (`m-cahill/serena`).
+
+**Correct PR flow:**
+
+```
+feature-branch → PR → m-cahill/serena:main
+```
+
+**Incorrect PR flow (never do this):**
+
+```
+m-cahill/serena → AUTOMATIC1111/stable-diffusion-webui
+```
+
+Upstream PRs must never be opened. CI includes a guardrail that fails if workflows run outside `m-cahill/serena`.
