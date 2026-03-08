@@ -19,8 +19,13 @@ def touch(path: str, content: str = "") -> None:
 
 def main() -> None:
     sd = "stable-diffusion-stability-ai"
-    # paths.py asserts ldm/models/diffusion/ddpm.py
-    touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "ddpm.py"), "# stub\n")
+    # paths.py asserts ldm/models/diffusion/ddpm.py; sd_models_types imports LatentDiffusion
+    ddpm_content = (
+        "# stub for CI\n"
+        "class LatentDiffusion:\n    pass\n"
+        "class LatentDepth2ImageDiffusion(LatentDiffusion):\n    pass\n"
+    )
+    touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "ddpm.py"), ddpm_content)
     touch(os.path.join(REPOS, sd, "ldm", "__init__.py"))
     touch(os.path.join(REPOS, sd, "ldm", "modules", "__init__.py"))
     touch(os.path.join(REPOS, sd, "ldm", "modules", "encoders", "__init__.py"))
