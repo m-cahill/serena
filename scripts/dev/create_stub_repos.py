@@ -40,6 +40,8 @@ def _make_stub_class(name):
                 return _noop
     return _Meta(name, (), {"forward": _noop})
 
+_const_cache = {}  # id(module) -> {attr: dict} for UPPER_CASE
+
 class _StubModule(types.ModuleType):
     """Resolves any attribute as submodule or stub class."""
 
@@ -49,10 +51,10 @@ class _StubModule(types.ModuleType):
             if name and name[0].isupper():
                 # UPPER_CASE on module -> dict (e.g. midas.api.ISL_PATHS)
                 if "_" in name or name.isupper():
-                    cache = getattr(self, "_d", None)
-                    if cache is None:
-                        cache = {}
-                        object.__setattr__(self, "_d", cache)
+                    cid = id(self)
+                    if cid not in _const_cache:
+                        _const_cache[cid] = {}
+                    cache = _const_cache[cid]
                     if name not in cache:
                         cache[name] = {}
                     return cache[name]
