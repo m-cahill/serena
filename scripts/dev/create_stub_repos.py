@@ -3,6 +3,8 @@
 Create minimal stub repositories for CI.
 Satisfies paths.py assertion and import chain without cloning external repos.
 Deterministic, no network required.
+
+Uses dynamic stub modules for ldm and sgm to avoid whack-a-mole import chain.
 """
 import os
 
@@ -17,114 +19,79 @@ def touch(path: str, content: str = "") -> None:
         f.write(content)
 
 
+DYNAMIC_STUB = '''"""Dynamic stub module for CI - satisfies any nested import."""
+import types
+import sys
+import importlib.abc
+import importlib.machinery
+
+class _StubModule(types.ModuleType):
+    """Resolves any attribute as submodule or stub class."""
+
+    def __getattr__(self, name):
+        module_name = f"{self.__name__}.{name}"
+        if module_name not in sys.modules:
+            if name and name[0].isupper():
+                sys.modules[module_name] = type(name, (), {})
+            else:
+                m = _StubModule(module_name)
+                m.__call__ = lambda *a, **k: None
+                sys.modules[module_name] = m
+        return sys.modules[module_name]
+
+class _StubFinder(importlib.abc.MetaPathFinder):
+    def __init__(self, prefix):
+        self.prefix = prefix
+
+    def find_spec(self, fullname, path, target=None):
+        if fullname.startswith(self.prefix + "."):
+            return importlib.machinery.ModuleSpec(fullname, _StubLoader())
+        return None
+
+class _StubLoader(importlib.abc.Loader):
+    def create_module(self, spec):
+        return None
+
+    def exec_module(self, module):
+        pass
+
+# Append finder so default finders run first; we catch modules they miss
+def _install_finder():
+    for prefix in ("ldm", "sgm"):
+        sys.meta_path.append(_StubFinder(prefix))
+
+_install_finder()
+
+original = sys.modules[__name__]
+stub = _StubModule(__name__)
+if "__file__" in original.__dict__:
+    stub.__file__ = original.__file__
+if "__path__" in original.__dict__:
+    stub.__path__ = original.__path__
+sys.modules[__name__] = stub
+'''
+
+
 def main() -> None:
     sd = "stable-diffusion-stability-ai"
-    # paths.py asserts ldm/models/diffusion/ddpm.py; sd_models_types imports LatentDiffusion
+
+    # paths.py asserts ldm/models/diffusion/ddpm.py exists
     ddpm_content = (
-        "# stub for CI\n"
+        "# stub for CI - paths.py assertion + LatentDiffusion import\n"
         "class LatentDiffusion:\n    pass\n"
         "class LatentDepth2ImageDiffusion(LatentDiffusion):\n    pass\n"
     )
     touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "ddpm.py"), ddpm_content)
-    touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "ddim.py"), "# stub\n")
-    # ldm.util: default, instantiate_from_config, ismap, etc. (sd_hijack_optimizations, etc.)
-    touch(os.path.join(REPOS, sd, "ldm", "util.py"), "def default(a, b): return b if a is None else a\n")
-    touch(os.path.join(REPOS, sd, "ldm", "__init__.py"))
-    touch(
-        os.path.join(REPOS, sd, "ldm", "modules", "__init__.py"),
-        "from . import distributions, diffusionmodules\n",
-    )
-    touch(os.path.join(REPOS, sd, "ldm", "modules", "encoders", "__init__.py"))
-    # ldm.modules.encoders.modules: FrozenCLIPEmbedder, FrozenOpenCLIPEmbedder, CLIPTextModel
-    ldm_modules = (
-        "class FrozenCLIPEmbedder:\n    pass\n"
-        "class FrozenOpenCLIPEmbedder:\n    pass\n"
-        "class CLIPTextModel:\n    pass\n"
-    )
-    touch(os.path.join(REPOS, sd, "ldm", "modules", "encoders", "modules.py"), ldm_modules)
-    # ldm.modules.attention, diffusionmodules.model (sd_hijack_optimizations)
-    touch(
-        os.path.join(REPOS, sd, "ldm", "modules", "attention", "__init__.py"),
-        "class CrossAttention:\n    def forward(self, *a, **k): pass\n",
-    )
-    touch(
-        os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "__init__.py"),
-        "from . import model, openaimodel\n",
-    )
-    touch(
-        os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "model.py"),
-        "class AttnBlock:\n    def forward(self, *a, **k): pass\n",
-    )
-    touch(
-        os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "openaimodel.py"),
-        "# stub\n",
-    )
-    # ldm.modules.midas (sd_models)
-    touch(os.path.join(REPOS, sd, "ldm", "modules", "midas", "__init__.py"))
-    # ldm.modules.distributions.distributions (textual_inversion.dataset)
-    touch(os.path.join(REPOS, sd, "ldm", "modules", "distributions", "__init__.py"))
-    touch(
-        os.path.join(REPOS, sd, "ldm", "modules", "distributions", "distributions.py"),
-        "class DiagonalGaussianDistribution:\n    pass\n",
-    )
+    # Dynamic stubs at each package level so Python loads them (not namespace pkgs)
+    touch(os.path.join(REPOS, sd, "ldm", "__init__.py"), DYNAMIC_STUB)
+    touch(os.path.join(REPOS, sd, "ldm", "models", "__init__.py"), DYNAMIC_STUB)
+    touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "__init__.py"), DYNAMIC_STUB)
 
-    # generative-models: sgm.modules.encoders.modules
+    # generative-models: paths.py checks sgm exists
     gm = "generative-models"
-    touch(os.path.join(REPOS, gm, "sgm", "__init__.py"))
-    touch(os.path.join(REPOS, gm, "sgm", "modules", "__init__.py"))
-    touch(os.path.join(REPOS, gm, "sgm", "modules", "encoders", "__init__.py"))
-    sgm_modules = (
-        "class FrozenCLIPEmbedder:\n    pass\n"
-        "class FrozenOpenCLIPEmbedder2:\n    pass\n"
-        "class ConcatTimestepEmbedderND:\n    pass\n"
-    )
-    touch(os.path.join(REPOS, gm, "sgm", "modules", "encoders", "modules.py"), sgm_modules)
-    # sgm.modules.attention, diffusionmodules.model (sd_hijack_optimizations)
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "attention", "__init__.py"),
-        "class CrossAttention:\n    def forward(self, *a, **k): pass\n"
-        "\nSDP_IS_AVAILABLE = True\nXFORMERS_IS_AVAILABLE = False\n",
-    )
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "__init__.py"),
-        "from . import model, openaimodel\n",
-    )
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "model.py"),
-        "class AttnBlock:\n    def forward(self, *a, **k): pass\n",
-    )
-    # sgm.models.diffusion (sd_models_xl)
-    touch(os.path.join(REPOS, gm, "sgm", "models", "__init__.py"))
-    touch(
-        os.path.join(REPOS, gm, "sgm", "models", "diffusion", "__init__.py"),
-        "class DiffusionEngine:\n    pass\n",
-    )
-    # sgm.modules.diffusionmodules.denoiser_scaling, discretizer (sd_models_xl)
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "denoiser_scaling.py"),
-        "class VScaling:\n    pass\n",
-    )
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "discretizer.py"),
-        "class LegacyDDPMDiscretization:\n    alphas_cumprod = [1.0]\n",
-    )
-    # sgm.modules.GeneralConditioner (sd_models_xl)
-    touch(os.path.join(REPOS, gm, "sgm", "modules", "__init__.py"))
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "conditioner.py"),
-        "class GeneralConditioner:\n    pass\n",
-    )
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "__init__.py"),
-        "from .conditioner import GeneralConditioner\n"
-        "from . import attention, diffusionmodules, encoders\n",
-    )
-    touch(
-        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "openaimodel.py"),
-        "# stub\n",
-    )
+    touch(os.path.join(REPOS, gm, "sgm", "__init__.py"), DYNAMIC_STUB)
 
-    # k-diffusion: k_diffusion.sampling, utils (sd_schedulers, sd_samplers_lcm)
+    # k-diffusion: paths.py checks k_diffusion/sampling.py; needs real attrs
     kd = "k-diffusion"
     touch(
         os.path.join(REPOS, kd, "k_diffusion", "__init__.py"),
@@ -151,10 +118,10 @@ def main() -> None:
     )
     touch(os.path.join(REPOS, kd, "k_diffusion", "sampling.py"), kd_sampling)
 
-    # BLIP: models/blip.py
+    # BLIP: paths.py checks models/blip.py
     touch(os.path.join(REPOS, "BLIP", "models", "blip.py"), "# stub\n")
 
-    # stable-diffusion-webui-assets (optional, paths may warn)
+    # stable-diffusion-webui-assets (optional)
     touch(os.path.join(REPOS, "stable-diffusion-webui-assets", ".gitkeep"))
 
     print("Stub repositories created.")

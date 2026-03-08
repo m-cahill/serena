@@ -10,8 +10,8 @@
 
 | Workflow | Latest Run | Status |
 |----------|------------|--------|
-| Linter | 22812483655 | ✓ success |
-| Tests | 22812483662 | ✗ failure (iterating) |
+| Linter | 22812569761 | ✓ success |
+| Tests | 22812569762 | ✗ failure |
 
 ---
 
@@ -69,6 +69,13 @@ repositories/
 
 ---
 
-## 5. Status
+## 5. Dynamic Stub Approach (Commit 9a83c70e+)
 
-Iterative stub addition continues. Each CI run reveals the next missing import. Latest commit: f013e553 (explicit ldm.modules.diffusionmodules import).
+Replaced manual file-by-file stubs with **dynamic stub modules**:
+
+- `_StubFinder` (MetaPathFinder): catches any `ldm.*` or `sgm.*` import the default finder misses
+- `_StubModule`: resolves attributes as submodules or stub classes
+- Keeps `ddpm.py` for paths.py assertion and LatentDiffusion
+- Keeps k_diffusion file-based (needs real get_sigmas_*, torch, etc.)
+
+Eliminates whack-a-mole import chain.

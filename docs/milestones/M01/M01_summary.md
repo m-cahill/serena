@@ -37,11 +37,15 @@ With `--skip-prepare-environment`, no repos are cloned. The app expects `reposit
 - paths.py assertion (ddpm.py)
 - LatentDiffusion, LatentDepth2ImageDiffusion
 - ldm.util.default
-- ldm.modules.attention, diffusionmodules.model, midas
+- ldm.modules.attention, diffusionmodules (model, openaimodel), midas, distributions
+- ldm.models.diffusion.ddim
 - sgm.modules.encoders, attention, diffusionmodules
 - sgm.models.diffusion (DiffusionEngine)
 - sgm.modules.diffusionmodules.denoiser_scaling, discretizer
 - sgm.modules.GeneralConditioner, openaimodel
+- k_diffusion (utils, external, sampling)
+
+**Fix applied:** Dynamic stub module (MetaPathFinder) for ldm and sgm.
 
 ---
 
