@@ -50,6 +50,12 @@ def main() -> None:
     )
     # ldm.modules.midas (sd_models)
     touch(os.path.join(REPOS, sd, "ldm", "modules", "midas", "__init__.py"))
+    # ldm.modules.distributions.distributions (textual_inversion.dataset)
+    touch(os.path.join(REPOS, sd, "ldm", "modules", "distributions", "__init__.py"))
+    touch(
+        os.path.join(REPOS, sd, "ldm", "modules", "distributions", "distributions.py"),
+        "class DiagonalGaussianDistribution:\n    pass\n",
+    )
 
     # generative-models: sgm.modules.encoders.modules
     gm = "generative-models"
