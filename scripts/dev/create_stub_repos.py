@@ -25,6 +25,17 @@ import sys
 import importlib.abc
 import importlib.machinery
 
+def _make_stub_class(name):
+    """Stub class; any attr access returns no-op (for forward, etc.)."""
+    _noop = lambda *a, **k: None
+    class _Meta(type):
+        def __getattribute__(cls, attr):
+            try:
+                return type.__getattribute__(cls, attr)
+            except AttributeError:
+                return _noop
+    return _Meta(name, (), {"forward": _noop})
+
 class _StubModule(types.ModuleType):
     """Resolves any attribute as submodule or stub class."""
 
@@ -32,7 +43,7 @@ class _StubModule(types.ModuleType):
         module_name = f"{self.__name__}.{name}"
         if module_name not in sys.modules:
             if name and name[0].isupper():
-                sys.modules[module_name] = type(name, (), {})
+                sys.modules[module_name] = _make_stub_class(name)
             else:
                 m = _StubModule(module_name)
                 m.__path__ = []  # package for nested imports
