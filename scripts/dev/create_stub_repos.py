@@ -47,6 +47,15 @@ class _StubModule(types.ModuleType):
         module_name = f"{self.__name__}.{name}"
         if module_name not in sys.modules:
             if name and name[0].isupper():
+                # UPPER_CASE on module -> dict (e.g. midas.api.ISL_PATHS)
+                if "_" in name or name.isupper():
+                    cache = getattr(self, "_d", None)
+                    if cache is None:
+                        cache = {}
+                        object.__setattr__(self, "_d", cache)
+                    if name not in cache:
+                        cache[name] = {}
+                    return cache[name]
                 sys.modules[module_name] = _make_stub_class(name)
             else:
                 m = _StubModule(module_name)
