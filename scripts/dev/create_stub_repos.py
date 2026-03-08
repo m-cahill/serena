@@ -35,6 +35,7 @@ class _StubModule(types.ModuleType):
                 sys.modules[module_name] = type(name, (), {})
             else:
                 m = _StubModule(module_name)
+                m.__path__ = []  # package for nested imports
                 m.__call__ = lambda *a, **k: None
                 sys.modules[module_name] = m
         return sys.modules[module_name]
@@ -53,7 +54,8 @@ class _StubLoader(importlib.abc.Loader):
         return None
 
     def exec_module(self, module):
-        pass
+        # Must have __path__ so Python treats it as a package for nested imports
+        module.__path__ = []
 
 # Append finder so default finders run first; we catch modules they miss
 def _install_finder():
