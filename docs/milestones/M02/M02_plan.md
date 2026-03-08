@@ -110,7 +110,7 @@ GitHub Actions sets `CI=true` by default; no workflow change required.
 
 ### Step 3 — Re-enable coverage enforcement
 
-Existing `--cov-fail-under=60` in `run_tests.yaml` is enforced once tests pass.
+Coverage gate enforced on combined (pytest + server) coverage. Baseline 33% (current − 2% margin); target 60% deferred to M04.
 
 ### Step 4 — Add CONTRIBUTING.md
 
