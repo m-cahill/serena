@@ -107,10 +107,18 @@ def main() -> None:
         "# stub\n",
     )
 
-    # k-diffusion: k_diffusion.sampling
+    # k-diffusion: k_diffusion.sampling (sd_schedulers, sd_samplers_common)
     kd = "k-diffusion"
     touch(os.path.join(REPOS, kd, "k_diffusion", "__init__.py"))
-    touch(os.path.join(REPOS, kd, "k_diffusion", "sampling.py"), "# stub\n")
+    kd_sampling = (
+        "import torch as _torch\n"
+        "torch = _torch\n"
+        "def get_sigmas_karras(*a, **k): pass\n"
+        "def get_sigmas_exponential(*a, **k): pass\n"
+        "def get_sigmas_polyexponential(*a, **k): pass\n"
+        "def to_d(*a, **k): pass\n"
+    )
+    touch(os.path.join(REPOS, kd, "k_diffusion", "sampling.py"), kd_sampling)
 
     # BLIP: models/blip.py
     touch(os.path.join(REPOS, "BLIP", "models", "blip.py"), "# stub\n")
