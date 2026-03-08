@@ -26,6 +26,8 @@ def main() -> None:
         "class LatentDepth2ImageDiffusion(LatentDiffusion):\n    pass\n"
     )
     touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "ddpm.py"), ddpm_content)
+    # ldm.util: default, instantiate_from_config, ismap, etc. (sd_hijack_optimizations, etc.)
+    touch(os.path.join(REPOS, sd, "ldm", "util.py"), "def default(a, b): return b if a is None else a\n")
     touch(os.path.join(REPOS, sd, "ldm", "__init__.py"))
     touch(os.path.join(REPOS, sd, "ldm", "modules", "__init__.py"))
     touch(os.path.join(REPOS, sd, "ldm", "modules", "encoders", "__init__.py"))
