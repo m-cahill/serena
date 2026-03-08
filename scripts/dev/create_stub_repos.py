@@ -109,7 +109,10 @@ def main() -> None:
 
     # k-diffusion: k_diffusion.sampling, utils (sd_schedulers, sd_samplers_lcm)
     kd = "k-diffusion"
-    touch(os.path.join(REPOS, kd, "k_diffusion", "__init__.py"))
+    touch(
+        os.path.join(REPOS, kd, "k_diffusion", "__init__.py"),
+        "from . import utils, sampling, external\n",
+    )
     touch(os.path.join(REPOS, kd, "k_diffusion", "utils.py"), "# stub\n")
     touch(
         os.path.join(REPOS, kd, "k_diffusion", "external.py"),
