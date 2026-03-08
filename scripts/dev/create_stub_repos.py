@@ -67,6 +67,7 @@ class _StubModule(types.ModuleType):
             else:
                 m = _StubModule(module_name)
                 m.__path__ = []  # package for nested imports
+                m.__file__ = f"<stub:{module_name}>"
                 m.__call__ = lambda *a, **k: None
                 sys.modules[module_name] = m
         return sys.modules[module_name]
@@ -84,6 +85,7 @@ class _StubLoader(importlib.abc.Loader):
     def create_module(self, spec):
         m = _StubModule(spec.name)
         m.__path__ = []
+        m.__file__ = f"<stub:{spec.name}>"  # satisfy inspect.getfile
         return m
 
     def exec_module(self, module):
