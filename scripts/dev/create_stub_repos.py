@@ -65,7 +65,8 @@ def main() -> None:
     # sgm.modules.attention, diffusionmodules.model (sd_hijack_optimizations)
     touch(
         os.path.join(REPOS, gm, "sgm", "modules", "attention", "__init__.py"),
-        "class CrossAttention:\n    def forward(self, *a, **k): pass\n",
+        "class CrossAttention:\n    def forward(self, *a, **k): pass\n"
+        "\nSDP_IS_AVAILABLE = True\nXFORMERS_IS_AVAILABLE = False\n",
     )
     touch(os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "__init__.py"))
     touch(
@@ -74,7 +75,33 @@ def main() -> None:
     )
     # sgm.models.diffusion (sd_models_xl)
     touch(os.path.join(REPOS, gm, "sgm", "models", "__init__.py"))
-    touch(os.path.join(REPOS, gm, "sgm", "models", "diffusion", "__init__.py"))
+    touch(
+        os.path.join(REPOS, gm, "sgm", "models", "diffusion", "__init__.py"),
+        "class DiffusionEngine:\n    pass\n",
+    )
+    # sgm.modules.diffusionmodules.denoiser_scaling, discretizer (sd_models_xl)
+    touch(
+        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "denoiser_scaling.py"),
+        "class VScaling:\n    pass\n",
+    )
+    touch(
+        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "discretizer.py"),
+        "class LegacyDDPMDiscretization:\n    alphas_cumprod = [1.0]\n",
+    )
+    # sgm.modules.GeneralConditioner (sd_models_xl)
+    touch(os.path.join(REPOS, gm, "sgm", "modules", "__init__.py"))
+    touch(
+        os.path.join(REPOS, gm, "sgm", "modules", "conditioner.py"),
+        "class GeneralConditioner:\n    pass\n",
+    )
+    touch(
+        os.path.join(REPOS, gm, "sgm", "modules", "__init__.py"),
+        "from .conditioner import GeneralConditioner\n",
+    )
+    touch(
+        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "openaimodel.py"),
+        "# stub\n",
+    )
 
     # k-diffusion: k_diffusion.sampling
     kd = "k-diffusion"
