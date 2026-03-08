@@ -88,6 +88,11 @@ Eliminates whack-a-mole import chain.
 
 ## 6. Run 4 — Closeout Verification
 
-**Trigger:** Milestone closeout commit (M01_summary, M01_audit, M02_plan, ledger update).
+**Trigger:** Milestone closeout commit 0bd566f5 (M01_summary, M01_audit, M02_plan, ledger update).
+
+| Workflow | Run ID | Status |
+|----------|--------|--------|
+| Linter | 22815773475 | ✓ success |
+| Tests | 22815773481 | Partial (17 pass, 18 fail) |
 
 Closeout verification run. No functional changes. CI remains consistent with Run 3.
