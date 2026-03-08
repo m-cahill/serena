@@ -31,7 +31,7 @@ def main() -> None:
     touch(os.path.join(REPOS, sd, "ldm", "__init__.py"))
     touch(
         os.path.join(REPOS, sd, "ldm", "modules", "__init__.py"),
-        "from . import distributions\n",
+        "from . import distributions, diffusionmodules\n",
     )
     touch(os.path.join(REPOS, sd, "ldm", "modules", "encoders", "__init__.py"))
     # ldm.modules.encoders.modules: FrozenCLIPEmbedder, FrozenOpenCLIPEmbedder, CLIPTextModel
