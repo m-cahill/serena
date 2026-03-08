@@ -51,11 +51,12 @@ class _StubFinder(importlib.abc.MetaPathFinder):
 
 class _StubLoader(importlib.abc.Loader):
     def create_module(self, spec):
-        return None
+        m = _StubModule(spec.name)
+        m.__path__ = []
+        return m
 
     def exec_module(self, module):
-        # Must have __path__ so Python treats it as a package for nested imports
-        module.__path__ = []
+        pass
 
 # Append finder so default finders run first; we catch modules they miss
 def _install_finder():
