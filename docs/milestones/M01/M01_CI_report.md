@@ -1,7 +1,7 @@
 # M01 CI Report — 2026-03-08
 
 **Branch:** m01-ci-truthfulness  
-**Latest commit:** 9a83c70e  
+**Latest commit:** 5a76c617  
 **Report generated:** 2026-03-08
 
 ---
@@ -10,51 +10,54 @@
 
 | Workflow | Run ID | Status |
 |----------|--------|--------|
-| Linter | 22812569761 | ✓ PASS |
-| Tests | 22812569762 | ✗ FAIL |
+| Linter | 22814396752 | ✓ PASS |
+| Tests | 22814850488 | Partial |
 
 ---
 
-## 2. Test Failure
+## 2. Dynamic Stub — Success
 
-**Root cause:** Server startup fails before binding to port 7860.
+**Server startup:** ✓ PASS — port 7860 binds, server runs.
 
-**Error (from output.txt):**
+**Dynamic stub approach:**
+- `_StubFinder` + `_StubModule` for `ldm.*` and `sgm.*`
+- Resolves any nested import without individual files
+- Stub classes: `forward`, `ATTENTION_MODES`, `ISL_PATHS`, etc.
+- `__file__` set for `inspect.getfile`
+- `ddpm.py`: DDPM, LatentDiffusion with `__init__(*a, **k)`
+
+---
+
+## 3. Test Results (Run 22814850488)
+
+| Category | Result |
+|----------|--------|
+| wait-for-it | ✓ 127.0.0.1:7860 available |
+| test_extras | ✓ PASS (3) |
+| test_face_restorers | ✓ PASS (2) |
+| test_torch_utils | ✓ PASS (2) |
+| test_utils | ✓ PASS (10) |
+| test_img2img | ✗ 500 (4) |
+| test_txt2img | ✗ 500 (14) |
+
+**img2img/txt2img:** Return 500 — stub model lacks real inference. Expected with stub-only setup.
+
+---
+
+## 4. Stub Layout (Minimal)
+
 ```
-ModuleNotFoundError: No module named 'ldm.models.diffusion.plms'
-  File "modules/sd_hijack.py", line 15, in <module>
-    import ldm.models.diffusion.plms
+repositories/
+  stable-diffusion-stability-ai/ldm/__init__.py (dynamic stub)
+  stable-diffusion-stability-ai/ldm/models/diffusion/ddpm.py (DDPM, LatentDiffusion)
+  generative-models/sgm/__init__.py (dynamic stub)
+  k-diffusion/ (file-based: utils, sampling, external)
+  BLIP/, stable-diffusion-webui-assets/
 ```
-
-**Effect:** `wait-for-it` times out (20s); pytest never runs.
-
----
-
-## 3. Stub Progression
-
-| Step | Blocker | Fix applied |
-|------|---------|-------------|
-| 1 | paths.py assert | ddpm.py |
-| 2 | LatentDiffusion | ddpm classes |
-| 3 | ldm.util | default() |
-| 4 | ldm.modules.midas | midas/ |
-| 5 | ldm.modules.distributions | DiagonalGaussianDistribution |
-| 6 | ldm.modules.diffusionmodules.openaimodel | openaimodel.py |
-| 7 | sgm.* | sgm stubs |
-| 8 | k_diffusion.* | external, utils, sampling |
-| 9 | ldm.models.diffusion.ddim | ddim.py |
-| 10 | **ldm.models.diffusion.plms** | **Next fix** |
-
----
-
-## 4. Fix Applied
-
-**Dynamic stub module** (commit in progress): MetaPathFinder + _StubModule for ldm and sgm. Resolves any nested import without individual files.
 
 ---
 
 ## 5. Links
 
-- **PR:** (create when ready to merge)
-- **Linter run:** https://github.com/m-cahill/serena/actions/runs/22812569761
-- **Tests run:** https://github.com/m-cahill/serena/actions/runs/22812569762
+- **Linter run:** https://github.com/m-cahill/serena/actions
+- **Tests run:** 22814850488

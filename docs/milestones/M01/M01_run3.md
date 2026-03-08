@@ -10,8 +10,8 @@
 
 | Workflow | Latest Run | Status |
 |----------|------------|--------|
-| Linter | 22812569761 | ✓ success |
-| Tests | 22812569762 | ✗ failure |
+| Linter | 22814396752 | ✓ success |
+| Tests | 22814850488 | Partial (server ✓, img2img/txt2img 500) |
 
 ---
 
@@ -69,13 +69,17 @@ repositories/
 
 ---
 
-## 5. Dynamic Stub Approach (Commit 9a83c70e+)
+## 5. Dynamic Stub Approach (Commit 5a76c617)
 
 Replaced manual file-by-file stubs with **dynamic stub modules**:
 
 - `_StubFinder` (MetaPathFinder): catches any `ldm.*` or `sgm.*` import the default finder misses
-- `_StubModule`: resolves attributes as submodules or stub classes
-- Keeps `ddpm.py` for paths.py assertion and LatentDiffusion
+- `_StubLoader`: creates `_StubModule` with `__path__`, `__file__` for inspect
+- `_StubModule`: resolves attributes as submodules, stub classes, or dicts (UPPER_CASE)
+- Stub classes: metaclass returns no-op for missing attrs, `{}` for ATTENTION_MODES
+- UPPER_CASE on modules → dict (e.g. `midas.api.ISL_PATHS`)
+- `__file__` = `<stub:name>` so `inspect.getfile` works
+- Keeps `ddpm.py` for paths.py assertion; DDPM, LatentDiffusion with `__init__(*a,**k)`
 - Keeps k_diffusion file-based (needs real get_sigmas_*, torch, etc.)
 
 Eliminates whack-a-mole import chain.
