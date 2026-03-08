@@ -96,7 +96,8 @@ def main() -> None:
     )
     touch(
         os.path.join(REPOS, gm, "sgm", "modules", "__init__.py"),
-        "from .conditioner import GeneralConditioner\n",
+        "from .conditioner import GeneralConditioner\n"
+        "from . import attention, diffusionmodules, encoders\n",
     )
     touch(
         os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "openaimodel.py"),
