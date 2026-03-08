@@ -80,7 +80,7 @@ jobs:
       - name: Run tests
         run: |
           wait-for-it --service 127.0.0.1:7860 -t 20
-          python -m pytest -vv --junitxml=test/results.xml --cov . --cov-fail-under=60 --cov-report=xml --verify-base-url test
+          python -m pytest -vv --junitxml=test/results.xml --cov . --cov-report=xml --verify-base-url test
       - name: Kill test server
         if: always()
         run: curl -vv -XPOST http://127.0.0.1:7860/sdapi/v1/server-stop && sleep 10
@@ -88,6 +88,7 @@ jobs:
         run: |
           python -m coverage combine .coverage*
           python -m coverage report -i
+          python -m coverage report --fail-under=60 -i
           python -m coverage html -i
       - name: Upload main app output
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
