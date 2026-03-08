@@ -111,6 +111,13 @@ def main() -> None:
     kd = "k-diffusion"
     touch(os.path.join(REPOS, kd, "k_diffusion", "__init__.py"))
     touch(os.path.join(REPOS, kd, "k_diffusion", "utils.py"), "# stub\n")
+    touch(
+        os.path.join(REPOS, kd, "k_diffusion", "external.py"),
+        "class DiscreteEpsDDPMDenoiser:\n    pass\n"
+        "class DiscreteSchedule:\n    pass\n"
+        "class CompVisVDenoiser:\n    pass\n"
+        "class CompVisDenoiser:\n    pass\n",
+    )
     kd_sampling = (
         "import torch as _torch\n"
         "torch = _torch\n"
@@ -118,6 +125,9 @@ def main() -> None:
         "def get_sigmas_exponential(*a, **k): pass\n"
         "def get_sigmas_polyexponential(*a, **k): pass\n"
         "def to_d(*a, **k): pass\n"
+        "def default_noise_sampler(*a, **k): pass\n"
+        "def trange(*a, **k): return iter([])\n"
+        "class BrownianTreeNoiseSampler:\n    pass\n"
     )
     touch(os.path.join(REPOS, kd, "k_diffusion", "sampling.py"), kd_sampling)
 
