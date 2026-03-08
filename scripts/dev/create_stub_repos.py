@@ -115,9 +115,12 @@ def main() -> None:
     ddpm_content = (
         "# stub for CI - paths.py assertion + LatentDiffusion/DDPM import\n"
         "class DDPM:\n"
+        "    def __init__(self, *a, **k): pass\n"
         "    def register_schedule(self, *a, **k): pass\n"
-        "class LatentDiffusion(DDPM):\n    pass\n"
-        "class LatentDepth2ImageDiffusion(LatentDiffusion):\n    pass\n"
+        "class LatentDiffusion(DDPM):\n"
+        "    def __init__(self, *a, **k): pass\n"
+        "class LatentDepth2ImageDiffusion(LatentDiffusion):\n"
+        "    def __init__(self, *a, **k): pass\n"
     )
     touch(os.path.join(REPOS, sd, "ldm", "models", "diffusion", "ddpm.py"), ddpm_content)
     # Dynamic stubs at each package level so Python loads them (not namespace pkgs)
