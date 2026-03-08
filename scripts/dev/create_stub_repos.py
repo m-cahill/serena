@@ -26,13 +26,17 @@ import importlib.abc
 import importlib.machinery
 
 def _make_stub_class(name):
-    """Stub class; any attr access returns no-op (for forward, etc.)."""
+    """Stub class; forward->noop, UPPER_CASE->{}, else->noop."""
     _noop = lambda *a, **k: None
     class _Meta(type):
         def __getattribute__(cls, attr):
             try:
                 return type.__getattribute__(cls, attr)
             except AttributeError:
+                if attr.isupper() or (attr and attr[0].isupper() and "_" in attr):
+                    d = {}
+                    object.__setattr__(cls, attr, d)  # cache for future access
+                    return d
                 return _noop
     return _Meta(name, (), {"forward": _noop})
 
