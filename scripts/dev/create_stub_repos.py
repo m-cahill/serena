@@ -72,6 +72,9 @@ def main() -> None:
         os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "model.py"),
         "class AttnBlock:\n    def forward(self, *a, **k): pass\n",
     )
+    # sgm.models.diffusion (sd_models_xl)
+    touch(os.path.join(REPOS, gm, "sgm", "models", "__init__.py"))
+    touch(os.path.join(REPOS, gm, "sgm", "models", "diffusion", "__init__.py"))
 
     # k-diffusion: k_diffusion.sampling
     kd = "k-diffusion"
