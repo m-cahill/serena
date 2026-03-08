@@ -107,9 +107,10 @@ def main() -> None:
         "# stub\n",
     )
 
-    # k-diffusion: k_diffusion.sampling (sd_schedulers, sd_samplers_common)
+    # k-diffusion: k_diffusion.sampling, utils (sd_schedulers, sd_samplers_lcm)
     kd = "k-diffusion"
     touch(os.path.join(REPOS, kd, "k_diffusion", "__init__.py"))
+    touch(os.path.join(REPOS, kd, "k_diffusion", "utils.py"), "# stub\n")
     kd_sampling = (
         "import torch as _torch\n"
         "torch = _torch\n"
