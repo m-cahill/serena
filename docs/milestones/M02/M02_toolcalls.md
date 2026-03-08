@@ -15,3 +15,5 @@ This file records Cursor tool calls performed during the milestone.
 | 2026-03-08 | run | git checkout -b m02-api-ci-truthfulness, commit, push | Branch m02-api-ci-truthfulness | done |
 | 2026-03-08 | search_replace | Move coverage gate to combined step | .github/workflows/run_tests.yaml | done |
 | 2026-03-08 | search_replace | Set coverage baseline 33% (60% deferred to M04) | .github/workflows/run_tests.yaml | done |
+| 2026-03-08 | write | M02_run1.md, M02_summary.md, M02_audit.md | docs/milestones/M02/ | done |
+| 2026-03-08 | search_replace | Add M02 to ledger | docs/serena.md | done |

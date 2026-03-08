@@ -3,7 +3,7 @@
 **Milestone:** M02  
 **Title:** API CI truthfulness, local dev guardrails, repeatable verification  
 **Branch:** `m02-api-ci-truthfulness`  
-**Status:** In Progress  
+**Status:** Completed  
 **Depends on:** M01 (complete)
 
 ---
