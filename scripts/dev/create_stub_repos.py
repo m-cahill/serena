@@ -35,7 +35,7 @@ def _make_stub_class(name):
             except AttributeError:
                 if attr.isupper() or (attr and attr[0].isupper() and "_" in attr):
                     d = {}
-                    object.__setattr__(cls, attr, d)  # cache for future access
+                    type.__setattr__(cls, attr, d)  # cache for future access
                     return d
                 return _noop
     return _Meta(name, (), {"forward": _noop})
