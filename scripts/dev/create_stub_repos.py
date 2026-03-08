@@ -46,6 +46,11 @@ class _StubModule(types.ModuleType):
     """Resolves any attribute as submodule or stub class."""
 
     def __getattr__(self, name):
+        # Special attrs: avoid creating submodules, satisfy inspect
+        if name == "__file__":
+            return ""
+        if name == "__path__":
+            return []
         module_name = f"{self.__name__}.{name}"
         if module_name not in sys.modules:
             if name and name[0].isupper():
