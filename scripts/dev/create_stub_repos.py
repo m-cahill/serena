@@ -38,6 +38,18 @@ def main() -> None:
         "class CLIPTextModel:\n    pass\n"
     )
     touch(os.path.join(REPOS, sd, "ldm", "modules", "encoders", "modules.py"), ldm_modules)
+    # ldm.modules.attention, diffusionmodules.model (sd_hijack_optimizations)
+    touch(
+        os.path.join(REPOS, sd, "ldm", "modules", "attention", "__init__.py"),
+        "class CrossAttention:\n    def forward(self, *a, **k): pass\n",
+    )
+    touch(os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "__init__.py"))
+    touch(
+        os.path.join(REPOS, sd, "ldm", "modules", "diffusionmodules", "model.py"),
+        "class AttnBlock:\n    def forward(self, *a, **k): pass\n",
+    )
+    # ldm.modules.midas (sd_models)
+    touch(os.path.join(REPOS, sd, "ldm", "modules", "midas", "__init__.py"))
 
     # generative-models: sgm.modules.encoders.modules
     gm = "generative-models"
@@ -50,6 +62,16 @@ def main() -> None:
         "class ConcatTimestepEmbedderND:\n    pass\n"
     )
     touch(os.path.join(REPOS, gm, "sgm", "modules", "encoders", "modules.py"), sgm_modules)
+    # sgm.modules.attention, diffusionmodules.model (sd_hijack_optimizations)
+    touch(
+        os.path.join(REPOS, gm, "sgm", "modules", "attention", "__init__.py"),
+        "class CrossAttention:\n    def forward(self, *a, **k): pass\n",
+    )
+    touch(os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "__init__.py"))
+    touch(
+        os.path.join(REPOS, gm, "sgm", "modules", "diffusionmodules", "model.py"),
+        "class AttnBlock:\n    def forward(self, *a, **k): pass\n",
+    )
 
     # k-diffusion: k_diffusion.sampling
     kd = "k-diffusion"
