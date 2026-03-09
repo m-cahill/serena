@@ -11,3 +11,5 @@
 | 2026-03-09 | search_replace | Refactor process_images to use temporary_opts | modules/processing.py | done |
 | 2026-03-09 | write | Add test_opts_override.py | test/quality/test_opts_override.py | done |
 | 2026-03-09 | ruff | Lint runtime_utils, test_opts_override | modules/runtime_utils.py, test/quality/test_opts_override.py | pass |
+| 2026-03-09 | git | Create branch, commit, push | m05-override-isolation, 5fe82459 | done |
+| 2026-03-09 | write | Generate M05_run1.md | docs/milestones/M05/M05_run1.md | done |
