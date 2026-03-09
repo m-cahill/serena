@@ -17,6 +17,15 @@ def test_get_api_endpoint(base_url, url):
     assert requests.get(f"{base_url}/{url}").status_code == 200
 
 
+<<<<<<< HEAD
+=======
+def test_interrogate_deepbooru(base_url, img2img_basic_image_base64):
+    """Interrogate with deepbooru model."""
+    payload = {"image": img2img_basic_image_base64, "model": "deepbooru"}
+    assert requests.post(f"{base_url}/sdapi/v1/interrogate", json=payload).status_code == 200
+
+
+>>>>>>> origin/main
 def test_png_info(base_url, img2img_basic_image_base64):
     """PNG info endpoint."""
     payload = {"image": img2img_basic_image_base64}
