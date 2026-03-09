@@ -1,24 +1,9 @@
-"""Unit tests for modules.util and modules.prompt_parser. Adds coverage without server."""
-from modules.util import natural_sort_key, html_path
+"""Unit tests for modules.prompt_parser. Adds coverage without triggering circular imports.
+
+Note: modules.util (natural_sort_key, html_path) is not tested here due to circular
+import chain (util -> shared -> scripts -> util). Coverage for util comes from API/smoke tests.
+"""
 from modules.prompt_parser import get_learned_conditioning_prompt_schedules
-
-
-def test_natural_sort_key():
-    """natural_sort_key orders strings with numbers correctly."""
-    items = ["a10", "a2", "a1"]
-    assert sorted(items, key=natural_sort_key) == ["a1", "a2", "a10"]
-
-
-def test_natural_sort_key_empty():
-    """natural_sort_key handles empty string."""
-    assert natural_sort_key("") == []
-
-
-def test_html_path():
-    """html_path returns path under script_path/html/."""
-    p = html_path("foo")
-    assert "html" in p
-    assert p.endswith("foo")
 
 
 def test_get_learned_conditioning_prompt_schedules_simple():
@@ -40,3 +25,15 @@ def test_get_learned_conditioning_prompt_schedules_alternate():
     assert result[0][1] in ("a", "b")
     assert result[1][1] in ("a", "b")
     assert result[2][1] in ("a", "b")
+
+
+def test_get_learned_conditioning_prompt_schedules_int_step():
+    """Prompt schedule with integer step [b:3]."""
+    result = get_learned_conditioning_prompt_schedules(["a [b:3]"], 10)[0]
+    assert result == [[3, "a "], [10, "a b"]]
+
+
+def test_get_learned_conditioning_prompt_schedules_unbalanced():
+    """Unbalanced bracket falls through to single step."""
+    result = get_learned_conditioning_prompt_schedules(["a [unbalanced"], 10)[0]
+    assert result == [[10, "a [unbalanced"]]
