@@ -12,3 +12,5 @@
 | 2026-03-08 | write | Create verify_pinned_deps.sh | scripts/ci/verify_pinned_deps.sh | done |
 | 2026-03-08 | search_replace | Remove pip-audit from Smoke | .github/workflows/run_smoke_tests.yaml | done |
 | 2026-03-08 | search_replace | Add pip-audit, verify deps, env capture, coverage 40%, artifacts | .github/workflows/run_quality_tests.yaml | done |
+| 2026-03-08 | run_terminal | git commit, push, gh pr create | PR #4 | done |
+| 2026-03-08 | write | Create M04_run1.md | docs/milestones/M04/M04_run1.md | done |
