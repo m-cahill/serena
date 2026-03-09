@@ -3,7 +3,7 @@
 **Milestone:** M04  
 **Title:** Coverage / security / reproducibility guardrails  
 **Branch:** `m04-coverage-guardrails`  
-**Status:** In progress  
+**Status:** Completed  
 **Depends on:** M03 (complete)
 
 ---
