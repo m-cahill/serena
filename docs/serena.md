@@ -132,7 +132,7 @@ Core principles:
 | M00 | Program kickoff, baseline freeze, phase map, E2E verification | Completed | m00-kickoff-baseline-e2e | — | cdfe1285 | Linter 22794525690 ✓; Tests 22794525698 ✗ (pre-existing CLIP/pkg_resources) | Baseline 2.4/5 | 2025-03-07 |
 | M01 | CI truthfulness, SHA pinning, smoke path | Completed | m01-ci-truthfulness | — | 2f664049 | Linter 22814396752 ✓; Tests 22814850488 (server ✓, 17 pass, img2img/txt2img 500) | 4.7 / 5 | 2026-03-08 |
 | M02 | API CI truthfulness, local dev guardrails | Completed | m02-api-ci-truthfulness | — | 7484170d | Linter 22831756517 ✓; Tests 22831756504 ✓ (33/33 pass) | 4.9 / 5 | 2026-03-08 |
-| M03 | Test architecture (smoke / quality / nightly) | Completed | m03-test-architecture | #2 | 4ce5cde9 | Linter ✓; Smoke 22834384359 ✓ (33/33) | 5.0 / 5 | 2026-03-09 |
+| M03 | Test architecture (smoke / quality / nightly) | Completed | m03-test-architecture | #2 | 975dda4b | Linter ✓; Smoke 22834384359 ✓; Quality 22834861040 ✓ | 5.0 / 5 | 2026-03-09 |
 
 ---
 
