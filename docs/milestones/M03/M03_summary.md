@@ -3,8 +3,10 @@
 **Project:** Serena  
 **Phase:** Phase I — Baseline & Guardrails  
 **Milestone:** M03 — Test architecture (smoke / quality / nightly)  
-**Status:** In progress  
-**Branch:** m03-test-architecture
+**Status:** Closed  
+**Branch:** m03-test-architecture  
+**PR:** #2  
+**Commit:** eee04b57
 
 ---
 

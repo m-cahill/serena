@@ -19,3 +19,6 @@ This file records Cursor tool calls performed during the milestone.
 | 2026-03-08 | write | prevent_upstream_push.sh | scripts/dev/ | done |
 | 2026-03-08 | search_replace | Pre-push hook, test tiers | CONTRIBUTING.md | done |
 | 2026-03-08 | write | M03_run1.md, M03_summary.md | docs/milestones/M03/ | done |
+| 2026-03-09 | delete | warns_merge_master.yml | .github/workflows/ | done |
+| 2026-03-09 | search_replace | Add base_url to pytest.ini | pytest.ini | done |
+| 2026-03-09 | search_replace | M03_run1 CI results, ledger, M03_audit | docs/ | done |
