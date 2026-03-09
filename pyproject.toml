@@ -36,3 +36,12 @@ extend-immutable-calls = ["fastapi.Depends", "fastapi.security.HTTPBasic"]
 
 [tool.pytest.ini_options]
 base_url = "http://127.0.0.1:7860"
+
+# M04: Focus coverage on main app; omit extensions and external repos.
+[tool.coverage.run]
+omit = [
+    "extensions-builtin/*",
+    "repositories/*",
+    "*/__pycache__/*",
+    "config*.py",
+]
