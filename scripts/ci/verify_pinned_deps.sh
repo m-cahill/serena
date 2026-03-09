@@ -22,13 +22,14 @@ while IFS= read -r line || [[ -n "$line" ]]; do
   pkg="${line%%==*}"
   rest="${line#*==}"
   expected="${rest%%[# ]*}"
-  pkg="${pkg// }"
-  expected="${expected// }"
+  pkg="${pkg//[[:space:]]/}"
+  expected="${expected//[[:space:]]/}"
 
   [[ -z "$pkg" || -z "$expected" ]] && continue
 
   installed=""
   if installed=$(pip show "$pkg" 2>/dev/null | grep -E '^Version:' | awk '{print $2}'); then
+    installed="${installed//[[:space:]]/}"
     if [[ "$installed" != "$expected" ]]; then
       echo "::error::Dependency mismatch: $pkg expected $expected got $installed"
       ((errors++)) || true
