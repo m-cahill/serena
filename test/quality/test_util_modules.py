@@ -49,7 +49,7 @@ def test_get_multicond_prompt_list_simple():
     assert len(indexes) == 1
     assert len(indexes[0]) == 2
     assert len(flat_list) == 2
-    assert "a" in flat_list and "b" in flat_list
+    assert flat_list[0] == "a" and flat_list[1].strip() == "b"
 
 
 def test_get_multicond_prompt_list_weight():
