@@ -43,6 +43,8 @@ omit = [
     "extensions-builtin/*",
     "repositories/*",
     "scripts/*",
+    "modules/deepbooru_model.py",
+    "modules/deepbooru.py",
     "*/__pycache__/*",
     "config*.py",
 ]
