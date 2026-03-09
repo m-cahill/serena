@@ -18,10 +18,12 @@ To verify the project builds and tests pass without a real model:
 
 ```bash
 python launch.py --skip-prepare-environment --skip-torch-cuda-test --exit
-pytest test
+pytest test/smoke
 ```
 
-For full CI parity (including server startup and API tests), start the test server in one terminal, then run pytest in another. See `.github/workflows/run_tests.yaml` for the exact commands CI uses.
+For full CI parity (including server startup and API tests), start the test server in one terminal, then run pytest in another. See `.github/workflows/run_smoke_tests.yaml` for the exact commands CI uses.
+
+**Test tiers:** `test/smoke` (fast, PR gate), `test/quality` (deeper unit tests), `test/nightly` (heavy tests). Run `pytest test` for the full suite.
 
 ---
 
@@ -71,3 +73,16 @@ m-cahill/serena → AUTOMATIC1111/stable-diffusion-webui
 ```
 
 Upstream PRs must never be opened. CI includes a guardrail that fails if workflows run outside `m-cahill/serena`.
+
+---
+
+## Pre-push hook (optional)
+
+To prevent accidentally pushing to upstream or other non-Serena remotes, install the pre-push hook:
+
+```bash
+cp scripts/dev/prevent_upstream_push.sh .git/hooks/pre-push
+chmod +x .git/hooks/pre-push
+```
+
+The hook aborts the push if the target remote URL does not contain `m-cahill/serena`.

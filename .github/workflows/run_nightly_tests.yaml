@@ -1,12 +1,14 @@
-name: Tests
+name: Nightly Tests
 
 on:
-  - push
-  - pull_request
+  schedule:
+    # Run daily at 00:00 UTC
+    - cron: "0 0 * * *"
+  workflow_dispatch:
 
 jobs:
-  test:
-    name: tests on CPU with empty model
+  nightly:
+    name: nightly tests
     runs-on: ubuntu-latest
     steps:
       - name: Verify repository
@@ -17,6 +19,8 @@ jobs:
           fi
       - name: Checkout Code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: main
       - name: Set up Python 3.10
         uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
         with:
@@ -83,10 +87,10 @@ jobs:
           --api-server-stop
           --port 7860
           2>&1 | tee output.txt &
-      - name: Run tests
+      - name: Run nightly tests
         run: |
           wait-for-it --service 127.0.0.1:7860 -t 20
-          python -m pytest -vv --junitxml=test/results.xml --cov . --cov-report=xml --verify-base-url test
+          python -m pytest test -vv --junitxml=test/results.xml --cov . --cov-report=xml --verify-base-url
       - name: Kill test server
         if: always()
         run: curl -vv -XPOST http://127.0.0.1:7860/sdapi/v1/server-stop && sleep 10
@@ -94,8 +98,6 @@ jobs:
         run: |
           python -m coverage combine .coverage*
           python -m coverage report -i
-          # 33% = current baseline - 2% margin; raise to 60% in M04
-          python -m coverage report --fail-under=33 -i
           python -m coverage html -i
       - name: Upload main app output
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02

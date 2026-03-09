@@ -13,6 +13,18 @@ def pytest_configure(config):
     os.environ.setdefault("IGNORE_CMD_ARGS_ERRORS", "1")
 
 
+def pytest_collection_modifyitems(config, items):
+    """Apply smoke/quality/nightly markers based on test path."""
+    for item in items:
+        path_str = str(item.path)
+        if "/smoke/" in path_str or "\\smoke\\" in path_str:
+            item.add_marker(pytest.mark.smoke)
+        elif "/quality/" in path_str or "\\quality\\" in path_str:
+            item.add_marker(pytest.mark.quality)
+        elif "/nightly/" in path_str or "\\nightly\\" in path_str:
+            item.add_marker(pytest.mark.nightly)
+
+
 def file_to_base64(filename):
     with open(filename, "rb") as file:
         data = file.read()
