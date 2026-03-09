@@ -3,7 +3,11 @@
 Note: modules.util (natural_sort_key, html_path) is not tested here due to circular
 import chain (util -> shared -> scripts -> util). Coverage for util comes from API/smoke tests.
 """
-from modules.prompt_parser import get_learned_conditioning_prompt_schedules
+from modules.prompt_parser import (
+    get_learned_conditioning_prompt_schedules,
+    get_multicond_prompt_list,
+    SdConditioning,
+)
 
 
 def test_get_learned_conditioning_prompt_schedules_simple():
@@ -37,3 +41,28 @@ def test_get_learned_conditioning_prompt_schedules_unbalanced():
     """Unbalanced bracket falls through to single step."""
     result = get_learned_conditioning_prompt_schedules(["a [unbalanced"], 10)[0]
     assert result == [[10, "a [unbalanced"]]
+
+
+def test_get_multicond_prompt_list_simple():
+    """get_multicond_prompt_list splits AND and extracts weights."""
+    indexes, flat_list, _ = get_multicond_prompt_list(["a AND b"])
+    assert len(indexes) == 1
+    assert len(indexes[0]) == 2
+    assert len(flat_list) == 2
+    assert "a" in flat_list and "b" in flat_list
+
+
+def test_get_multicond_prompt_list_weight():
+    """get_multicond_prompt_list handles weight syntax."""
+    indexes, flat_list, _ = get_multicond_prompt_list(["a:1.2"])
+    assert len(indexes) == 1
+    assert indexes[0][0][1] == 1.2
+
+
+def test_sd_conditioning():
+    """SdConditioning stores prompts and optional dimensions."""
+    c = SdConditioning(["prompt1", "prompt2"], is_negative_prompt=True, width=512, height=768)
+    assert list(c) == ["prompt1", "prompt2"]
+    assert c.is_negative_prompt is True
+    assert c.width == 512
+    assert c.height == 768

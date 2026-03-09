@@ -11,6 +11,14 @@ import requests
     "sdapi/v1/scripts",
     "sdapi/v1/script-info",
     "sdapi/v1/extensions",
+    "sdapi/v1/samplers",
+    "sdapi/v1/schedulers",
+    "sdapi/v1/upscalers",
+    "sdapi/v1/sd-models",
+    "sdapi/v1/options",
+    "sdapi/v1/cmd-flags",
+    "sdapi/v1/face-restorers",
+    "sdapi/v1/prompt-styles",
 ])
 def test_get_api_endpoint(base_url, url):
     """Verify extended API endpoints return 200."""
