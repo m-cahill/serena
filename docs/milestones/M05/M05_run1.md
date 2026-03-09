@@ -162,4 +162,21 @@ No failures. All jobs passed.
 |-------|--------|--------|
 | Smoke Tests | 22876253113 | ✓ success |
 | Linter | 22876253091 | ✓ success |
-| Quality Tests | — | Pending (push to main) |
+| Quality Tests | 22877674534 | ✗ failed (test_opts_override) |
+
+---
+
+## 11. Quality Run 1 — Post-Merge (22877674534)
+
+**Status:** Failed  
+**Cause:** `test_opts_override.py` — 2 failures
+
+### Failure
+
+When `opts.load()` gets `FileNotFoundError` (no config.json), it sets `opts.data = {}`.  
+`temporary_opts` only applies overrides for keys in `opts.data`, so no overrides are applied and `samples_save` stays at its default (True).
+
+### Fix
+
+Ensure a minimal config exists before loading webui so `opts.data` is populated.  
+Updated `test/conftest.py` `initialize` fixture to create `config.json` with `{"samples_save": True}` when missing.

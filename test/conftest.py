@@ -45,4 +45,16 @@ def mask_basic_image_base64() -> str:
 
 @pytest.fixture(scope="session")
 def initialize() -> None:
+    """Load webui; ensure config exists so opts.data is populated for quality tests."""
+    import json
+    import os
+
+    from modules.shared_cmd_options import cmd_opts
+
+    config_path = cmd_opts.ui_settings_file
+    if not os.path.exists(config_path):
+        os.makedirs(os.path.dirname(config_path) or ".", exist_ok=True)
+        with open(config_path, "w", encoding="utf-8") as f:
+            json.dump({"samples_save": True}, f)
+
     import webui  # noqa: F401
