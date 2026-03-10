@@ -134,6 +134,9 @@ Core principles:
 | M02 | API CI truthfulness, local dev guardrails | Completed | m02-api-ci-truthfulness | — | 7484170d | Linter 22831756517 ✓; Tests 22831756504 ✓ (33/33 pass) | 4.9 / 5 | 2026-03-08 |
 | M03 | Test architecture (smoke / quality / nightly) | Completed | m03-test-architecture | #2 | 975dda4b | Linter ✓; Smoke 22834384359 ✓; Quality 22834861040 ✓ | 5.0 / 5 | 2026-03-09 |
 | M04 | Coverage/security/reproducibility guardrails | Completed | m04-coverage-guardrails | #4 | 47439cac | Quality 22871471473 ✓ (coverage 40%, pip-audit, verify_pinned_deps) | 5.0 / 5 | 2026-03-09 |
+| M05 | Override isolation / temporary opts seam | Completed | m05-override-isolation | #18 (+ #19 fix) | ae161cbb | Quality 22888808682 ✓ | 5.0 / 5 | 2026-03-10 |
+
+**M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
 ---
 
