@@ -13,7 +13,7 @@
 |----------|--------|---------|--------|--------|
 | Smoke Tests | 22877868495 | pull_request | m05-fix-opts-test | ✓ success |
 | Linter | 22877868499 | pull_request | m05-fix-opts-test | ✓ success |
-| Quality Tests | — | push to main | — | Pending (runs after merge) |
+| Quality Tests | 22888808682 | push to main | main | ✓ success |
 
 ---
 
@@ -52,28 +52,43 @@
 
 ---
 
-## 4. Verdict
+## 4. Post-Merge Quality Run (22888808682)
 
-**Fix PR #19:** Smoke Tests ✓ | Linter ✓
+**Status:** ✓ success  
+**Duration:** 3m20s  
+**Trigger:** Merge PR #19 → main
 
-**Quality Tests:** Will run on push to main after merge. Expected to pass with config fixture ensuring opts.data is populated.
+| Step | Result |
+|------|--------|
+| Run quality tests | ✓ (61 tests) |
+| Show coverage | ✓ (≥40% gate) |
+| verify_pinned_deps | ✓ |
+| pip-audit | ⚠️ informational (M27) |
+| Artifacts | coverage.xml, ci_environment.txt, htmlcov |
 
 ---
 
-## 5. Summary Table
+## 5. Verdict
+
+**M05 fix complete.** All CI gates green:
+- Smoke Tests ✓
+- Linter ✓
+- Quality Tests ✓ (test_opts_override pass, coverage ≥40%)
+
+---
+
+## 6. Summary Table
 
 | Check | Run ID | Result |
 |-------|--------|--------|
 | Smoke Tests | 22877868495 | ✓ success |
 | Linter | 22877868499 | ✓ success |
-| Quality Tests | — | Pending (post-merge) |
+| Quality Tests | 22888808682 | ✓ success |
 
 ---
 
-## 6. Next Actions
+## 7. Next Actions
 
 | Action | Owner |
 |--------|-------|
-| Merge PR #19 | Human |
-| Verify Quality run post-merge | Human/Cursor |
-| Generate M05 closeout (summary, audit, ledger) | Cursor (after Quality green) |
+| Generate M05 closeout (summary, audit, ledger) | Cursor |
