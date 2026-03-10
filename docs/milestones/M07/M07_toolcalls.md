@@ -12,3 +12,6 @@ Implementation toolcalls for Cursor execution.
 | 2026-03-10 | search_replace | Add create_opts_snapshot import | modules/processing.py | ✓ |
 | 2026-03-10 | search_replace | Add opts snapshot capture after prepare_prompt_seed_state | modules/processing.py | ✓ |
 | 2026-03-10 | run | Local pytest (smoke/quality) | — | Skipped: full env (gradio, torch) not installed locally; CI will verify |
+| 2026-03-10 | gh pr create | Create PR #22 | m-cahill/serena | ✓ |
+| 2026-03-10 | gh run list | Monitor CI (Linter, Smoke) | — | ✓ Linter 22920401661, Smoke 22920401686 |
+| 2026-03-10 | write | Create M07_run1.md | docs/milestones/M07/M07_run1.md | ✓ |
