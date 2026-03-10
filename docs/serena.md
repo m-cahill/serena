@@ -135,8 +135,11 @@ Core principles:
 | M03 | Test architecture (smoke / quality / nightly) | Completed | m03-test-architecture | #2 | 975dda4b | Linter ✓; Smoke 22834384359 ✓; Quality 22834861040 ✓ | 5.0 / 5 | 2026-03-09 |
 | M04 | Coverage/security/reproducibility guardrails | Completed | m04-coverage-guardrails | #4 | 47439cac | Quality 22871471473 ✓ (coverage 40%, pip-audit, verify_pinned_deps) | 5.0 / 5 | 2026-03-09 |
 | M05 | Override isolation / temporary opts seam | Completed | m05-override-isolation | #18 (+ #19 fix) | ae161cbb | Quality 22888808682 ✓ | 5.0 / 5 | 2026-03-10 |
+| M06 | Prompt/seed prep extraction | Completed | m06-prompt-seed-prep | #20 | 6744152a | Quality 22890285319 ✓ | 5.0 / 5 | 2026-03-10 |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
+
+**M06:** Extracted `prepare_prompt_seed_state(p)` into `modules/prompt_seed_prep.py`. Second Phase II runtime seam. Populates p.all_seeds and p.all_subseeds; setup_prompts and fill_fields_from_opts unchanged. Enables M07 opts snapshot and M09 execution context.
 
 ---
 
