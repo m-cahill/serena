@@ -26,6 +26,7 @@ import modules.paths as paths
 import modules.face_restoration
 import modules.images as images
 import modules.styles
+import modules.prompt_seed_prep as prompt_seed_prep
 import modules.runtime_utils as runtime_utils
 import modules.sd_models as sd_models
 import modules.sd_vae as sd_vae
@@ -861,8 +862,8 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
 
     devices.torch_gc()
 
-    seed = get_fixed_seed(p.seed)
-    subseed = get_fixed_seed(p.subseed)
+    p.seed = get_fixed_seed(p.seed)
+    p.subseed = get_fixed_seed(p.subseed)
 
     if p.restore_faces is None:
         p.restore_faces = opts.face_restoration
@@ -889,15 +890,7 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
     p.fill_fields_from_opts()
     p.setup_prompts()
 
-    if isinstance(seed, list):
-        p.all_seeds = seed
-    else:
-        p.all_seeds = [int(seed) + (x if p.subseed_strength == 0 else 0) for x in range(len(p.all_prompts))]
-
-    if isinstance(subseed, list):
-        p.all_subseeds = subseed
-    else:
-        p.all_subseeds = [int(subseed) + x for x in range(len(p.all_prompts))]
+    prompt_seed_prep.prepare_prompt_seed_state(p)
 
     if os.path.exists(cmd_opts.embeddings_dir) and not p.do_not_reload_embeddings:
         model_hijack.embedding_db.load_textual_inversion_embeddings()
