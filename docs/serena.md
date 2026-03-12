@@ -138,6 +138,7 @@ Core principles:
 | M06 | Prompt/seed prep extraction | Completed | m06-prompt-seed-prep | #20 | 6744152a | Quality 22890285319 ✓ | 5.0 / 5 | 2026-03-10 |
 | M07 | Opts snapshot introduction | Completed | m07-opts-snapshot | #22 | 8ea50d35 | Quality 22983583947 ✓ | 5.0 / 5 | 2026-03-12 |
 | M08 | Opts snapshot threading | Completed | m08-snapshot-threading | #24 | 710a0abd | Quality 22984445599 ✓ | 5.0 / 5 | 2026-03-12 |
+| M09 | Execution context introduction | Completed | m09-execution-context | #26 | 2c6a2510 | Quality 22986731960 ✓ | 5.0 / 5 | 2026-03-12 |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -146,6 +147,8 @@ Core principles:
 **M07:** Introduced `create_opts_snapshot(opts)` in `modules/opts_snapshot.py`. Third Phase II runtime seam. Captures deterministic snapshot of opts.data in process_images_inner after prepare_prompt_seed_state; stored on p.opts_snapshot. Write-only in M07; enables M08 snapshot threading.
 
 **M08:** Threaded p.opts_snapshot into process_images_inner for save-related reads. Fourth Phase II runtime seam. Migrated 12 opts (save_images_before_face_restoration, samples_format, grid_save, etc.) from shared.opts to p.opts_snapshot. save_samples(), sample_hr_pass(), metadata unchanged. Enables M09 execution context.
+
+**M09:** Introduced RuntimeContext in modules/runtime_context.py. Fifth Phase II runtime seam. Attached p.runtime_context in process_images_inner() after opts_snapshot (model, opts_snapshot, device, state, cmd_opts). Write-only in M09; no migration of shared.* reads yet. Completes Phase II — Runtime Seam Preparation. Enables Phase III ProcessingRunner.
 
 ---
 
