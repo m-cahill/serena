@@ -141,6 +141,7 @@ Core principles:
 | M08 | Opts snapshot threading | Completed | m08-snapshot-threading | #24 | 710a0abd | Quality 22984445599 ✓ | 5.0 / 5 | 2026-03-12 |
 | M09 | Execution context introduction | Completed | m09-execution-context | #26 | 2c6a2510 | Quality 22986731960 ✓ | 5.0 / 5 | 2026-03-12 |
 | M10 | ProcessingRunner skeleton | Completed | m10-processing-runner | #27 (+ #28 fix) | 0d11b587 | Quality 22988627838 ✓ | 5.0 / 5 | 2026-03-12 |
+| M11 | Runner lifecycle surface | Completed | m11-runner-lifecycle | #30 | 08ac1c0e | Quality 22989978348 ✓ | 5.0 / 5 | 2026-03-12 |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -153,6 +154,8 @@ Core principles:
 **M09:** Introduced RuntimeContext in modules/runtime_context.py. Fifth Phase II runtime seam. Attached p.runtime_context in process_images_inner() after opts_snapshot (model, opts_snapshot, device, state, cmd_opts). Write-only in M09; no migration of shared.* reads yet. Completes Phase II — Runtime Seam Preparation. Enables Phase III ProcessingRunner.
 
 **M10:** Introduced ProcessingRunner in modules/runtime/runner.py. First Phase III execution boundary. process_images delegates through runner; ProcessingRequest wraps StableDiffusionProcessing. Zero blast radius; all callers unchanged. Phase III roadmap updated (M11 lifecycle, M12 instrumentation, M13 txt2img, M14 API, M15 queue). Enables M11 Runner lifecycle surface.
+
+**M11:** Introduced lifecycle surface on ProcessingRunner: prepare → execute → finalize. run() delegates through stages; pass-through behavior; identical outputs. test_runner_lifecycle_order verifies lifecycle structure. Stable execution surface enables M12 instrumentation, progress hooks, cancellation, queue runners.
 
 ---
 
