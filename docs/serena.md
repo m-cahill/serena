@@ -80,48 +80,49 @@ Core principles:
 | M08 | process_images_inner snapshot threading |
 | M09 | Execution context/state seam |
 
-### Phase III — Runner & Service Boundary (M10–M14)
+### Phase III — Runner & Service Boundary (M10–M15)
 | Milestone | Title |
 |-----------|-------|
 | M10 | ProcessingRunner skeleton |
-| M11 | txt2img via runner |
-| M12 | img2img via runner |
-| M13 | API adoption of runner |
-| M14 | UI adoption of runner |
+| M11 | Runner lifecycle surface (prepare / execute / finalize) |
+| M12 | Runtime instrumentation hooks |
+| M13 | txt2img path through runner |
+| M14 | API integration |
+| M15 | background/queue runner preparation |
 
-### Phase IV — Runtime Extraction (M15–M19)
+### Phase IV — Runtime Extraction (M16–M20)
 | Milestone | Title |
 |-----------|-------|
-| M15 | Runtime module extraction |
-| M16 | Sampler runner extraction |
-| M17 | Decode/save separation |
-| M18 | Model provider interface |
-| M19 | Runtime tests with mockable boundaries |
+| M16 | Runtime module extraction |
+| M17 | Sampler runner extraction |
+| M18 | Decode/save separation |
+| M19 | Model provider interface |
+| M20 | Runtime tests with mockable boundaries |
 
-### Phase V — UI & Extension Stabilization (M20–M24)
+### Phase V — UI & Extension Stabilization (M21–M25)
 | Milestone | Title |
 |-----------|-------|
-| M20 | UI tab registry |
-| M21 | txt2img/img2img tab modularization |
-| M22 | Settings/extensions modularization |
-| M23 | Extension API version/contract |
-| M24 | Deprecation/compatibility scaffolding |
+| M21 | UI tab registry |
+| M22 | txt2img/img2img tab modularization |
+| M23 | Settings/extensions modularization |
+| M24 | Extension API version/contract |
+| M25 | Deprecation/compatibility scaffolding |
 
-### Phase VI — Hardening & Reproducibility (M25–M29)
+### Phase VI — Hardening & Reproducibility (M26–M30)
 | Milestone | Title |
 |-----------|-------|
-| M25 | Locked manifests / npm ci / CI env stabilization |
-| M26 | Coverage and complexity gates |
-| M27 | Security/supply-chain evidence |
-| M28 | Health/perf verification |
-| M29 | QA/evidence publishing |
+| M26 | Locked manifests / npm ci / CI env stabilization |
+| M27 | Coverage and complexity gates |
+| M28 | Security/supply-chain evidence |
+| M29 | Health/perf verification |
+| M30 | QA/evidence publishing |
 
-### Phase VII — Release Lock / 5.0 Closure (M30–M32)
+### Phase VII — Release Lock / 5.0 Closure (M31–M33)
 | Milestone | Title |
 |-----------|-------|
-| M30 | Architecture lock |
-| M31 | Evidence/audit closure |
-| M32 | Release-ready 5/5 close |
+| M31 | Architecture lock |
+| M32 | Evidence/audit closure |
+| M33 | Release-ready 5/5 close |
 
 ---
 
