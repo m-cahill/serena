@@ -11,3 +11,8 @@ Implementation toolcalls for Cursor execution.
 | 2026-03-11 | run | pytest test/smoke | test/smoke | skipped (local env) |
 | 2026-03-11 | run | pytest test/quality | test/quality | skipped (local env) |
 | 2026-03-11 | run | git commit, push, gh pr create | git, gh | completed |
+| 2026-03-12 | run | gh pr merge 26 | gh | completed |
+| 2026-03-12 | run | Wait for Quality Tests 22986731960 | CI | completed |
+| 2026-03-12 | write | M09_run2.md, M09_summary.md, M09_audit.md | docs/milestones/M09/ | completed |
+| 2026-03-12 | search_replace | Update docs/serena.md ledger | docs/serena.md | completed |
+| 2026-03-12 | run | git tag v0.0.09-m09, push | git | completed |
