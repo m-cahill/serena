@@ -1,5 +1,28 @@
-"""Contract tests for ProcessingRunner (M10 runner skeleton)."""
+"""Contract tests for ProcessingRunner (M10 runner skeleton, M11 lifecycle)."""
 from modules.runtime.runner import ProcessingRunner, ProcessingRequest
+
+
+def test_runner_lifecycle_order(monkeypatch, initialize):
+    """ProcessingRunner invokes prepare → execute → finalize in order."""
+    calls = []
+
+    class TestRunner(ProcessingRunner):
+        def prepare(self, request):
+            calls.append("prepare")
+            return request
+
+        def execute(self, state):
+            calls.append("execute")
+            return "result"
+
+        def finalize(self, state, result):
+            calls.append("finalize")
+            return result
+
+    runner = TestRunner()
+    runner.run(ProcessingRequest(processing="dummy"))
+
+    assert calls == ["prepare", "execute", "finalize"]
 
 
 def test_processing_runner_delegates(monkeypatch, initialize):
