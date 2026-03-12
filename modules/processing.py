@@ -27,6 +27,7 @@ import modules.face_restoration
 import modules.images as images
 import modules.styles
 from modules.opts_snapshot import create_opts_snapshot
+from modules.runtime_context import RuntimeContext
 import modules.prompt_seed_prep as prompt_seed_prep
 import modules.runtime_utils as runtime_utils
 import modules.sd_models as sd_models
@@ -893,6 +894,13 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
 
     prompt_seed_prep.prepare_prompt_seed_state(p)
     p.opts_snapshot = create_opts_snapshot(shared.opts)
+    p.runtime_context = RuntimeContext(
+        model=shared.sd_model,
+        opts_snapshot=p.opts_snapshot,
+        device=shared.device,
+        state=shared.state,
+        cmd_opts=shared.cmd_opts,
+    )
 
     if os.path.exists(cmd_opts.embeddings_dir) and not p.do_not_reload_embeddings:
         model_hijack.embedding_db.load_textual_inversion_embeddings()
