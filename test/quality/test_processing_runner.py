@@ -1,10 +1,11 @@
 """Contract tests for ProcessingRunner (M10 runner skeleton)."""
-import modules.processing
 from modules.runtime.runner import ProcessingRunner, ProcessingRequest
 
 
-def test_processing_runner_delegates(monkeypatch):
+def test_processing_runner_delegates(monkeypatch, initialize):
     """ProcessingRunner.run delegates to process_images_inner."""
+    import modules.processing
+
     called = {}
 
     def fake_process_images_inner(p):
