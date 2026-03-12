@@ -1021,8 +1021,8 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
                 x_sample = x_sample.astype(np.uint8)
 
                 if p.restore_faces:
-                    if save_samples and opts.save_images_before_face_restoration:
-                        images.save_image(Image.fromarray(x_sample), p.outpath_samples, "", p.seeds[i], p.prompts[i], opts.samples_format, info=infotext(i), p=p, suffix="-before-face-restoration")
+                    if save_samples and p.opts_snapshot.save_images_before_face_restoration:
+                        images.save_image(Image.fromarray(x_sample), p.outpath_samples, "", p.seeds[i], p.prompts[i], p.opts_snapshot.samples_format, info=infotext(i), p=p, suffix="-before-face-restoration")
 
                     devices.torch_gc()
 
@@ -1051,9 +1051,9 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
                     mask_for_overlay, overlay_image = ppmo.mask_for_overlay, ppmo.overlay_image
 
                 if p.color_corrections is not None and i < len(p.color_corrections):
-                    if save_samples and opts.save_images_before_color_correction:
+                    if save_samples and p.opts_snapshot.save_images_before_color_correction:
                         image_without_cc, _ = apply_overlay(image, p.paste_to, overlay_image)
-                        images.save_image(image_without_cc, p.outpath_samples, "", p.seeds[i], p.prompts[i], opts.samples_format, info=infotext(i), p=p, suffix="-before-color-correction")
+                        images.save_image(image_without_cc, p.outpath_samples, "", p.seeds[i], p.prompts[i], p.opts_snapshot.samples_format, info=infotext(i), p=p, suffix="-before-color-correction")
                     image = apply_color_correction(p.color_corrections[i], image)
 
                 # If the intention is to show the output from the model
@@ -1068,7 +1068,7 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
                     image = pp.image
 
                 if save_samples:
-                    images.save_image(image, p.outpath_samples, "", p.seeds[i], p.prompts[i], opts.samples_format, info=infotext(i), p=p)
+                    images.save_image(image, p.outpath_samples, "", p.seeds[i], p.prompts[i], p.opts_snapshot.samples_format, info=infotext(i), p=p)
 
                 text = infotext(i)
                 infotexts.append(text)
@@ -1077,18 +1077,18 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
                 output_images.append(image)
 
                 if mask_for_overlay is not None:
-                    if opts.return_mask or opts.save_mask:
+                    if p.opts_snapshot.return_mask or p.opts_snapshot.save_mask:
                         image_mask = mask_for_overlay.convert('RGB')
-                        if save_samples and opts.save_mask:
-                            images.save_image(image_mask, p.outpath_samples, "", p.seeds[i], p.prompts[i], opts.samples_format, info=infotext(i), p=p, suffix="-mask")
-                        if opts.return_mask:
+                        if save_samples and p.opts_snapshot.save_mask:
+                            images.save_image(image_mask, p.outpath_samples, "", p.seeds[i], p.prompts[i], p.opts_snapshot.samples_format, info=infotext(i), p=p, suffix="-mask")
+                        if p.opts_snapshot.return_mask:
                             output_images.append(image_mask)
 
-                    if opts.return_mask_composite or opts.save_mask_composite:
+                    if p.opts_snapshot.return_mask_composite or p.opts_snapshot.save_mask_composite:
                         image_mask_composite = Image.composite(original_denoised_image.convert('RGBA').convert('RGBa'), Image.new('RGBa', image.size), images.resize_image(2, mask_for_overlay, image.width, image.height).convert('L')).convert('RGBA')
-                        if save_samples and opts.save_mask_composite:
-                            images.save_image(image_mask_composite, p.outpath_samples, "", p.seeds[i], p.prompts[i], opts.samples_format, info=infotext(i), p=p, suffix="-mask-composite")
-                        if opts.return_mask_composite:
+                        if save_samples and p.opts_snapshot.save_mask_composite:
+                            images.save_image(image_mask_composite, p.outpath_samples, "", p.seeds[i], p.prompts[i], p.opts_snapshot.samples_format, info=infotext(i), p=p, suffix="-mask-composite")
+                        if p.opts_snapshot.return_mask_composite:
                             output_images.append(image_mask_composite)
 
             del x_samples_ddim
@@ -1101,19 +1101,19 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
         p.color_corrections = None
 
         index_of_first_image = 0
-        unwanted_grid_because_of_img_count = len(output_images) < 2 and opts.grid_only_if_multiple
-        if (opts.return_grid or opts.grid_save) and not p.do_not_save_grid and not unwanted_grid_because_of_img_count:
+        unwanted_grid_because_of_img_count = len(output_images) < 2 and p.opts_snapshot.grid_only_if_multiple
+        if (p.opts_snapshot.return_grid or p.opts_snapshot.grid_save) and not p.do_not_save_grid and not unwanted_grid_because_of_img_count:
             grid = images.image_grid(output_images, p.batch_size)
 
-            if opts.return_grid:
+            if p.opts_snapshot.return_grid:
                 text = infotext(use_main_prompt=True)
                 infotexts.insert(0, text)
                 if opts.enable_pnginfo:
                     grid.info["parameters"] = text
                 output_images.insert(0, grid)
                 index_of_first_image = 1
-            if opts.grid_save:
-                images.save_image(grid, p.outpath_grids, "grid", p.all_seeds[0], p.all_prompts[0], opts.grid_format, info=infotext(use_main_prompt=True), short_filename=not opts.grid_extended_filename, p=p, grid=True)
+            if p.opts_snapshot.grid_save:
+                images.save_image(grid, p.outpath_grids, "grid", p.all_seeds[0], p.all_prompts[0], p.opts_snapshot.grid_format, info=infotext(use_main_prompt=True), short_filename=not p.opts_snapshot.grid_extended_filename, p=p, grid=True)
 
     if not p.disable_extra_networks and p.extra_network_data:
         extra_networks.deactivate(p, p.extra_network_data)
