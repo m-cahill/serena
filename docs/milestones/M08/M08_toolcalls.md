@@ -11,3 +11,5 @@ Implementation toolcalls for Cursor execution.
 | 2026-03-12 | gh run watch | Monitor Linter 22984306617 | — | Done ✓ |
 | 2026-03-12 | gh run watch | Monitor Smoke Tests 22984306614 | — | Done ✓ |
 | 2026-03-12 | write | Generate M08_run1.md CI report | docs/milestones/M08/M08_run1.md | Done |
+| 2026-03-12 | write | Generate M08_audit.md per RefactorMilestoneAuditPrompt | docs/milestones/M08/M08_audit.md | Done |
+| 2026-03-12 | write | Generate M08_summary.md per RefactorSummaryPrompt | docs/milestones/M08/M08_summary.md | Done |
