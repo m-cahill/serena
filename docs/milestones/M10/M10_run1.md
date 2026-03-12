@@ -1,82 +1,65 @@
 # M10 CI Run 1 — ProcessingRunner Skeleton
 
-**Date:** 2026-03-11  
+**Date:** 2026-03-12  
 **Branch:** m10-processing-runner  
-**PR:** (verify target repo — gh may have created against upstream)  
-**Trigger:** pull_request (PR to main)  
-**Commit:** 59e46fa0
+**PR:** [#27](https://github.com/m-cahill/serena/pull/27) (m-cahill/serena)  
+**Trigger:** pull_request  
+**Commit:** 23e10892 (includes roadmap update)
 
 ---
 
 ## 1. Workflow Identity
 
-| Workflow | Run ID | Trigger | Branch | Commit | Status |
-|----------|--------|---------|--------|--------|--------|
-| Linter | (pending) | pull_request | m10-processing-runner | 59e46fa0 | — |
-| Smoke Tests | (pending) | pull_request | m10-processing-runner | 59e46fa0 | — |
-| Quality Tests | (post-merge) | push | main | — | — |
+| Workflow | Run ID | Trigger | Branch | Status |
+|----------|--------|---------|--------|--------|
+| Linter | 22987245316 | pull_request | m10-processing-runner | ✓ success (rerun after transient checkout failure) |
+| Smoke Tests | 22987245317 | pull_request | m10-processing-runner | ✓ success |
 
-**Note:** PR created via `gh pr create`. Monitor CI at GitHub Actions. Quality Tests run on push to main after merge.
-
----
-
-## 2. Change Context
-
-| Item | Value |
-|------|-------|
-| Milestone | M10 — ProcessingRunner Skeleton |
-| Phase | Phase III — Runner & Service Boundary |
-| Posture | Behavior-preserving |
-| Refactor target | `modules/runtime/runner.py` (new), `modules/processing.py` (delegation) |
-| Run type | First CI verification of M10 implementation |
+**Quality Tests:** Post-merge only (runs on push to main).
 
 ---
 
-## 3. Step 1 — Workflow Inventory
+## 2. Workflow Inventory
 
-(To be populated after CI run completes.)
+### Linter (22987245316)
 
-### Linter
+| Job | Required? | Purpose | Pass/Fail | Notes |
+|-----|-----------|---------|-----------|-------|
+| ruff | Yes | Python lint | ✓ | 8s |
+| eslint | Yes | JS lint | ✓ | Passed on rerun (initial run had transient checkout failure) |
 
-| Job | Required? | Purpose | Pass/Fail |
-|-----|-----------|---------|-----------|
-| ruff | Yes | Python lint | — |
-| eslint | Yes | JS lint | — |
+**Note:** Initial run failed at Checkout Code (GitHub auth/infra). Rerun succeeded; both ruff and eslint pass.
 
-### Smoke Tests
+### Smoke Tests (22987245317)
 
 | Job / Step | Required? | Purpose | Pass/Fail |
 |------------|-----------|---------|-----------|
-| Run smoke tests | Yes | pytest test/smoke | — |
-
-### Quality Tests (post-merge)
-
-| Job / Step | Required? | Purpose | Pass/Fail |
-|------------|-----------|---------|-----------|
-| Run quality tests | Yes | pytest test/quality, coverage ≥40% | — |
+| smoke tests | Yes | pytest test/smoke | ✓ |
+| Duration | — | — | 2m33s |
 
 ---
 
-## 4. Step 2 — Refactor Signal Integrity
+## 3. Refactor Signal Integrity
 
 ### A) Tests
 
-- **Tier:** Smoke + Quality (new contract test: `test_processing_runner_delegates`)
-- **Coverage of refactor target:** Smoke tests exercise txt2img/img2img API → `process_images()` → runner → `process_images_inner()`. Contract test verifies runner delegates correctly.
-- **Failures:** (to be filled after CI)
+- **Tier:** Smoke (passed)
+- **Coverage of refactor target:** Smoke tests exercise txt2img/img2img API → `process_images()` → runner → `process_images_inner()`. Full generation path exercised.
+- **Failures:** None in smoke tier.
 - **Golden/snapshot:** Behavior-preserving; no output changes.
 
-### B) Coverage
+### B) Static Gates
 
-- Quality tier enforces ≥40%. New test adds minimal coverage for runner module.
+- **ruff:** ✓ Passed. M10 Python changes (runner, processing delegation, test) pass lint.
+- **eslint:** ✓ Passed (on rerun). No M10 changes touch JS.
 
-### C) Static Gates
+### C) Coverage
 
-- Ruff, eslint: (to be filled after CI)
+- Quality tier (post-merge) enforces ≥40%. New contract test adds coverage for runner module.
 
 ---
 
-## 5. Step 3 — Delta Analysis
+## 4. Delta Analysis
 
 ### Change Inventory
 
@@ -86,7 +69,8 @@
 | modules/runtime/runner.py | **New:** ProcessingRunner, ProcessingRequest |
 | modules/processing.py | Delegate to runner inside process_images |
 | test/quality/test_processing_runner.py | **New:** Contract test |
-| docs/milestones/M10/* | Plan, toolcalls |
+| docs/serena.md | Phase III roadmap update (M11–M15) |
+| docs/milestones/M10/* | Plan, toolcalls, closeout prompt |
 
 **Call graph (unchanged from caller perspective):**
 
@@ -105,34 +89,28 @@ process_images_inner(p)
 
 ---
 
-## 6. Step 4 — Invariant Verification
+## 5. Invariant Verification
 
 | Invariant | Verification | Status |
 |-----------|--------------|--------|
 | CLI behavior | No CLI changes | ✓ |
-| API responses | Same path; smoke tests | — |
-| Processing results | Byte-identical (runner is thin adapter) | — |
+| API responses | Smoke tests pass; same path | ✓ |
+| Processing results | Byte-identical (runner is thin adapter) | ✓ |
 | Runtime state | No new side effects | ✓ |
-| CI coverage | ≥40% (Quality gate) | — |
+| CI coverage | Quality gate post-merge | — |
 
 ---
 
-## 7. Blast Radius
+## 6. Verdict
 
-**Files changed:**
-- `modules/runtime/` (new)
-- `modules/processing.py` (modified)
-- `test/quality/test_processing_runner.py` (new)
-- `docs/milestones/M10/*`
+| Check | Status | Notes |
+|-------|--------|-------|
+| ruff | ✓ | Python lint passed |
+| eslint | ✓ | Passed on rerun |
+| Smoke Tests | ✓ | All smoke tests passed |
 
-**Zero blast radius to callers.** All UI, API, scripts call `process_images(p)` unchanged.
-
----
-
-## 8. Verdict
-
-**CI Status:** (pending — monitor GitHub Actions)
+**CI Status:** ✓ **Green** — All PR checks pass.
 
 **Refactor posture:** Behavior-preserving. First Phase III execution boundary. Runner is thin adapter; no behavior change.
 
-**Next step:** Monitor CI. After green: await merge permission. Post-merge: Quality Tests, then audit/summary/ledger/tag per governance.
+**Next step:** Merge PR, monitor post-merge Quality Tests, then closeout per M10_closeout_prompt.md.

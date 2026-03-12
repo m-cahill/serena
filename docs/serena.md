@@ -140,6 +140,7 @@ Core principles:
 | M07 | Opts snapshot introduction | Completed | m07-opts-snapshot | #22 | 8ea50d35 | Quality 22983583947 ✓ | 5.0 / 5 | 2026-03-12 |
 | M08 | Opts snapshot threading | Completed | m08-snapshot-threading | #24 | 710a0abd | Quality 22984445599 ✓ | 5.0 / 5 | 2026-03-12 |
 | M09 | Execution context introduction | Completed | m09-execution-context | #26 | 2c6a2510 | Quality 22986731960 ✓ | 5.0 / 5 | 2026-03-12 |
+| M10 | ProcessingRunner skeleton | Completed | m10-processing-runner | #27 (+ #28 fix) | 0d11b587 | Quality 22988627838 ✓ | 5.0 / 5 | 2026-03-12 |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -150,6 +151,8 @@ Core principles:
 **M08:** Threaded p.opts_snapshot into process_images_inner for save-related reads. Fourth Phase II runtime seam. Migrated 12 opts (save_images_before_face_restoration, samples_format, grid_save, etc.) from shared.opts to p.opts_snapshot. save_samples(), sample_hr_pass(), metadata unchanged. Enables M09 execution context.
 
 **M09:** Introduced RuntimeContext in modules/runtime_context.py. Fifth Phase II runtime seam. Attached p.runtime_context in process_images_inner() after opts_snapshot (model, opts_snapshot, device, state, cmd_opts). Write-only in M09; no migration of shared.* reads yet. Completes Phase II — Runtime Seam Preparation. Enables Phase III ProcessingRunner.
+
+**M10:** Introduced ProcessingRunner in modules/runtime/runner.py. First Phase III execution boundary. process_images delegates through runner; ProcessingRequest wraps StableDiffusionProcessing. Zero blast radius; all callers unchanged. Phase III roadmap updated (M11 lifecycle, M12 instrumentation, M13 txt2img, M14 API, M15 queue). Enables M11 Runner lifecycle surface.
 
 ---
 
