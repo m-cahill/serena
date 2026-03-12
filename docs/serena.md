@@ -142,6 +142,7 @@ Core principles:
 | M09 | Execution context introduction | Completed | m09-execution-context | #26 | 2c6a2510 | Quality 22986731960 ✓ | 5.0 / 5 | 2026-03-12 |
 | M10 | ProcessingRunner skeleton | Completed | m10-processing-runner | #27 (+ #28 fix) | 0d11b587 | Quality 22988627838 ✓ | 5.0 / 5 | 2026-03-12 |
 | M11 | Runner lifecycle surface | Completed | m11-runner-lifecycle | #30 | 08ac1c0e | Quality 22989978348 ✓ | 5.0 / 5 | 2026-03-12 |
+| M12 | Runtime instrumentation hooks | In progress | m12-runner-instrumentation | — | — | — | — | — |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -156,6 +157,8 @@ Core principles:
 **M10:** Introduced ProcessingRunner in modules/runtime/runner.py. First Phase III execution boundary. process_images delegates through runner; ProcessingRequest wraps StableDiffusionProcessing. Zero blast radius; all callers unchanged. Phase III roadmap updated (M11 lifecycle, M12 instrumentation, M13 txt2img, M14 API, M15 queue). Enables M11 Runner lifecycle surface.
 
 **M11:** Introduced lifecycle surface on ProcessingRunner: prepare → execute → finalize. run() delegates through stages; pass-through behavior; identical outputs. test_runner_lifecycle_order verifies lifecycle structure. Stable execution surface enables M12 instrumentation, progress hooks, cancellation, queue runners.
+
+**M12:** (In progress) Adds optional instrumentation hooks on ProcessingRunner: on_prepare, on_execute, on_finalize. Hooks no-op by default; lifecycle order prepare → on_prepare → execute → on_execute → finalize → on_finalize. Enables M13+ progress, cancellation, queue runners.
 
 ---
 
