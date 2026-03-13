@@ -143,6 +143,7 @@ Core principles:
 | M10 | ProcessingRunner skeleton | Completed | m10-processing-runner | #27 (+ #28 fix) | 0d11b587 | Quality 22988627838 ✓ | 5.0 / 5 | 2026-03-12 |
 | M11 | Runner lifecycle surface | Completed | m11-runner-lifecycle | #30 | 08ac1c0e | Quality 22989978348 ✓ | 5.0 / 5 | 2026-03-12 |
 | M12 | Runtime instrumentation hooks | Completed | m12-runner-instrumentation | — | 46cf6d1c | Quality 23037656379 ✓ | 5.0 / 5 | 2026-03-13 |
+| M13 | txt2img path through runner | Completed | m13-txt2img-runner | #31 | 4dd04999 | Smoke 23038170275 ✓; Linter 23072709504 ✓; Quality 23072709479 ✓ | 5.0 / 5 | 2026-03-13 |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -159,6 +160,8 @@ Core principles:
 **M11:** Introduced lifecycle surface on ProcessingRunner: prepare → execute → finalize. run() delegates through stages; pass-through behavior; identical outputs. test_runner_lifecycle_order verifies lifecycle structure. Stable execution surface enables M12 instrumentation, progress hooks, cancellation, queue runners.
 
 **M12:** Introduced optional instrumentation hooks on ProcessingRunner: on_prepare, on_execute, on_finalize. Hooks no-op by default; lifecycle order prepare → on_prepare → execute → on_execute → finalize → on_finalize. test_runner_hooks_called verifies hook invocation. Enables M13+ progress, cancellation, queue runners.
+
+**M13:** Verification milestone. Confirmed txt2img path flows through process_images → ProcessingRunner (no routing changes; M10 already delegates). Added test_txt2img_path_uses_runner contract test. Runner boundary proven with real consumer. Enables M14 API integration.
 
 ---
 
