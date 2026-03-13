@@ -9,4 +9,9 @@ Implementation toolcalls for Cursor execution.
 | 2026-03-12 | write | Add contract test | test/quality/test_txt2img_runner_contract.py | Done |
 | 2026-03-12 | search_replace | Update M13_plan implementation steps, risk, deliverables | docs/milestones/M13/M13_plan.md | Done |
 | 2026-03-12 | write | M13_run1 CI analysis | docs/milestones/M13/M13_run1.md | Done |
-| 2026-03-12 | run | Push branch, create PR | git push, gh pr | Done (PR link below) |
+| 2026-03-12 | run | Push branch, create PR | git push, gh pr | Done (PR #31) |
+| 2026-03-13 | run | Merge PR #31 | gh pr merge | Done |
+| 2026-03-13 | run | Poll post-merge CI | gh run view | Done (Linter, Quality ✓) |
+| 2026-03-13 | write | M13_run2, M13_summary, M13_audit | docs/milestones/M13/ | Done |
+| 2026-03-13 | search_replace | Update ledger | docs/serena.md | Done |
+| 2026-03-13 | run | Create and push tag v0.0.13-m13 | git tag, git push | Done |
