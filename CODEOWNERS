@@ -1,4 +1,5 @@
-*       @AUTOMATIC1111
+# Serena fork: use fork owner; upstream @AUTOMATIC1111 has no members in this repo
+*       @m-cahill
 
 # if you were managing a localization and were removed from this file, this is because
 # the intended way to do localizations now is via extensions. See:
