@@ -5,8 +5,6 @@ not direct process_images_inner calls. No routing changes; verification only.
 """
 from threading import Lock
 
-import pytest
-
 
 def test_api_txt2img_uses_runner(monkeypatch, initialize):
     """API txt2img path invokes ProcessingRunner when process_images is called."""
