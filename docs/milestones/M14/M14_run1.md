@@ -2,65 +2,59 @@
 
 **Milestone:** M14 — API integration (runner contract enforcement)  
 **Branch:** m14-api-runner-contract  
-**PR:** None (branch pushed; PR not yet created)  
+**PR:** [#32](https://github.com/m-cahill/serena/pull/32)  
 **Baseline:** M13 (a12028b1)
 
 ---
 
 ## 0. Workflow Run — Actual Results
 
-### Linter (Run 1 — Latest)
+### Linter (PR #32)
 
 | Item | Value |
 |------|-------|
 | **Workflow** | Linter |
-| **Run ID** | [23181836435](https://github.com/m-cahill/serena/actions/runs/23181836435) |
-| **Trigger** | push |
+| **Run ID** | [23182483282](https://github.com/m-cahill/serena/actions/runs/23182483282) |
+| **Trigger** | pull_request (#32) |
 | **Branch** | m14-api-runner-contract |
-| **Commit** | 963108a (fix: CODEOWNERS — use fork owner @m-cahill) |
+| **Commit** | 2bd2fe0 |
 | **Status** | ✓ completed |
 | **Conclusion** | ✓ success |
-| **Duration** | 17s |
+| **Duration** | 15s |
 
-### Job: ruff
+### Smoke Tests (PR #32)
+
+| Item | Value |
+|------|-------|
+| **Workflow** | Smoke Tests |
+| **Run ID** | [23182483297](https://github.com/m-cahill/serena/actions/runs/23182483297) |
+| **Trigger** | pull_request (#32) |
+| **Branch** | m14-api-runner-contract |
+| **Commit** | 2bd2fe0 |
+| **Status** | ✓ completed |
+| **Conclusion** | ✓ success |
+| **Duration** | 2m 21s |
+
+### Job: smoke tests
 
 | Step | Result |
 |------|--------|
 | Verify repository | ✓ |
+| Verify base branch | ✓ |
 | Checkout Code | ✓ |
-| Install Ruff | ✓ |
-| Run Ruff | ✓ |
-
-### Job: eslint
-
-| Step | Result |
-|------|--------|
-| Verify repository | ✓ |
-| Checkout Code | ✓ |
-| Install Node.js | ✓ |
-| npm i --ci | ✓ |
-| npm run lint | ✓ |
+| Set up Python 3.10 | ✓ |
+| Cache models | ✓ |
+| Install test dependencies | ✓ |
+| Install runtime dependencies | ✓ |
+| Create stub repositories | ✓ |
+| Setup environment | ✓ |
+| Smoke startup | ✓ |
+| Start test server | ✓ |
+| **Run smoke tests** | ✓ |
+| Kill test server | ✓ |
+| Upload main app output | ✓ |
 
 **Annotations:** Node.js 20 actions deprecation warning (informational; not merge-blocking).
-
----
-
-### Linter (Run 2 — Ruff fix)
-
-| Item | Value |
-|------|-------|
-| **Run ID** | [23181336377](https://github.com/m-cahill/serena/actions/runs/23181336377) |
-| **Commit** | a881eab (fix: remove unused pytest import) |
-| **Conclusion** | ✓ success |
-
----
-
-### Smoke Tests
-
-| Item | Value |
-|------|-------|
-| **Status** | N/A |
-| **Reason** | Smoke Tests trigger on `pull_request` only. No PR exists for m14-api-runner-contract. |
 
 ---
 
@@ -68,9 +62,9 @@
 
 | Job / Check | Required? | Purpose | Pass/Fail | Notes |
 |-------------|-----------|---------|-----------|-------|
-| ruff | Merge-blocking | Python lint | ✓ pass | Run 23181836435 |
-| eslint | Merge-blocking | JS lint | ✓ pass | Run 23181836435 |
-| Smoke Tests | Merge-blocking | E2E server + API | N/A | Requires PR |
+| ruff | Merge-blocking | Python lint | ✓ pass | Run 23182483282 |
+| eslint | Merge-blocking | JS lint | ✓ pass | Run 23182483282 |
+| Smoke Tests | Merge-blocking | E2E server + API | ✓ pass | Run 23182483297 |
 
 ---
 
@@ -125,15 +119,15 @@
 ## 5. Delta vs Baseline
 
 **Expected:** New contract test only; no behavior change.  
-**Observed:** Linter passes; Smoke N/A (no PR).
+**Observed:** Linter passes; Smoke passes. All invariant checks satisfied.
 
 ---
 
 ## 6. Verdict
 
-> **Verdict:** Linter checks pass on m14-api-runner-contract. Smoke Tests have not run because no PR exists. Once a PR is created targeting main, Smoke will trigger. Contract test design is correct; Quality tier will run post-merge.
+> **Verdict:** All required CI checks pass. Linter (ruff, eslint) and Smoke Tests completed successfully on PR #32. No regression signals. Invariants preserved. Safe to merge.
 
-**Recommended outcome:** ✅ Merge approved (after PR created and Smoke passes)
+**Recommended outcome:** ✅ **Merge approved**
 
 ---
 
@@ -141,8 +135,8 @@
 
 | Action | Owner | Scope |
 |--------|-------|-------|
-| Create PR (m14-api-runner-contract → main) | Human | Unblocks Smoke |
-| Wait for Smoke Tests on PR | CI | Merge gate |
+| ~~Create PR~~ | — | ✓ Done (#32) |
+| ~~Wait for Smoke Tests~~ | — | ✓ Done |
 | Merge PR (with permission) | Human | M14 |
 | Verify Quality Tests post-merge | CI | M14_run2 |
 | Update ledger, generate audit/summary | Cursor | M14 closeout |
@@ -153,6 +147,5 @@
 
 | Workflow | Run ID | Trigger | Status |
 |----------|--------|---------|--------|
-| Linter | 23181836435 | push (963108a) | ✓ success |
-| Linter | 23181336377 | push (a881eab) | ✓ success |
-| Smoke Tests | — | PR required | N/A |
+| Linter | 23182483282 | PR #32 | ✓ success |
+| Smoke Tests | 23182483297 | PR #32 | ✓ success |
