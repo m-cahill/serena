@@ -12,7 +12,9 @@ Phase: Phase III — Runner & Service Boundary
 | M15 start | write | Create execution_queue.py | modules/runtime/ | done |
 | | search_replace | Update runner.py | modules/runtime/runner.py | done |
 | | write | Create test_runner_queue_mode.py | test/quality/ | done |
-| | run_terminal_cmd | Run quality tests | pytest | in_progress |
+| | run_terminal_cmd | Run quality tests | pytest | skipped (local env) |
+| | run_terminal_cmd | Create branch, commit, push | git | done |
+| | gh pr create | Create PR | — | failed (use web UI) |
 
 ---
 
