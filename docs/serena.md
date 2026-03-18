@@ -145,6 +145,7 @@ Core principles:
 | M12 | Runtime instrumentation hooks | Completed | m12-runner-instrumentation | — | 46cf6d1c | Quality 23037656379 ✓ | 5.0 / 5 | 2026-03-13 |
 | M13 | txt2img path through runner | Completed | m13-txt2img-runner | #31 | 4dd04999 | Smoke 23038170275 ✓; Linter 23072709504 ✓; Quality 23072709479 ✓ | 5.0 / 5 | 2026-03-13 |
 | M14 | API integration | Completed | m14-api-runner-contract | #32 | 5b7de065 | Smoke 23182483297 ✓; Linter 23182849899 ✓; Quality 23182849888 ✓ | 5.0 / 5 | 2026-03-17 |
+| M15 | Queue runner preparation | Completed | m15-queue-runner-prep | #33 | a4b9a622 | Smoke 23227154919 ✓; Linter 23227154926 ✓; Quality 23232040072 ✓ | 5.0 / 5 | 2026-03-18 |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -165,6 +166,8 @@ Core principles:
 **M13:** Verification milestone. Confirmed txt2img path flows through process_images → ProcessingRunner (no routing changes; M10 already delegates). Added test_txt2img_path_uses_runner contract test. Runner boundary proven with real consumer. Enables M14 API integration.
 
 **M14:** Verification milestone. Confirmed API path flows through process_images → ProcessingRunner (no routing changes). Added test_api_txt2img_uses_runner contract test. API + UI now both contract-proven. CODEOWNERS updated for fork (@m-cahill). Enables M15 queue/background runner.
+
+**M15:** Introduced ExecutionQueue (pass-through) and queue seam in ProcessingRunner. Optional queue wraps execute only; use_queue=False by default. Constructor injection; _execute(state) hook for future orchestration. test_runner_queue_mode verifies queue used, lifecycle preserved, default unchanged. Completes Phase III — Runner & Service Boundary. Enables M16 runtime extraction.
 
 ---
 
