@@ -41,7 +41,14 @@ def test_api_txt2img_uses_runner(monkeypatch, initialize):
     import modules.sd_models as sd_models_mod
 
     monkeypatch.setattr(sd_models_mod, "reload_model_weights", lambda: None)
-    monkeypatch.setattr(sd_models_mod, "apply_token_merging", lambda m, r: None)
+    monkeypatch.setattr(
+        sd_models_mod, "apply_token_merging", lambda m, r: None
+    )
+
+    # Ensure scripts loaded (Api constructor needs scripts_txt2img/img2img)
+    from modules import scripts
+    if scripts.scripts_txt2img is None:
+        scripts.load_scripts()
 
     # Call API method directly (no HTTP)
     app = FastAPI()
