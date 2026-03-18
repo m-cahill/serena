@@ -45,11 +45,6 @@ def test_api_txt2img_uses_runner(monkeypatch, initialize):
         sd_models_mod, "apply_token_merging", lambda m, r: None
     )
 
-    # Ensure scripts loaded (Api constructor needs scripts_txt2img/img2img)
-    from modules import scripts
-    if scripts.scripts_txt2img is None:
-        scripts.load_scripts()
-
     # Call API method directly (no HTTP)
     app = FastAPI()
     api = Api(app, Lock())

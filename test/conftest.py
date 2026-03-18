@@ -58,3 +58,5 @@ def initialize() -> None:
             json.dump({"samples_save": True}, f)
 
     import webui  # noqa: F401
+    from modules import initialize as init_mod
+    init_mod.initialize()
