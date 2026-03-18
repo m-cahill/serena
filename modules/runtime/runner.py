@@ -3,6 +3,7 @@
 M10: Thin adapter around process_images_inner. No behavior changes.
 M11: Lifecycle surface (prepare → execute → finalize). Pass-through behavior.
 M12: Instrumentation hooks (on_prepare, on_execute, on_finalize). No-op by default.
+M15: Queue insertion seam. Optional queue wraps execute only; default synchronous.
 """
 
 
@@ -18,17 +19,30 @@ class ProcessingRunner:
     Unified execution entrypoint for Serena processing pipeline.
     M11: Exposes lifecycle stages for future instrumentation.
     M12: Optional instrumentation hooks (no-op by default).
+    M15: Optional queue wraps execute only; use_queue=False by default.
     """
+
+    def __init__(self, queue=None, use_queue=False):
+        from modules.runtime.execution_queue import ExecutionQueue
+        self.queue = queue or ExecutionQueue()
+        self.use_queue = use_queue
 
     def run(self, request):
         """Execute processing pipeline via lifecycle stages."""
         state = self.prepare(request)
         self.on_prepare(state)
-        result = self.execute(state)
+        if self.use_queue:
+            result = self.queue.submit(state, self._execute)
+        else:
+            result = self._execute(state)
         self.on_execute(state, result)
         result = self.finalize(state, result)
         self.on_finalize(state, result)
         return result
+
+    def _execute(self, state):
+        """Internal execution hook. Future insertion point for async, retries, cancellation."""
+        return self.execute(state)
 
     def prepare(self, request):
         """Lifecycle stage 1: prepare request. Pass-through in M11."""
