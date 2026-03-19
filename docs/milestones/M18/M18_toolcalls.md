@@ -17,6 +17,8 @@ Phase: Phase IV — Runtime Extraction
 | 2026-03-19T22:15Z | shell | Run pytest on test_decode_runtime.py | test/quality | done |
 | 2026-03-19T22:25Z | shell | ruff check on changed runtime/processing/test files | modules/, test/quality | done (decode_runtime clean) |
 | 2026-03-19T22:42Z | git | Commit M18 (amend: drop unused save_outputs_for_row arg) | repo | done |
+| 2026-03-20T00:00Z | git | Push m18-decode-save-separation to origin | repo | in progress |
+| 2026-03-20T00:00Z | shell | Watch gh workflow run for M18 push; collect run id | GitHub Actions | in progress |
 
 ---
 
