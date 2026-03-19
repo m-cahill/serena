@@ -147,6 +147,7 @@ Core principles:
 | M14 | API integration | Completed | m14-api-runner-contract | #32 | 5b7de065 | Smoke 23182483297 ✓; Linter 23182849899 ✓; Quality 23182849888 ✓ | 5.0 / 5 | 2026-03-17 |
 | M15 | Queue runner preparation | Completed | m15-queue-runner-prep | #33 | a4b9a622 | Smoke 23227154919 ✓; Linter 23227154926 ✓; Quality 23232040072 ✓ | 5.0 / 5 | 2026-03-18 |
 | M16 | Runtime module extraction | Completed | m16-runtime-extraction | #34 | 912f33da | Linter 23276080886 ✓; Smoke 23276080894 ✓; Quality 23283000106 ✓ | 5.0 / 5 | 2026-03-19 06:40 UTC |
+| M17 | Sampler runner extraction | Completed | m17-sampler-runner-extraction | #35 | 16bd28ce | Linter 23284575241 ✓; Smoke 23284575264 ✓ (PR); Linter 23318593862 ✓; Quality 23318593847 ✓ | 5.0 / 5 | 2026-03-19 21:54 UTC |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -172,11 +173,17 @@ Core principles:
 
 **M16:** Extracted execution-phase batch orchestration into `modules/runtime/processing_runtime.py`. `run_generation_batches(p)` generator handles torch context, init, batch loop, sampler call; yields (n, samples_ddim) per batch. process_images_inner delegates; decode/save/postprocess remain in processing.py. First Phase IV extraction; proves runtime logic can move safely behind runner boundary. Enables M17 sampler runner extraction.
 
+**M17:** Extracted sampler creation and invocation into `modules/runtime/sampler_runtime.py`. `run_sampler_txt2img` and `run_sampler_img2img` delegate from Txt2Img.sample, sample_hr_pass, and Img2Img.sample; script hooks and decode/save remain in processing.py. Img2Img keeps `create_sampler` in `init()` (invocation-only extraction). Second Phase IV extraction; runtime layer now owns batch orchestration (M16) and sampler execution (M17). Enables M18 decode/save separation.
+
 ---
 
 ### Phase IV — Runtime Extraction (Started)
 
-Runtime extraction initiated; first orchestration slice relocated behind runner boundary. M16 complete; M17–M20 (sampler, decode/save, model provider, mockable boundaries) follow.
+Runtime extraction initiated; orchestration (M16) and **sampler execution (M17)** relocated behind the runner boundary.
+
+> **Sampler execution extracted to runtime layer. Orchestration and model execution now both live behind the runner boundary.**
+
+M18–M20 (decode/save, model provider, mockable boundaries) follow.
 
 ---
 

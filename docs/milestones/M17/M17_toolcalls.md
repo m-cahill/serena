@@ -17,6 +17,12 @@ Phase: Phase IV — Runtime Extraction
 | M17 CI | gh pr create | Create PR #35 | — | done |
 | M17 CI | gh run watch | Monitor Smoke Tests 23284575264 | — | done |
 | M17 CI | write | Create M17_run1.md CI analysis | docs/milestones/M17/M17_run1.md | done |
+| M17 closeout | gh pr merge | Merge PR #35 to main | — | done |
+| M17 closeout | write | Post-merge CI analysis | docs/milestones/M17/M17_run2.md | done |
+| M17 closeout | write | M17 summary | docs/milestones/M17/M17_summary.md | done |
+| M17 closeout | write | M17 audit | docs/milestones/M17/M17_audit.md | done |
+| M17 closeout | search_replace | Update docs/serena.md ledger + Phase IV | docs/serena.md | done |
+| M17 closeout | write | Seed M18 plan + toolcalls | docs/milestones/M18/ | done |
 
 ---
 
