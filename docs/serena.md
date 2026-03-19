@@ -148,6 +148,7 @@ Core principles:
 | M15 | Queue runner preparation | Completed | m15-queue-runner-prep | #33 | a4b9a622 | Smoke 23227154919 ✓; Linter 23227154926 ✓; Quality 23232040072 ✓ | 5.0 / 5 | 2026-03-18 |
 | M16 | Runtime module extraction | Completed | m16-runtime-extraction | #34 | 912f33da | Linter 23276080886 ✓; Smoke 23276080894 ✓; Quality 23283000106 ✓ | 5.0 / 5 | 2026-03-19 06:40 UTC |
 | M17 | Sampler runner extraction | Completed | m17-sampler-runner-extraction | #35 | 16bd28ce | Linter 23284575241 ✓; Smoke 23284575264 ✓ (PR); Linter 23318593862 ✓; Quality 23318593847 ✓ | 5.0 / 5 | 2026-03-19 21:54 UTC |
+| M18 | Decode/save separation | In progress (implementation on branch; CI pending) | m18-decode-save-separation | — | — | — | — | — |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -175,15 +176,17 @@ Core principles:
 
 **M17:** Extracted sampler creation and invocation into `modules/runtime/sampler_runtime.py`. `run_sampler_txt2img` and `run_sampler_img2img` delegate from Txt2Img.sample, sample_hr_pass, and Img2Img.sample; script hooks and decode/save remain in processing.py. Img2Img keeps `create_sampler` in `init()` (invocation-only extraction). Second Phase IV extraction; runtime layer now owns batch orchestration (M16) and sampler execution (M17). Enables M18 decode/save separation.
 
+**M18:** Extracted VAE decode stack/normalize, face restoration and color/overlay postprocess, per-row saves (including masks), and grid save from `process_images_inner` into `modules/runtime/decode_runtime.py`. `decode_latent_batch` / `DecodedSamples` moved to decode_runtime to avoid import cycles; HR paths import `decode_runtime.decode_latent_batch` only. Script hooks (`postprocess_batch`, `postprocess_image`, mask overlay, after composite) remain in `processing.py` with unchanged order. Third Phase IV extraction; full txt2img/img2img output pipeline for the inner loop now lives in the runtime module. Enables M19 model provider abstraction.
+
 ---
 
 ### Phase IV — Runtime Extraction (Started)
 
-Runtime extraction initiated; orchestration (M16) and **sampler execution (M17)** relocated behind the runner boundary.
+Runtime extraction initiated; orchestration (M16), **sampler execution (M17)**, and **decode/postprocess/save for process_images_inner (M18)** are behind the runtime layer.
 
-> **Sampler execution extracted to runtime layer. Orchestration and model execution now both live behind the runner boundary.**
+> **Inner-loop decode, postprocess, and save run through `decode_runtime`; script hook call sites stay in processing.py.**
 
-M18–M20 (decode/save, model provider, mockable boundaries) follow.
+M19–M20 (model provider, mockable boundaries) follow.
 
 ---
 

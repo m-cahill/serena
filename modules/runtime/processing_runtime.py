@@ -2,7 +2,7 @@
 
 M16: Extracted from process_images_inner. Handles torch context, batch loop,
 sampler invocation, and interruption checks. Yields latent samples per batch;
-decode/save/postprocess remain in processing.py.
+decode/save/postprocess: M18 decode_runtime (process_images_inner path only).
 """
 
 from __future__ import annotations
