@@ -14,6 +14,9 @@ Phase: Phase IV — Runtime Extraction
 | M17 impl | search_replace | Extract sampler invocations in processing.py | modules/processing.py | done |
 | M17 impl | write | Add M17 delegation tests | test/quality/test_sampler_runtime.py | done |
 | M17 impl | search_replace | Update runtime __init__.py docstring | modules/runtime/__init__.py | done |
+| M17 CI | gh pr create | Create PR #35 | — | done |
+| M17 CI | gh run watch | Monitor Smoke Tests 23284575264 | — | done |
+| M17 CI | write | Create M17_run1.md CI analysis | docs/milestones/M17/M17_run1.md | done |
 
 ---
 
