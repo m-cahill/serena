@@ -146,6 +146,7 @@ Core principles:
 | M13 | txt2img path through runner | Completed | m13-txt2img-runner | #31 | 4dd04999 | Smoke 23038170275 ✓; Linter 23072709504 ✓; Quality 23072709479 ✓ | 5.0 / 5 | 2026-03-13 |
 | M14 | API integration | Completed | m14-api-runner-contract | #32 | 5b7de065 | Smoke 23182483297 ✓; Linter 23182849899 ✓; Quality 23182849888 ✓ | 5.0 / 5 | 2026-03-17 |
 | M15 | Queue runner preparation | Completed | m15-queue-runner-prep | #33 | a4b9a622 | Smoke 23227154919 ✓; Linter 23227154926 ✓; Quality 23232040072 ✓ | 5.0 / 5 | 2026-03-18 |
+| M16 | Runtime module extraction | Completed | m16-runtime-extraction | #34 | 912f33da | Linter 23276080886 ✓; Smoke 23276080894 ✓; Quality 23283000106 ✓ | 5.0 / 5 | 2026-03-19 06:40 UTC |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -168,6 +169,14 @@ Core principles:
 **M14:** Verification milestone. Confirmed API path flows through process_images → ProcessingRunner (no routing changes). Added test_api_txt2img_uses_runner contract test. API + UI now both contract-proven. CODEOWNERS updated for fork (@m-cahill). Enables M15 queue/background runner.
 
 **M15:** Introduced ExecutionQueue (pass-through) and queue seam in ProcessingRunner. Optional queue wraps execute only; use_queue=False by default. Constructor injection; _execute(state) hook for future orchestration. test_runner_queue_mode verifies queue used, lifecycle preserved, default unchanged. Completes Phase III — Runner & Service Boundary. Enables M16 runtime extraction.
+
+**M16:** Extracted execution-phase batch orchestration into `modules/runtime/processing_runtime.py`. `run_generation_batches(p)` generator handles torch context, init, batch loop, sampler call; yields (n, samples_ddim) per batch. process_images_inner delegates; decode/save/postprocess remain in processing.py. First Phase IV extraction; proves runtime logic can move safely behind runner boundary. Enables M17 sampler runner extraction.
+
+---
+
+### Phase IV — Runtime Extraction (Started)
+
+Runtime extraction initiated; first orchestration slice relocated behind runner boundary. M16 complete; M17–M20 (sampler, decode/save, model provider, mockable boundaries) follow.
 
 ---
 
