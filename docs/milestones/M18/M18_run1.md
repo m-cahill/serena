@@ -3,7 +3,7 @@
 **Milestone:** M18 — Decode/save separation  
 **Branch:** m18-decode-save-separation  
 **PR:** [#36](https://github.com/m-cahill/serena/pull/36)  
-**Commit:** 2f6e3e2a  
+**Commit (PR tip):** 5c4613f5 (includes `M18_run1.md` + ledger; code extraction in 3f310e06 / 2f6e3e2a series)  
 **Baseline:** M17 on `main` (sampler extraction); pre-merge `main` at fork discretion  
 
 ---
@@ -18,16 +18,16 @@
 
 ---
 
-## 0. Workflow runs — actual results (this push / PR)
+## 0. Workflow runs — actual results (PR tip `5c4613f5`)
 
-### Linter (push to branch)
+### Linter (push to branch, same tip)
 
 | Item | Value |
 |------|-------|
 | **Workflow** | Linter |
-| **Run ID** | [23320455954](https://github.com/m-cahill/serena/actions/runs/23320455954) |
+| **Run ID** | [23320583095](https://github.com/m-cahill/serena/actions/runs/23320583095) |
 | **Trigger** | `push` → `m18-decode-save-separation` |
-| **Commit** | 2f6e3e2a |
+| **Commit** | 5c4613f5 |
 | **Conclusion** | success |
 | **Jobs** | ruff ✓, eslint ✓ |
 
@@ -36,9 +36,9 @@
 | Item | Value |
 |------|-------|
 | **Workflow** | Linter |
-| **Run ID** | [23320478855](https://github.com/m-cahill/serena/actions/runs/23320478855) |
+| **Run ID** | [23320584761](https://github.com/m-cahill/serena/actions/runs/23320584761) |
 | **Trigger** | `pull_request` (#36) |
-| **Commit** | 2f6e3e2a |
+| **Commit** | 5c4613f5 |
 | **Conclusion** | success |
 | **Jobs** | ruff ✓, eslint ✓ |
 
@@ -47,11 +47,19 @@
 | Item | Value |
 |------|-------|
 | **Workflow** | Smoke Tests |
-| **Run ID** | [23320478834](https://github.com/m-cahill/serena/actions/runs/23320478834) |
+| **Run ID** | [23320584759](https://github.com/m-cahill/serena/actions/runs/23320584759) |
 | **Trigger** | `pull_request` (#36), base `main` |
-| **Commit** | 2f6e3e2a |
+| **Commit** | 5c4613f5 |
 | **Conclusion** | success |
-| **Duration** | ~2m44s (smoke job) |
+| **Duration** | ~3m1s (smoke job) |
+
+### Earlier runs (code-only tip `2f6e3e2a`, pre-docs)
+
+* Linter push [23320455954](https://github.com/m-cahill/serena/actions/runs/23320455954) ✓  
+* PR Linter [23320478855](https://github.com/m-cahill/serena/actions/runs/23320478855) ✓  
+* PR Smoke [23320478834](https://github.com/m-cahill/serena/actions/runs/23320478834) ✓ (~2m44s)  
+
+Same conclusions; superseded by tip `5c4613f5` above for merge evidence.
 
 ### Quality Tests
 
@@ -67,9 +75,9 @@
 
 | Job / Check | Required? | Purpose | Pass/Fail | Notes |
 |-------------|-----------|---------|-----------|-------|
-| ruff | Merge-blocking (PR) | Python lint | ✓ | Runs 23320455954, 23320478855 |
+| ruff | Merge-blocking (PR) | Python lint | ✓ | Runs 23320583095, 23320584761 |
 | eslint | Merge-blocking (PR) | JS lint | ✓ | Same |
-| smoke tests | Merge-blocking (PR) | E2E server + API smoke | ✓ | Run 23320478834 |
+| smoke tests | Merge-blocking (PR) | E2E server + API smoke | ✓ | Run 23320584759 |
 | quality tests | Post-merge on `main` | Contract + coverage + pip-audit | Pending | Triggered only on `main` push |
 
 **Annotations (informational):** GitHub deprecation notices for Node.js 20 on several actions — no job failures; no Serena config change in M18.
@@ -143,7 +151,7 @@
 
 ## 6. Verdict
 
-**Verdict:** For PR #36 at `2f6e3e2a`, **Linter** and **Smoke** are green. The change is a behavior-preserving relocation behind the runtime module; no CI failures. **Quality Tests** have not run on this SHA because they trigger only on `push` to `main`; milestone evidence is complete for PR gating once policy treats Linter + Smoke as the merge blockers, and **Quality must be confirmed after merge** (or via a follow-up run document).
+**Verdict:** For PR #36 at tip `5c4613f5`, **Linter** and **Smoke** are green. The change is a behavior-preserving relocation behind the runtime module; no CI failures. **Quality Tests** have not run on this SHA because they trigger only on `push` to `main`; milestone evidence is complete for PR gating once policy treats Linter + Smoke as the merge blockers, and **Quality must be confirmed after merge** (or via a follow-up run document).
 
 **Recommended outcome:** ✅ **Merge approved** from a PR CI perspective (pending your explicit merge permission per program gates). After merge, record **Quality** run ID in `M18_run2.md` or amend ledger if a single run suffices.
 
