@@ -16,6 +16,7 @@ Phase: Phase IV — Runtime Extraction
 | 2026-03-19T22:10Z | write | Add M18 quality tests (delegation, order, decode_latents passthrough) | test/quality/test_decode_runtime.py | done |
 | 2026-03-19T22:15Z | shell | Run pytest on test_decode_runtime.py | test/quality | done |
 | 2026-03-19T22:25Z | shell | ruff check on changed runtime/processing/test files | modules/, test/quality | done (decode_runtime clean) |
+| 2026-03-19T22:42Z | git | Commit M18 (amend: drop unused save_outputs_for_row arg) | repo | done |
 
 ---
 
