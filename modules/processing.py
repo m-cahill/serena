@@ -29,7 +29,7 @@ from modules.opts_snapshot import create_opts_snapshot
 from modules.runtime_context import RuntimeContext
 import modules.prompt_seed_prep as prompt_seed_prep
 import modules.runtime_utils as runtime_utils
-from modules.runtime import processing_runtime
+from modules.runtime import processing_runtime, sampler_runtime
 import modules.sd_models as sd_models
 import modules.sd_vae as sd_vae
 from ldm.data.util import AddMiDaS
@@ -1232,8 +1232,6 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
                 self.extra_generation_params["Hires upscaler"] = self.hr_upscaler
 
     def sample(self, conditioning, unconditional_conditioning, seeds, subseeds, subseed_strength, prompts):
-        self.sampler = sd_samplers.create_sampler(self.sampler_name, self.sd_model)
-
         if self.firstpass_image is not None and self.enable_hr:
             # here we don't need to generate image, we just take self.firstpass_image and prepare it for hires fix
 
@@ -1270,7 +1268,7 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
                     uc=unconditional_conditioning
                 )
 
-            samples = self.sampler.sample(self, x, conditioning, unconditional_conditioning, image_conditioning=self.txt2img_image_conditioning(x))
+            samples = sampler_runtime.run_sampler_txt2img(self, x, conditioning, unconditional_conditioning)
             del x
 
             if not self.enable_hr:
@@ -1309,8 +1307,6 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
             images.save_image(image, self.outpath_samples, "", seeds[index], prompts[index], opts.samples_format, info=info, p=self, suffix="-before-highres-fix")
 
         img2img_sampler_name = self.hr_sampler_name or self.sampler_name
-
-        self.sampler = sd_samplers.create_sampler(img2img_sampler_name, self.sd_model)
 
         if self.latent_scale_mode is not None:
             for i in range(samples.shape[0]):
@@ -1378,7 +1374,12 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
                 uc=self.hr_uc,
             )
 
-        samples = self.sampler.sample_img2img(self, samples, noise, self.hr_c, self.hr_uc, steps=self.hr_second_pass_steps or self.steps, image_conditioning=image_conditioning)
+        samples = sampler_runtime.run_sampler_img2img(
+            self, samples, noise, self.hr_c, self.hr_uc,
+            steps=self.hr_second_pass_steps or self.steps,
+            image_conditioning=image_conditioning,
+            sampler_name=img2img_sampler_name,
+        )
 
         sd_models.apply_token_merging(self.sd_model, self.get_token_merging_ratio())
 
@@ -1698,7 +1699,10 @@ class StableDiffusionProcessingImg2Img(StableDiffusionProcessing):
                 c=conditioning,
                 uc=unconditional_conditioning
             )
-        samples = self.sampler.sample_img2img(self, self.init_latent, x, conditioning, unconditional_conditioning, image_conditioning=self.image_conditioning)
+        samples = sampler_runtime.run_sampler_img2img(
+            self, self.init_latent, x, conditioning, unconditional_conditioning,
+            image_conditioning=self.image_conditioning,
+        )
 
         if self.mask is not None:
             blended_samples = samples * self.nmask + self.init_latent * self.mask
