@@ -29,6 +29,8 @@ Phase: Phase IV — Runtime Extraction
 | 2026-03-19T23:08Z | gh | Watch Quality Tests 23321103961 on main | GitHub Actions | done |
 | 2026-03-19T23:15Z | write | M18_run2, M18_summary, M18_audit; serena completed row; M19 seed | docs/ | done |
 | 2026-03-19T23:20Z | git | Commit closeout on main; tag v0.0.18-m18 | repo | done |
+| 2026-03-20T12:00Z | shell | Restore UTF-8 punctuation in `docs/serena.md` (post-closeout encoding drift) | docs/serena.md | done |
+| 2026-03-20T12:00Z | git | Commit 4fd332bc; move `v0.0.18-m18` to include ledger fix | repo | done |
 
 ---
 
