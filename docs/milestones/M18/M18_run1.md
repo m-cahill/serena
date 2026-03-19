@@ -3,7 +3,7 @@
 **Milestone:** M18 — Decode/save separation  
 **Branch:** m18-decode-save-separation  
 **PR:** [#36](https://github.com/m-cahill/serena/pull/36)  
-**Branch tip:** `6229c183` — **CI evidence** in §0 references validation at **`5c4613f5`** (runtime + initial `M18_run1`/ledger); commits after that are documentation-only.  
+**Branch tip:** `5076bc33` — **CI evidence** in §0 references validation at **`5c4613f5`** (runtime + initial `M18_run1`/ledger); commits after that are documentation-only.  
 **Baseline:** M17 on `main` (sampler extraction); pre-merge `main` at fork discretion  
 
 ---
