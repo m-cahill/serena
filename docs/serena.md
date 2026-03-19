@@ -148,7 +148,7 @@ Core principles:
 | M15 | Queue runner preparation | Completed | m15-queue-runner-prep | #33 | a4b9a622 | Smoke 23227154919 ✓; Linter 23227154926 ✓; Quality 23232040072 ✓ | 5.0 / 5 | 2026-03-18 |
 | M16 | Runtime module extraction | Completed | m16-runtime-extraction | #34 | 912f33da | Linter 23276080886 ✓; Smoke 23276080894 ✓; Quality 23283000106 ✓ | 5.0 / 5 | 2026-03-19 06:40 UTC |
 | M17 | Sampler runner extraction | Completed | m17-sampler-runner-extraction | #35 | 16bd28ce | Linter 23284575241 ✓; Smoke 23284575264 ✓ (PR); Linter 23318593862 ✓; Quality 23318593847 ✓ | 5.0 / 5 | 2026-03-19 21:54 UTC |
-| M18 | Decode/save separation | PR open — Linter + Smoke green; Quality on merge | m18-decode-save-separation | #36 | 6229c183 | Linter 23320583095 ✓ (push @5c4613f5); Linter 23320584761 ✓; Smoke 23320584759 ✓ (PR @5c4613f5); Quality pending `main` push | — | — |
+| M18 | Decode/save separation | PR open � Linter + Smoke green; Quality on merge | m18-decode-save-separation | #36 | c22dd9dc | Linter 23320583095 ✓ (push @5c4613f5); Linter 23320584761 ✓; Smoke 23320584759 ✓ (PR @5c4613f5); Quality pending `main` push | — | — |
 
 **M05:** Introduced `temporary_opts()` context manager — first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
