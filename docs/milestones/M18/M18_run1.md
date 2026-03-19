@@ -3,7 +3,7 @@
 **Milestone:** M18 — Decode/save separation  
 **Branch:** m18-decode-save-separation  
 **PR:** [#36](https://github.com/m-cahill/serena/pull/36)  
-**Commit (PR tip):** 5c4613f5 (includes `M18_run1.md` + ledger; code extraction in 3f310e06 / 2f6e3e2a series)  
+**Commit (branch tip at report refresh):** 84c5c6d4 — CI rows below reference validation at **5c4613f5** (code + first `M18_run1`/ledger); **84c5c6d4** is docs-only (run ID alignment).  
 **Baseline:** M17 on `main` (sampler extraction); pre-merge `main` at fork discretion  
 
 ---

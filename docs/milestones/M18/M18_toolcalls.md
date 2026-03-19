@@ -24,7 +24,7 @@ Phase: Phase IV — Runtime Extraction
 | 2026-03-19T23:00Z | write | M18_run1.md workflow analysis; update serena ledger | docs/milestones/M18/, docs/serena.md | done |
 | 2026-03-19T23:00Z | git | Commit and push M18_run1 + ledger | repo | done |
 | 2026-03-19T23:15Z | shell | Watch CI for doc tip 5c4613f5; refresh M18_run1 run IDs | GitHub Actions, docs | done |
-| 2026-03-19T23:18Z | git | Amend run1 + serena for PR tip 5c4613f5 run IDs | docs | in progress |
+| 2026-03-19T23:18Z | git | Amend run1 + serena for PR tip 5c4613f5 run IDs | docs | done |
 
 ---
 
