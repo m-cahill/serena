@@ -18,7 +18,11 @@ Phase: Phase IV — Runtime Extraction
 | 2026-03-19T22:25Z | shell | ruff check on changed runtime/processing/test files | modules/, test/quality | done (decode_runtime clean) |
 | 2026-03-19T22:42Z | git | Commit M18 (amend: drop unused save_outputs_for_row arg) | repo | done |
 | 2026-03-20T00:00Z | git | Push m18-decode-save-separation to origin | repo | in progress |
-| 2026-03-20T00:00Z | shell | Watch gh workflow run for M18 push; collect run id | GitHub Actions | in progress |
+| 2026-03-20T00:00Z | shell | Watch gh workflow run for M18 push; collect run id | GitHub Actions | done |
+| 2026-03-19T22:50Z | gh | Open PR #36 to main (trigger Smoke + PR Linter) | GitHub | done |
+| 2026-03-19T22:52Z | gh | Watch Smoke 23320478834 + PR Linter 23320478855 | GitHub Actions | done |
+| 2026-03-19T23:00Z | write | M18_run1.md workflow analysis; update serena ledger | docs/milestones/M18/, docs/serena.md | done |
+| 2026-03-19T23:00Z | git | Commit and push M18_run1 + ledger | repo | in progress |
 
 ---
 
