@@ -12,3 +12,4 @@ Implementation checkpoints for Cursor execution (structural events only).
 | 2026-03-20 | search_replace | Ledger M21 row, Phase V in progress | docs/serena.md | done |
 | 2026-03-20 | run | pytest test/quality/test_ui_tab_registry.py | pytest | done |
 | 2026-03-20 | run | Commit M21 | git | done |
+| 2026-03-20 | search_replace | Remove unused pytest import | test/quality/test_ui_tab_registry.py | done |
