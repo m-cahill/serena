@@ -33,6 +33,7 @@ class FakeModel:
     latent_channels = 4
     lowvram = False
     is_sdxl = False
+    is_sdxl_inpaint = False
     is_sd3 = False
     sd_model_hash = "fake"
     dtype = None
