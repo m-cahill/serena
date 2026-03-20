@@ -32,5 +32,6 @@
 
 ## Evidence
 
-- Quality: [23333740069](https://github.com/m-cahill/serena/actions/runs/23333740069) — 87 passed, coverage gate 40%.  
-- PR: [#39](https://github.com/m-cahill/serena/pull/39) merged to `main`; follow-up test fixes on `main` through `9c7e693a`.
+- Quality (M20 test fixes): [23333740069](https://github.com/m-cahill/serena/actions/runs/23333740069) @ `9c7e693a` — 87 passed, 40% coverage.  
+- Quality (docs closeout): [23334408261](https://github.com/m-cahill/serena/actions/runs/23334408261) @ `fe5b794f` — 87 passed, 40% coverage.  
+- PR: [#39](https://github.com/m-cahill/serena/pull/39) merged to `main`.

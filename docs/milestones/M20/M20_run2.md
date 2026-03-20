@@ -9,6 +9,8 @@
 **Conclusion:** SUCCESS  
 **Workflow duration:** ~3m51s (started 2026-03-20T07:47:15Z, completed ~07:51Z UTC)
 
+**Follow-up (docs-only closeout on `main`):** [23334408261](https://github.com/m-cahill/serena/actions/runs/23334408261) @ `fe5b794f` — also **87 passed**, **40%** coverage (confirms ledger/docs commit did not affect tests).
+
 ---
 
 ## 1. Results
