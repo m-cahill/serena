@@ -150,7 +150,7 @@ Core principles:
 | M17 | Sampler runner extraction | Completed | m17-sampler-runner-extraction | #35 | 16bd28ce | Linter 23284575241 ?; Smoke 23284575264 ? (PR); Linter 23318593862 ?; Quality 23318593847 ? | 5.0 / 5 | 2026-03-19 21:54 UTC |
 | M18 | Decode/save separation | Completed | m18-decode-save-separation | #36 | 84ea94e7 | Linter 23320584761 ?; Smoke 23320584759 ? (PR); Linter 23321103971 ?; Quality 23321103961 ? (79 pass, 40% cov) | 5.0 / 5 | 2026-03-19 23:08 UTC |
 | M19 | Model provider interface | Completed | m19-model-provider | #37, #38 | 8fb464e4 | Linter 23324037879 ?; Smoke 23324037884 ? (PR #37); Quality 23326003636 ? (83 pass, 40% cov) | 5.0 / 5 | 2026-03-20 02:09 UTC |
-| M20 | Runtime tests with mockable boundaries | Completed | m20-runtime-mock-tests | #39 | 99ac3948 | PR Linter 23331851493 ?; Smoke 23331851499 ?; Quality 23334543220 ? (87 pass, 40% cov) | 5.0 / 5 | 2026-03-20 08:18 UTC |
+| M20 | Runtime tests with mockable boundaries | Completed | m20-runtime-mock-tests | #39 | 9c7e693a | PR Linter 23331851493 ?; Smoke 23331851499 ?; Quality 23333740069 ? (87 pass, 40% cov) | 5.0 / 5 | 2026-03-20 07:51 UTC |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
