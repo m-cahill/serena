@@ -51,7 +51,7 @@ def _minimal_setup_conds(self):
 def _make_txt2img(out_samples: str, *, sampler_name: str):
     from modules import processing as proc_mod
 
-    return proc_mod.StableDiffusionProcessingTxt2Img(
+    p = proc_mod.StableDiffusionProcessingTxt2Img(
         outpath_samples=out_samples,
         outpath_grids=out_samples,
         prompt="m20 fake runtime",
@@ -71,8 +71,9 @@ def _make_txt2img(out_samples: str, *, sampler_name: str):
         do_not_save_samples=True,
         do_not_save_grid=True,
         restore_faces=False,
-        scripts=None,
     )
+    p.scripts = None
+    return p
 
 
 @pytest.fixture
