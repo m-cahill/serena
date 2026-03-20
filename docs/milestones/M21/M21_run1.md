@@ -16,5 +16,5 @@ Additional eslint/ruff rows appeared on a second workflow run (`23360545351`); a
 
 ## Post-merge
 
-- [ ] Quality workflow on `main` (coverage ≥ 40%)
-- [ ] Tag `v0.0.21-m21` after Quality green
+- [x] Quality workflow on `main`: [23361011739](https://github.com/m-cahill/serena/actions/runs/23361011739) @ `081de7e7` — **success**, 92 passed, 40% coverage.
+- [x] Closeout docs + tag `v0.0.21-m21` on `081de7e7` (after ledger/summary/audit on `main`).

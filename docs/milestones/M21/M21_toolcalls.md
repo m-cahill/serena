@@ -17,3 +17,8 @@ Implementation checkpoints for Cursor execution (structural events only).
 | 2026-03-20 | run | Open PR #40 | gh pr create | done |
 | 2026-03-20 | run | Poll PR CI (ruff, eslint, smoke) | gh run view 23360545341 | done |
 | 2026-03-20 | search_replace | Ledger PR #40 + CI run IDs | docs/serena.md | done |
+| 2026-03-20 | run | Squash-merge PR #40 | gh pr merge 40 --squash | done |
+| 2026-03-20 | run | Watch Quality on main | gh run watch 23361011739 | done |
+| 2026-03-20 | write | M21_summary.md, M21_audit.md; ledger complete | docs/ | done |
+| 2026-03-20 | run | Commit closeout on main | d0a9f001 | done |
+| 2026-03-20 | run | Tag v0.0.21-m21 @ 081de7e7, push tag | git push origin v0.0.21-m21 | done |
