@@ -12,6 +12,7 @@ Phase: Phase IV — Runtime Extraction
 | (init) | Milestone folder seeded at M19 closeout | docs/milestones/M20/ | done |
 | 2026-03-19 (session) | M20 implementation: canonical plan, fixtures, quality tests, branch | docs/milestones/M20/, test/fixtures/, test/quality/test_runtime_mock.py | done (await CI) |
 | 2026-03-20 | Push branch + open PR #39 to main | origin/m20-runtime-mock-tests | done |
+| 2026-03-20 | CI check via gh; add M20_run1.md (Linter+Smoke), M20_run2.md (Quality pending) | docs/milestones/M20/ | done |
 
 ---
 
