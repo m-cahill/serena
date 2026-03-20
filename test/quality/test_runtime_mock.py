@@ -1,4 +1,4 @@
-"""M20: ProcessingRunner + fake ModelProvider — full inner pipeline without real weights/GPU."""
+"""M20: ProcessingRunner + fake ModelProvider — inner pipeline without real weights."""
 
 from __future__ import annotations
 
@@ -11,16 +11,25 @@ from test.fixtures.fake_model import FakeModel, FakeModelProvider
 
 
 class _FakeSampler:
-    """Bypasses k-diffusion; returns pre-decoded RGB tensors (DecodedSamples / already_decoded)."""
+    """Bypass k-diffusion; return DecodedSamples (already_decoded)."""
 
-    def sample(self, p, x, conditioning, unconditional_conditioning, image_conditioning=None):
+    def sample(
+        self,
+        p,
+        x,
+        conditioning,
+        unconditional_conditioning,
+        image_conditioning=None,
+    ):
         import torch
 
         from modules.runtime.decode_runtime import DecodedSamples
 
         b = x.shape[0]
         h, w = p.height, p.width
-        tensors = [torch.full((3, h, w), 0.0, dtype=torch.float32) for _ in range(b)]
+        tensors = [
+            torch.full((3, h, w), 0.0, dtype=torch.float32) for _ in range(b)
+        ]
         return DecodedSamples(tensors)
 
 
@@ -39,7 +48,10 @@ def _minimal_setup_conds(self):
     from modules import devices, sd_samplers
 
     sampler_config = sd_samplers.find_sampler_config(self.sampler_name)
-    total_steps = sampler_config.total_steps(self.steps) if sampler_config else self.steps
+    if sampler_config:
+        total_steps = sampler_config.total_steps(self.steps)
+    else:
+        total_steps = self.steps
     steps = max(self.steps, 1)
     self.step_multiplier = max(total_steps // steps, 1)
     self.firstpass_steps = total_steps
@@ -78,15 +90,23 @@ def _make_txt2img(out_samples: str, *, sampler_name: str):
 
 
 def _null_autocast(disable=False):
-    """CPU-only CI: avoid torch.autocast('cuda') / without_autocast cuda contexts."""
+    """CPU-only CI: skip torch.autocast('cuda') contexts."""
     import contextlib
 
     return contextlib.nullcontext()
 
 
+def _noop_reload(*a, **k):
+    return None
+
+
+def _fake_create_sampler(name, model):
+    return _FakeSampler()
+
+
 @pytest.fixture
 def fake_pipeline_env(monkeypatch, tmp_path, initialize):
-    """Stubs shared.sd_model, reload, CLIP conditioning, and sampler creation for a CPU-only path."""
+    """Stub shared.sd_model, reload, conditioning, sampler; CPU-safe."""
     import modules.shared as shared
     from modules import devices as devices_mod
     from modules import processing as proc_mod
@@ -98,9 +118,13 @@ def fake_pipeline_env(monkeypatch, tmp_path, initialize):
 
     monkeypatch.setattr(devices_mod, "autocast", _null_autocast)
     monkeypatch.setattr(devices_mod, "without_autocast", _null_autocast)
-    monkeypatch.setattr(sd_models, "reload_model_weights", lambda *a, **k: None)
-    monkeypatch.setattr(sd_samplers, "create_sampler", lambda name, model: _FakeSampler())
-    monkeypatch.setattr(proc_mod.StableDiffusionProcessing, "setup_conds", _minimal_setup_conds)
+    monkeypatch.setattr(sd_models, "reload_model_weights", _noop_reload)
+    monkeypatch.setattr(sd_samplers, "create_sampler", _fake_create_sampler)
+    monkeypatch.setattr(
+        proc_mod.StableDiffusionProcessing,
+        "setup_conds",
+        _minimal_setup_conds,
+    )
     if hasattr(shared.cmd_opts, "no_prompt_history"):
         monkeypatch.setattr(shared.cmd_opts, "no_prompt_history", True)
     if hasattr(shared.opts, "randn_source"):
