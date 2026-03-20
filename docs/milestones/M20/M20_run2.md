@@ -1,64 +1,63 @@
-# M20 Run 2 — Post-Merge Quality Tests
+# M20 Run 2 — Post-Merge Quality Tests (PASS)
 
 **Milestone:** M20 — Runtime tests with mockable boundaries  
 **Phase:** Phase IV — Runtime Extraction  
-**Run type:** Post-merge (push to `main`) — **Quality Tests** workflow only
+**Run type:** Post-merge (`push` to `main`)  
+**Run ID:** [23333740069](https://github.com/m-cahill/serena/actions/runs/23333740069)  
+**Head SHA:** `9c7e693a`  
+**Trigger commit message:** `fix(M20): patch opts snapshot defaults for sparse CI opts.data`  
+**Conclusion:** SUCCESS  
+**Workflow duration:** ~3m51s (started 2026-03-20T07:47:15Z, completed ~07:51Z UTC)
 
 ---
 
-## Status (as of report generation)
-
-| Item | State |
-|------|--------|
-| PR [#39](https://github.com/m-cahill/serena/pull/39) | **Open** (not merged) |
-| Quality workflow | **Not triggered** for M20 — runs on `push` to `main` only |
-
-There is **no** Quality run ID yet for the M20 branch merge. Latest Quality on `main` is still from the prior merge (e.g. M19 closeout: run [23327390199](https://github.com/m-cahill/serena/actions/runs/23327390199)), which does **not** include M20 commits.
-
----
-
-## After PR #39 merges — fill this section
-
-Use:
-
-```bash
-gh run list -R m-cahill/serena --workflow "Quality Tests" --branch main --limit 3
-```
-
-Then update the table below from the **first** successful run whose commit message or SHA includes the M20 merge.
-
-| Field | Value |
-|-------|--------|
-| Run ID | _TBD_ |
-| URL | _TBD_ |
-| Head SHA | _TBD_ |
-| Conclusion | _TBD_ |
-| Workflow duration | _TBD_ |
-
-### Expected Quality contents
-
-- `pytest test/smoke test/quality` — must include **`test/quality/test_runtime_mock.py`** (4 tests).
-- `coverage report --fail-under=40` — gate **≥ 40%** (unchanged).
-
-### Template — results (copy from Actions log)
+## 1. Results
 
 | Step | Result |
 |------|--------|
-| Run quality tests | _N passed in ~Xs_ |
-| Show coverage | _TOTAL line %_ |
-
-### Confirmation checklist
-
-- [ ] `test_runtime_mock` tests passed
-- [ ] No regressions in existing runtime / provider tests
-- [ ] Coverage ≥ 40%
+| Run quality tests | ✓ **87 passed** in ~67s (includes 4× `test_runtime_mock.py`) |
+| `coverage report --fail-under=40` | ✓ **40%** combined TOTAL (18715 stmts, 11247 miss) |
+| Pytest phase coverage line | TOTAL **43%** during pytest-cov (informational) |
 
 ---
 
-## Delta vs Run 1 (PR phase)
+## 2. Superseded / failed runs (diagnostic only)
 
-| Metric | Run 1 (PR #39) | Run 2 (main, post-merge) |
-|--------|----------------|---------------------------|
-| Linter | [23331851493](https://github.com/m-cahill/serena/actions/runs/23331851493) ✓ | _not re-listed here_ |
+PR [#39](https://github.com/m-cahill/serena/pull/39) merged at `5b37c457`. First Quality on `main` (**23332146363**) failed on **`test_runtime_mock`**: `StableDiffusionProcessingTxt2Img` does not accept `scripts=` in `__init__` (`init=False` on dataclass).
+
+**Resolution:** test-only fixes on `main` (no runtime module edits): set `p.scripts` after construction; skip TI reload; CPU-safe autocast/randn; expand `FakeModel` flags for sampler/conditioning glue; `sd_checkpoint_info.model_name`; patch `create_opts_snapshot` in tests to backfill keys missing from sparse CI `opts.data` (e.g. `grid_only_if_multiple`).
+
+---
+
+## 3. Relevant tests
+
+All passed, including:
+
+- `test/quality/test_runtime_mock.py` (4 tests) — runner + `FakeModelProvider`, full stubbed inner path
+- Existing runtime / provider / decode / sampler quality tests
+
+---
+
+## 4. Checklist
+
+- [x] `test_runtime_mock` passed  
+- [x] No regressions in existing quality tests  
+- [x] Coverage ≥ 40%  
+
+---
+
+## 5. Delta vs Run 1 (PR phase)
+
+| Metric | Run 1 (PR #39) | Run 2 (main, final) |
+|--------|----------------|---------------------|
+| Linter | [23331851493](https://github.com/m-cahill/serena/actions/runs/23331851493) ✓ | (not re-listed) |
 | Smoke | [23331851499](https://github.com/m-cahill/serena/actions/runs/23331851499) ✓ | exercised inside Quality job |
-| Quality | N/A on PR | _TBD after merge_ |
+| Quality | N/A on PR | **23333740069** ✓ |
+
+---
+
+## 6. Notes
+
+- pip-audit: informational (`continue-on-error` per workflow).  
+- Node.js 20 deprecation warnings on actions (informational).  
+- `htmlcov` artifact missing when pytest fails early (expected on failed runs only).

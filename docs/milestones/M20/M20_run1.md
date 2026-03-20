@@ -79,3 +79,9 @@
 ## 6. Annotations
 
 - Node.js 20 deprecation warnings on GitHub Actions (informational; not blocking).
+
+---
+
+## 7. Post-merge note
+
+After PR #39 merged, **Quality** on `main` initially failed on `test_runtime_mock` (dataclass `scripts` init, then CI-specific glue). **Test-only** commits on `main` resolved this; see **`M20_run2.md`** for the authoritative green run (**23333740069**) and SHA **`9c7e693a`**.

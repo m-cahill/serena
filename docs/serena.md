@@ -150,6 +150,7 @@ Core principles:
 | M17 | Sampler runner extraction | Completed | m17-sampler-runner-extraction | #35 | 16bd28ce | Linter 23284575241 ?; Smoke 23284575264 ? (PR); Linter 23318593862 ?; Quality 23318593847 ? | 5.0 / 5 | 2026-03-19 21:54 UTC |
 | M18 | Decode/save separation | Completed | m18-decode-save-separation | #36 | 84ea94e7 | Linter 23320584761 ?; Smoke 23320584759 ? (PR); Linter 23321103971 ?; Quality 23321103961 ? (79 pass, 40% cov) | 5.0 / 5 | 2026-03-19 23:08 UTC |
 | M19 | Model provider interface | Completed | m19-model-provider | #37, #38 | 8fb464e4 | Linter 23324037879 ?; Smoke 23324037884 ? (PR #37); Quality 23326003636 ? (83 pass, 40% cov) | 5.0 / 5 | 2026-03-20 02:09 UTC |
+| M20 | Runtime tests with mockable boundaries | Completed | m20-runtime-mock-tests | #39 | 9c7e693a | PR Linter 23331851493 ?; Smoke 23331851499 ?; Quality 23333740069 ? (87 pass, 40% cov) | 5.0 / 5 | 2026-03-20 07:51 UTC |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -181,19 +182,21 @@ Core principles:
 
 **M19:** Introduced `ModelProvider` / `SharedModelProvider` in `modules/runtime/model_provider.py` and injected `model_provider` via `ProcessingRunner.prepare()` onto `processing`. Runtime modules (`processing_runtime`, `sampler_runtime`, `decode_runtime`) obtain the model only through `p.model_provider.get_model(p)`; no direct `shared.sd_model` or `p.sd_model` in those modules. First dependency-inversion milestone for the inner loop. PR #38 corrected Quality CI: sampler contract tests patch `modules.sd_samplers.create_sampler` (not `sys.modules`) for deterministic import order. Enables M20 mockable runtime.
 
+**M20:** Added `FakeModel` / `FakeModelProvider` in `test/fixtures/fake_model.py` and `test/quality/test_runtime_mock.py` ? Quality integration tests run `ProcessingRunner` + `process_images_inner` without a real model (test-only stubs: fake sampler / `DecodedSamples`, minimal `setup_conds`, CPU-safe autocast, opts snapshot backfill for sparse CI `opts.data`). No runtime module edits. PR #39 merged; follow-up test fixes on `main` to satisfy dataclass init, TI reload skip, and CI CPU torch. Quality 23333740069: 87 pass, 40% coverage. **Phase IV complete.**
+
 ---
 
-### Phase IV ? Runtime Extraction (Started)
+### Phase IV ? Runtime Extraction (Complete)
 
-Runtime extraction initiated; orchestration (M16), **sampler execution (M17)**, **decode/postprocess/save for process_images_inner (M18)**, and **model provider injection (M19)** are behind the runtime layer.
+Orchestration (M16), **sampler execution (M17)**, **decode/postprocess/save for process_images_inner (M18)**, **model provider injection (M19)**, and **mockable runtime proof (M20)** are complete.
 
 > **Inner-loop decode, postprocess, and save run through `decode_runtime`; script hook call sites stay in processing.py.**
 
-> Decode, postprocess, and save extracted to runtime layer. Full inner-loop pipeline now resides in runtime module.
+> **Runtime decoupled from global model state via ModelProvider** (M19); **end-to-end inner pipeline executable without a real model in tests** (M20).
 
-> **Runtime decoupled from global model state via ModelProvider; test isolation corrected for deterministic CI (PR #38).**
+> **Runtime validated as fully mockable; end-to-end pipeline executes without real model. Phase IV complete.**
 
-M20 (mockable boundaries) follows.
+**Next:** Phase V ? UI & extension modularization (M21+).
 
 ---
 
