@@ -8,7 +8,25 @@
 ### Errata (same monitoring pass, after pushing this file)
 
 - Additional **Linter** run on push: **`23362979869`** (success) for commit `docs(M22): CI monitoring report run1 (PR #41)`.
-- `gh run list --event pull_request` still showed **no** M22 / #41 entries at poll time — **Smoke Tests** remain unconfirmed via CLI. Verify on the PR **Checks** tab and repo **Actions → Smoke Tests** filters.
+- Latest branch tip at confirmation: **`9a974abd`** — Linter workflow run **`23363001050`** (ruff + eslint success).
+
+---
+
+## Smoke — authoritative confirmation (GitHub Checks API)
+
+This is **not** a CLI visibility gap. The REST API that backs the PR **Checks** tab was queried:
+
+`GET /repos/m-cahill/serena/commits/9a974abd698e1f99849af4c20a3bbe086de07203/check-runs`
+
+| Field | Value |
+|--------|--------|
+| `total_count` | **2** |
+| Check run names | **`ruff`**, **`eslint`** only |
+| Smoke / `smoke tests` check | **Absent** |
+
+PR metadata (`gh pr view 41 --json`): **`baseRefName` = `main`**, **`headRefName` = `m22-tab-modularization`** — target branch is correct for `.github/workflows/run_smoke_tests.yaml`.
+
+**Conclusion:** **Smoke Tests did not run** (no check run registered) for PR #41 at the current head. Historical **Smoke Tests** workflow runs in the API still end with M21; none reference `m22-tab-modularization`. Treat as **repository / Actions delivery issue** (Serena governance path: document and fix outside M22 code scope unless you fold a workflow repair into this PR).
 
 ---
 
@@ -16,12 +34,12 @@
 
 | Gate | Status | Evidence |
 |------|--------|----------|
-| **ruff** | **PASS** | Job in workflow run **23362825071** |
-| **eslint** | **PASS** | Job in workflow run **23362825071** |
-| **Smoke Tests** | **NOT OBSERVED** | No `pull_request` workflow run for M22 in `gh run list`; Smoke workflow is PR-only |
+| **ruff** | **PASS** | e.g. job on run **23363001050** (head `9a974abd`) |
+| **eslint** | **PASS** | same |
+| **Smoke Tests** | **Did not run** | Checks API: only 2 runs on PR head; no Smoke workflow run for M22 in Actions history |
 | **Quality Tests** | N/A (pre-merge) | Expected on **`main`** after merge per program rules |
 
-**PR-required signal:** Linter workflow is **green**. Smoke is **missing from GitHub’s run list** for this PR at poll time — treat as **follow-up** before merge approval.
+**Merge posture (program gates):** Linter is **green**; **Smoke is a blocker** until a green Smoke run exists or delivery is repaired and re-run.
 
 ---
 
