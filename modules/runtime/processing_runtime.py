@@ -3,6 +3,7 @@
 M16: Extracted from process_images_inner. Handles torch context, batch loop,
 sampler invocation, and interruption checks. Yields latent samples per batch;
 decode/save/postprocess: M18 decode_runtime (process_images_inner path only).
+M19: Model access via p.model_provider.get_model(p) only.
 """
 
 from __future__ import annotations
@@ -31,7 +32,7 @@ def run_generation_batches(p):
     """
     state = shared.state
 
-    with torch.no_grad(), p.sd_model.ema_scope():
+    with torch.no_grad(), p.model_provider.get_model(p).ema_scope():
         with devices.autocast():
             p.init(p.all_prompts, p.all_seeds, p.all_subseeds)
 
@@ -59,7 +60,7 @@ def run_generation_batches(p):
             p.seeds = p.all_seeds[n * p.batch_size:(n + 1) * p.batch_size]
             p.subseeds = p.all_subseeds[n * p.batch_size:(n + 1) * p.batch_size]
 
-            latent_channels = getattr(shared.sd_model, 'latent_channels', _OPT_C)
+            latent_channels = getattr(p.model_provider.get_model(p), 'latent_channels', _OPT_C)
             p.rng = rng.ImageRNG(
                 (latent_channels, p.height // _OPT_F, p.width // _OPT_F),
                 p.seeds,
@@ -100,7 +101,7 @@ def run_generation_batches(p):
             if p.n_iter > 1:
                 shared.state.job = f"Batch {n+1} out of {p.n_iter}"
 
-            sd_models.apply_alpha_schedule_override(p.sd_model, p)
+            sd_models.apply_alpha_schedule_override(p.model_provider.get_model(p), p)
 
             with devices.without_autocast() if devices.unet_needs_upcast else devices.autocast():
                 samples_ddim = p.sample(
