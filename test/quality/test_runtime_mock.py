@@ -77,10 +77,18 @@ def _make_txt2img(out_samples: str, *, sampler_name: str):
     return p
 
 
+def _null_autocast(disable=False):
+    """CPU-only CI: avoid torch.autocast('cuda') / without_autocast cuda contexts."""
+    import contextlib
+
+    return contextlib.nullcontext()
+
+
 @pytest.fixture
 def fake_pipeline_env(monkeypatch, tmp_path, initialize):
     """Stubs shared.sd_model, reload, CLIP conditioning, and sampler creation for a CPU-only path."""
     import modules.shared as shared
+    from modules import devices as devices_mod
     from modules import processing as proc_mod
     from modules import sd_models, sd_samplers
 
@@ -88,11 +96,15 @@ def fake_pipeline_env(monkeypatch, tmp_path, initialize):
     fake = FakeModel()
     shared.sd_model = fake
 
+    monkeypatch.setattr(devices_mod, "autocast", _null_autocast)
+    monkeypatch.setattr(devices_mod, "without_autocast", _null_autocast)
     monkeypatch.setattr(sd_models, "reload_model_weights", lambda *a, **k: None)
     monkeypatch.setattr(sd_samplers, "create_sampler", lambda name, model: _FakeSampler())
     monkeypatch.setattr(proc_mod.StableDiffusionProcessing, "setup_conds", _minimal_setup_conds)
     if hasattr(shared.cmd_opts, "no_prompt_history"):
         monkeypatch.setattr(shared.cmd_opts, "no_prompt_history", True)
+    if hasattr(shared.opts, "randn_source"):
+        monkeypatch.setattr(shared.opts, "randn_source", "CPU")
 
     try:
         yield fake, str(tmp_path)
