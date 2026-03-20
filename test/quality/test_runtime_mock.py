@@ -71,6 +71,7 @@ def _make_txt2img(out_samples: str, *, sampler_name: str):
         do_not_save_samples=True,
         do_not_save_grid=True,
         restore_faces=False,
+        do_not_reload_embeddings=True,
     )
     p.scripts = None
     return p
