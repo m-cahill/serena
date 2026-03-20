@@ -1,8 +1,5 @@
 """M19: Model provider injection and runtime model access."""
 
-import sys
-import types
-
 from modules.runtime.runner import ProcessingRequest, ProcessingRunner
 from modules.runtime import sampler_runtime
 
@@ -38,9 +35,7 @@ def test_sampler_runtime_uses_model_provider(monkeypatch):
         captured["model"] = model
         return MockSampler()
 
-    fake_sd_samplers = types.ModuleType("sd_samplers")
-    fake_sd_samplers.create_sampler = fake_create_sampler
-    monkeypatch.setitem(sys.modules, "modules.sd_samplers", fake_sd_samplers)
+    monkeypatch.setattr("modules.sd_samplers.create_sampler", fake_create_sampler)
 
     class MP:
         def get_model(self, p):
@@ -70,9 +65,7 @@ def test_sampler_img2img_hr_path_uses_model_provider(monkeypatch):
         captured["model"] = model
         return MockSampler()
 
-    fake_sd_samplers = types.ModuleType("sd_samplers")
-    fake_sd_samplers.create_sampler = fake_create_sampler
-    monkeypatch.setitem(sys.modules, "modules.sd_samplers", fake_sd_samplers)
+    monkeypatch.setattr("modules.sd_samplers.create_sampler", fake_create_sampler)
 
     class MP:
         def get_model(self, p):
