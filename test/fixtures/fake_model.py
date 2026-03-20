@@ -41,6 +41,7 @@ class FakeModel:
     def __init__(self) -> None:
         self.sd_checkpoint_info = SimpleNamespace(
             name_for_extra="fake-checkpoint",
+            model_name="fake-checkpoint",
         )
         self.model = _WrappedModel()
 
