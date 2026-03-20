@@ -10,6 +10,7 @@ Phase: Phase IV — Runtime Extraction
 | Timestamp | Purpose | Files | Status |
 |-----------|---------|-------|--------|
 | (init) | Milestone folder seeded at M19 closeout | docs/milestones/M20/ | done |
+| 2026-03-19 (session) | M20 implementation: canonical plan, fixtures, quality tests, branch | docs/milestones/M20/, test/fixtures/, test/quality/test_runtime_mock.py | done (await CI) |
 
 ---
 
