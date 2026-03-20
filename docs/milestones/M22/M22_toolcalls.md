@@ -19,6 +19,8 @@
 | 2026-03-20 | run/commit/push | Empty commit retrigger Smoke; workflow push trigger + `if` on base verify | git; .github/workflows/run_smoke_tests.yaml | done |
 | 2026-03-20 | run | `gh run watch` Smoke 23365701378; Checks API head 9ea22641 | gh api | done |
 | 2026-03-20 | strreplace | M22_run1 resolution section | docs/milestones/M22/M22_run1.md | done |
+| 2026-03-20 | strreplace/write | M22 closeout: ledger, plan, run1 post-merge, summary, audit, M23 stubs | docs/serena.md; docs/milestones/M22/*; docs/milestones/M23/* | done |
+| 2026-03-20 | run | Annotated tag `v0.0.22-m22` on merge `99b5f0c4`; push tag | git tag; git push origin | done |
 
 ---
 

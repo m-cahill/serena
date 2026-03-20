@@ -4,7 +4,7 @@
 **Phase:** Phase V — UI & Extension Stabilization  
 **Branch:** `m22-tab-modularization`  
 **Baseline:** `main` @ `081de7e7` (M21 tag anchor)  
-**Status:** In progress
+**Status:** Completed (2026-03-20)
 
 ---
 
@@ -44,4 +44,4 @@ Mechanically relocate txt2img and img2img top-level `gr.Blocks` bodies from `mod
 
 ## 5. Definition of done
 
-- PR green; post-merge Quality green; ledger updated; tag `v0.0.22-m22` after merge (closeout).
+- PR green; post-merge Quality green; ledger updated; annotated tag `v0.0.22-m22` on merge commit `99b5f0c43806c3b521cbb6d8ef561fa87ef2c75d` (closeout).

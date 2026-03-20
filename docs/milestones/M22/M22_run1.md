@@ -138,3 +138,17 @@ GET /repos/m-cahill/serena/commits/9ea226417d473bbfcdb6c0c33c41703c9d5e3b49/chec
 - **PR #41** at head **`9ea22641`:** **ruff**, **eslint**, and **smoke tests** are **green** per Checks API.
 - Root cause of the earlier gap: **`pull_request` did not run Smoke** for this PR; **not** M22 UI code. Mitigation: **push trigger** on non-`main` branches (documented in workflow comments).
 - **Post-merge:** still require **Quality Tests** on `main` (≥40% coverage) before M22 closeout.
+
+---
+
+## Post-merge Quality (closeout)
+
+| Field | Value |
+|--------|--------|
+| **Workflow** | Quality Tests |
+| **Run ID** | **23365924953** |
+| **Conclusion** | **success** |
+| **Coverage** | Gate satisfied (**≥ 40%**, per program) |
+| **Merge commit (authoritative)** | `99b5f0c43806c3b521cbb6d8ef561fa87ef2c75d` |
+
+M22 formal closeout: ledger row **Completed**, milestone summary/audit, annotated tag **`v0.0.22-m22`** on the squash merge commit above (not on doc-only follow-ups).

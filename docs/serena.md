@@ -152,7 +152,7 @@ Core principles:
 | M19 | Model provider interface | Completed | m19-model-provider | #37, #38 | 8fb464e4 | Linter 23324037879 ?; Smoke 23324037884 ? (PR #37); Quality 23326003636 ? (83 pass, 40% cov) | 5.0 / 5 | 2026-03-20 02:09 UTC |
 | M20 | Runtime tests with mockable boundaries | Completed | m20-runtime-mock-tests | #39 | 9c7e693a | PR Linter 23331851493 ?; Smoke 23331851499 ?; Quality 23333740069 ? (87 pass, 40% cov) | 5.0 / 5 | 2026-03-20 07:51 UTC |
 | M21 | UI tab registry | Completed | m21-ui-tab-registry | #40 | 081de7e7 | Linter 23360537402; Smoke 23360545341; Quality 23361011739 (92 pass, 40% cov) | 5.0 / 5 | 2026-03-20 |
-| M22 | txt2img/img2img tab modularization | In progress | m22-tab-modularization | #41 | ? | PR merge pending | ? | ? |
+| M22 | txt2img/img2img tab modularization | Completed | m22-tab-modularization | #41 | 99b5f0c4 | Smoke 23365701378; Linter 23365701379; Quality 23365924953 (success, ?40% cov) | 5.0 / 5 | 2026-03-20 |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -188,7 +188,7 @@ Core principles:
 
 **M21:** Introduced `modules/ui_tab_registry.py` (`TabSpec`, `core_tab_specs`, merge of `ui_tabs_callback()` rows, Settings/Extensions append) and refactored `create_ui()` top-level `interfaces` assembly only. Preserved `script_callbacks.ui_tabs_callback()` then `ui_extensions.create_ui()` side-effect order, `shared.tab_names` pre-sort semantics, and existing `sorted_interfaces` / `hidden_tabs` logic. Quality **`test/quality/test_ui_tab_registry.py`** (five contract tests). PR **#40** squash-merged; Quality **23361011739** @ **081de7e7**: 92 pass, 40% coverage. Tag **`v0.0.21-m21`** on **`081de7e7`**. **First Phase V UI seam.**
 
-**M22:** *(in progress)* Extracted txt2img and img2img top-level `gr.Blocks` bodies to `modules/ui_txt2img_tab.py` and `modules/ui_img2img_tab.py` with `TabBuildResult` (`dummy_component`, `txt2img_preview_params`, `image_cfg_scale` for remaining `create_ui()` wiring). Registry public API unchanged. Import-light module entry points; lazy imports inside builders. CI: Smoke workflow also runs on feature-branch `push` (delivery fix). Quality **`test/quality/test_ui_tab_modularization.py`**. PR **#41**.
+**M22:** Extracted txt2img and img2img top-level `gr.Blocks` bodies to `modules/ui_txt2img_tab.py` and `modules/ui_img2img_tab.py` with `TabBuildResult` (`dummy_component`, `txt2img_preview_params`, `image_cfg_scale` for remaining `create_ui()` wiring). Registry public API unchanged (`build_top_level_interface_tuples` still takes six interfaces). Dummy bridge: `ui_img2img_tab.img2img_dummy_component` set from txt2img before img2img build. Import-light entry points; lazy imports inside builders. CI: `.github/workflows/run_smoke_tests.yaml` ? `push` on non-`main` branches + PR to `main`; base-branch verify gated to `pull_request` (Smoke delivery fix). Quality **`test/quality/test_ui_tab_modularization.py`**. PR **#41** squash-merged; Quality **23365924953** @ **99b5f0c4**: coverage gate satisfied. Tag **`v0.0.22-m22`** on **`99b5f0c43806c3b521cbb6d8ef561fa87ef2c75d`**.
 
 ---
 
@@ -202,7 +202,7 @@ Orchestration (M16), **sampler execution (M17)**, **decode/postprocess/save for 
 
 > **Runtime validated as fully mockable; end-to-end pipeline executes without real model. Phase IV complete.**
 
-**Next:** Phase V ? UI & extension modularization ? **in progress** (M22 txt2img/img2img tab modularization).
+**Next:** Phase V ? **M23 ? Settings & extensions modularization** (tab bodies behind registry; `ui.py` orchestration continues).
 
 ---
 
