@@ -2,8 +2,13 @@
 
 **Generated:** 2026-03-20 (UTC, agent poll)  
 **Subject:** [PR #41](https://github.com/m-cahill/serena/pull/41) — M22 txt2img/img2img tab modularization  
-**Head:** `m22-tab-modularization` @ `f8505102dccd19527a0a6d175428a4a8830b3bd4`  
+**Head:** `m22-tab-modularization` (tip includes docs commit `e66d1b18` after this report was first written)  
 **Base:** `main` @ `4aa69e8af7ad16dccc729ab07f5a722b8cc9e350`
+
+### Errata (same monitoring pass, after pushing this file)
+
+- Additional **Linter** run on push: **`23362979869`** (success) for commit `docs(M22): CI monitoring report run1 (PR #41)`.
+- `gh run list --event pull_request` still showed **no** M22 / #41 entries at poll time — **Smoke Tests** remain unconfirmed via CLI. Verify on the PR **Checks** tab and repo **Actions → Smoke Tests** filters.
 
 ---
 
