@@ -38,4 +38,4 @@
 - Merge commit: **`081de7e71ea3307a750c16ddd0f8a35d4f44efdb`** (`081de7e7`).
 - PR checks: Linter [23360537402](https://github.com/m-cahill/serena/actions/runs/23360537402); Smoke [23360545341](https://github.com/m-cahill/serena/actions/runs/23360545341).
 - Post-merge Quality: [23361011739](https://github.com/m-cahill/serena/actions/runs/23361011739) @ `081de7e7` — **92** passed, **40%** coverage (gate).
-- Tag **`v0.0.21-m21`** on **`081de7e7`**.
+- Tag **`v0.0.21-m21`** (annotated) on merge commit **`081de7e7`** (milestone code); closeout docs landed in follow-up commits on `main` (`d0a9f001` … `d4b26f44`).
