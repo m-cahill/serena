@@ -4,6 +4,7 @@ M10: Thin adapter around process_images_inner. No behavior changes.
 M11: Lifecycle surface (prepare → execute → finalize). Pass-through behavior.
 M12: Instrumentation hooks (on_prepare, on_execute, on_finalize). No-op by default.
 M15: Queue insertion seam. Optional queue wraps execute only; default synchronous.
+M19: Injects model_provider onto processing; runtime uses get_model(p) only.
 """
 
 
@@ -22,10 +23,13 @@ class ProcessingRunner:
     M15: Optional queue wraps execute only; use_queue=False by default.
     """
 
-    def __init__(self, queue=None, use_queue=False):
+    def __init__(self, queue=None, use_queue=False, model_provider=None):
         from modules.runtime.execution_queue import ExecutionQueue
+        from modules.runtime.model_provider import SharedModelProvider
+
         self.queue = queue or ExecutionQueue()
         self.use_queue = use_queue
+        self.model_provider = model_provider if model_provider is not None else SharedModelProvider()
 
     def run(self, request):
         """Execute processing pipeline via lifecycle stages."""
@@ -45,7 +49,8 @@ class ProcessingRunner:
         return self.execute(state)
 
     def prepare(self, request):
-        """Lifecycle stage 1: prepare request. Pass-through in M11."""
+        """Lifecycle stage 1: prepare request. M19: attach model_provider to processing."""
+        request.processing.model_provider = self.model_provider
         return request
 
     def execute(self, state):

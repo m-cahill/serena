@@ -2,6 +2,7 @@
 
 Extracted from modules.processing.process_images_inner. Script hooks remain in
 processing.py; this module performs the non-hook output stages only.
+M19: Model access via p.model_provider.get_model(p) only.
 """
 
 from __future__ import annotations
@@ -79,14 +80,15 @@ def decode_latents(p, samples_ddim):
 
         if opts.sd_vae_decode_method != "Full":
             p.extra_generation_params["VAE Decoder"] = opts.sd_vae_decode_method
-        x_samples_ddim = decode_latent_batch(p.sd_model, samples_ddim, target_device=devices.cpu, check_for_nans=True)
+        model = p.model_provider.get_model(p)
+        x_samples_ddim = decode_latent_batch(model, samples_ddim, target_device=devices.cpu, check_for_nans=True)
 
     x_samples_ddim = torch.stack(x_samples_ddim).float()
     x_samples_ddim = torch.clamp((x_samples_ddim + 1.0) / 2.0, min=0.0, max=1.0)
 
     del samples_ddim
 
-    if lowvram.is_enabled(shared.sd_model):
+    if lowvram.is_enabled(p.model_provider.get_model(p)):
         lowvram.send_everything_to_cpu()
 
     devices.torch_gc()

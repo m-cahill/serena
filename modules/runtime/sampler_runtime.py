@@ -4,6 +4,7 @@ M17: Extracted from StableDiffusionProcessingTxt2Img.sample, sample_hr_pass,
 and StableDiffusionProcessingImg2Img.sample. Handles sampler creation (where
 applicable) and invocation; returns latent samples. Script hooks, decode,
 and save remain in processing.py.
+M19: Model from model_provider.get_model(p) only.
 """
 
 from __future__ import annotations
@@ -18,7 +19,8 @@ def run_sampler_txt2img(p, x, conditioning, unconditional_conditioning):
     """
     from modules import sd_samplers
 
-    p.sampler = sd_samplers.create_sampler(p.sampler_name, p.sd_model)
+    model = p.model_provider.get_model(p)
+    p.sampler = sd_samplers.create_sampler(p.sampler_name, model)
     samples = p.sampler.sample(
         p,
         x,
@@ -47,7 +49,8 @@ def run_sampler_img2img(
     from modules import sd_samplers
 
     if sampler_name is not None:
-        p.sampler = sd_samplers.create_sampler(sampler_name, p.sd_model)
+        model = p.model_provider.get_model(p)
+        p.sampler = sd_samplers.create_sampler(sampler_name, model)
     samples = p.sampler.sample_img2img(
         p,
         x,

@@ -1,6 +1,13 @@
 """M15 contract tests: queue mode preserves execution and lifecycle."""
+from types import SimpleNamespace
+
 from modules.runtime.runner import ProcessingRunner, ProcessingRequest
 from modules.runtime.execution_queue import ExecutionQueue
+
+
+def _dummy_processing():
+    """M19: processing must accept model_provider injection from prepare()."""
+    return SimpleNamespace()
 
 
 class TrackingQueue(ExecutionQueue):
@@ -16,7 +23,7 @@ class TrackingQueue(ExecutionQueue):
         return fn(state)
 
 
-def test_queue_mode_uses_queue(monkeypatch, initialize):
+def test_queue_mode_uses_queue(monkeypatch):
     """When use_queue=True, queue.submit is invoked and execution completes."""
     queue = TrackingQueue()
     runner = ProcessingRunner(queue=queue, use_queue=True)
@@ -26,14 +33,14 @@ def test_queue_mode_uses_queue(monkeypatch, initialize):
 
     monkeypatch.setattr(runner, "execute", fake_execute)
 
-    request = ProcessingRequest(processing="dummy")
+    request = ProcessingRequest(_dummy_processing())
     result = runner.run(request)
 
     assert queue.submit_called is True
     assert result == "done"
 
 
-def test_queue_mode_preserves_lifecycle_order(monkeypatch, initialize):
+def test_queue_mode_preserves_lifecycle_order(monkeypatch):
     """When use_queue=True, lifecycle order prepare→execute→finalize preserved."""
     calls = []
     queue = TrackingQueue()
@@ -55,29 +62,23 @@ def test_queue_mode_preserves_lifecycle_order(monkeypatch, initialize):
             return result
 
     runner = TestRunner()
-    runner.run(ProcessingRequest(processing="dummy"))
+    runner.run(ProcessingRequest(_dummy_processing()))
 
     assert calls == ["prepare", "execute", "finalize"]
 
 
-def test_default_mode_unchanged(monkeypatch, initialize):
-    """Default use_queue=False identical to pre-M15 (no queue path)."""
-    import modules.processing
-
+def test_default_mode_unchanged(monkeypatch):
+    """Default use_queue=False synchronous path unchanged (no queue)."""
     called = {}
 
-    def fake_process_images_inner(p):
+    def fake_execute(state):
         called["ok"] = True
+        assert hasattr(state.processing, "model_provider")
         return "result"
 
-    monkeypatch.setattr(
-        modules.processing,
-        "process_images_inner",
-        fake_process_images_inner,
-    )
-
     runner = ProcessingRunner()
-    request = ProcessingRequest(processing="dummy")
+    monkeypatch.setattr(runner, "execute", fake_execute)
+    request = ProcessingRequest(_dummy_processing())
     result = runner.run(request)
 
     assert called["ok"]

@@ -7,9 +7,11 @@ Phase: Phase IV — Runtime Extraction
 
 ## Actions
 
-| Timestamp | Tool | Purpose | Files | Status |
-|-----------|------|---------|-------|--------|
-| (init) | — | Milestone folder seeded at M18 closeout | docs/milestones/M19/ | done |
+| Timestamp | Purpose | Files | Status |
+|-----------|---------|-------|--------|
+| (init) | Milestone folder seeded at M18 closeout | docs/milestones/M19/ | done |
+| 2026-03-19 (M19 start) | Implement model provider + runner injection + runtime wiring; branch m19-model-provider | modules/runtime/, modules/runtime/runner.py, test/quality/ | done |
+| 2026-03-19 | Local pytest: test_model_provider, test_processing_runner, test_runner_queue_mode | test/quality/ | 10 passed |
 
 ---
 
