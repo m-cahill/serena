@@ -3,8 +3,6 @@ from __future__ import annotations
 
 from pathlib import Path
 
-import pytest
-
 from modules import ui_tab_registry as utr
 
 _REPO_ROOT = Path(__file__).resolve().parents[2]
