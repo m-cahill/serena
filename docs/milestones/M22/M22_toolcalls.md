@@ -16,6 +16,9 @@
 | 2026-03-20 | write | Quality contract tests | test/quality/test_ui_tab_modularization.py | done |
 | 2026-03-20 | run | ruff + pytest tab tests | ruff, pytest | done |
 | 2026-03-20 | strreplace | Ledger M21/M22 + narrative | docs/serena.md | done |
+| 2026-03-20 | run/commit/push | Empty commit retrigger Smoke; workflow push trigger + `if` on base verify | git; .github/workflows/run_smoke_tests.yaml | done |
+| 2026-03-20 | run | `gh run watch` Smoke 23365701378; Checks API head 9ea22641 | gh api | done |
+| 2026-03-20 | strreplace | M22_run1 resolution section | docs/milestones/M22/M22_run1.md | done |
 
 ---
 

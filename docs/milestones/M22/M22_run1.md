@@ -99,8 +99,42 @@ GitHub API `check-suites` on `f8505102` includes additional apps (e.g. Netlify, 
 
 ---
 
-## Conclusion
+## Resolution (2026-03-20)
 
-- **Linter (ruff + eslint):** **Green** — run **`23362825071`**.
-- **Smoke:** **Not confirmed** — **blocker for “PR fully green”** until a Smoke run completes successfully or absence is explained.
-- **Next report (run 2):** Re-poll after Smoke appears; append run ID and pass/fail.
+### Empty commit (`5afe79c6`)
+
+`git commit --allow-empty -m "ci: retrigger smoke"` **did not** produce a Smoke run: Checks API on `5afe79c6` still showed **only** `ruff` + `eslint` (Linter workflow **`23365663313`**). **`pull_request` was still not scheduling Smoke** for this PR.
+
+### Workflow repair (commit `9ea22641`)
+
+Updated `.github/workflows/run_smoke_tests.yaml`:
+
+- Added **`push`** with `branches-ignore: [main]` so feature-branch pushes run Smoke (aligned with how Linter already gets signal from `push`).
+- Kept **`pull_request` → `branches: [main]`** for when that delivery works.
+- **`Verify base branch`** step runs only when `github.event_name == 'pull_request'` (`GITHUB_BASE_REF` is unset on `push`).
+
+### Smoke green (push-triggered)
+
+| Workflow | Run ID | Event | Conclusion |
+|----------|--------|-------|------------|
+| **Smoke Tests** | **23365701378** | `push` | **success** (~2m59s) |
+| **Linter** | **23365701379** | `push` | **success** |
+
+### Checks API — head `9ea226417d473bbfcdb6c0c33c41703c9d5e3b49`
+
+```http
+GET /repos/m-cahill/serena/commits/9ea226417d473bbfcdb6c0c33c41703c9d5e3b49/check-runs
+```
+
+- `total_count`: **3**
+- Names: **`smoke tests`**, **`ruff`**, **`eslint`** — all **`success`**
+
+`gh pr checks 41` matches the above (job URLs under runs **23365701378** / **23365701379**).
+
+---
+
+## Conclusion (superseded)
+
+- **PR #41** at head **`9ea22641`:** **ruff**, **eslint**, and **smoke tests** are **green** per Checks API.
+- Root cause of the earlier gap: **`pull_request` did not run Smoke** for this PR; **not** M22 UI code. Mitigation: **push trigger** on non-`main` branches (documented in workflow comments).
+- **Post-merge:** still require **Quality Tests** on `main` (≥40% coverage) before M22 closeout.
