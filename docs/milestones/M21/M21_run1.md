@@ -2,7 +2,7 @@
 
 **Branch:** `m21-ui-tab-registry`  
 **PR:** https://github.com/m-cahill/serena/pull/40  
-**Head:** `b2a11209`
+**Head (at run capture):** implementation tip `b2a11209`; branch may advance with doc-only commits — see PR for current SHA.
 
 ## Required PR checks (green)
 

@@ -151,7 +151,7 @@ Core principles:
 | M18 | Decode/save separation | Completed | m18-decode-save-separation | #36 | 84ea94e7 | Linter 23320584761 ?; Smoke 23320584759 ? (PR); Linter 23321103971 ?; Quality 23321103961 ? (79 pass, 40% cov) | 5.0 / 5 | 2026-03-19 23:08 UTC |
 | M19 | Model provider interface | Completed | m19-model-provider | #37, #38 | 8fb464e4 | Linter 23324037879 ?; Smoke 23324037884 ? (PR #37); Quality 23326003636 ? (83 pass, 40% cov) | 5.0 / 5 | 2026-03-20 02:09 UTC |
 | M20 | Runtime tests with mockable boundaries | Completed | m20-runtime-mock-tests | #39 | 9c7e693a | PR Linter 23331851493 ?; Smoke 23331851499 ?; Quality 23333740069 ? (87 pass, 40% cov) | 5.0 / 5 | 2026-03-20 07:51 UTC |
-| M21 | UI tab registry | In progress | m21-ui-tab-registry | #40 | f61f0e0d | Linter 23360537402; Smoke 23360545341 (PR green) | post-merge Quality pending | ? |
+| M21 | UI tab registry | In progress | m21-ui-tab-registry | #40 | c10973a2 | Linter 23360537402; Smoke 23360545341 (PR green) | post-merge Quality pending | ? |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
