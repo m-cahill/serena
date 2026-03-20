@@ -104,6 +104,33 @@ def _fake_create_sampler(name, model):
     return _FakeSampler()
 
 
+# Minimal opts.data in CI can omit keys decode_runtime reads from p.opts_snapshot.
+_OPTS_SNAPSHOT_DEFAULTS = {
+    "grid_only_if_multiple": True,
+    "return_grid": False,
+    "grid_save": False,
+    "grid_format": "png",
+    "grid_extended_filename": False,
+    "save_images_before_face_restoration": False,
+    "samples_format": "png",
+    "save_images_before_color_correction": False,
+    "return_mask": False,
+    "save_mask": False,
+    "return_mask_composite": False,
+    "save_mask_composite": False,
+}
+
+
+def _create_opts_snapshot_patched(opts):
+    from modules.opts_snapshot import create_opts_snapshot as _real
+
+    ns = _real(opts)
+    for key, val in _OPTS_SNAPSHOT_DEFAULTS.items():
+        if not hasattr(ns, key):
+            setattr(ns, key, val)
+    return ns
+
+
 @pytest.fixture
 def fake_pipeline_env(monkeypatch, tmp_path, initialize):
     """Stub shared.sd_model, reload, conditioning, sampler; CPU-safe."""
@@ -120,6 +147,7 @@ def fake_pipeline_env(monkeypatch, tmp_path, initialize):
     monkeypatch.setattr(devices_mod, "without_autocast", _null_autocast)
     monkeypatch.setattr(sd_models, "reload_model_weights", _noop_reload)
     monkeypatch.setattr(sd_samplers, "create_sampler", _fake_create_sampler)
+    monkeypatch.setattr(proc_mod, "create_opts_snapshot", _create_opts_snapshot_patched)
     monkeypatch.setattr(
         proc_mod.StableDiffusionProcessing,
         "setup_conds",
