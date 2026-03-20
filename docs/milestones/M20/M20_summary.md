@@ -35,4 +35,5 @@
 - Quality (M20 test fixes): [23333740069](https://github.com/m-cahill/serena/actions/runs/23333740069) @ `9c7e693a` — 87 passed, 40% coverage.  
 - Quality (docs closeout): [23334408261](https://github.com/m-cahill/serena/actions/runs/23334408261) @ `fe5b794f` — 87 passed, 40% coverage.  
 - Quality (ledger tip): [23334543220](https://github.com/m-cahill/serena/actions/runs/23334543220) @ `5f5fd8c0` — 87 passed, 40% coverage.  
+- Tag **`v0.0.20-m20`** on **`9c7e693a`** (M20 test-fix tip; matches Quality **23333740069**).  
 - PR: [#39](https://github.com/m-cahill/serena/pull/39) merged to `main`.

@@ -9,7 +9,9 @@
 **Conclusion:** SUCCESS  
 **Workflow duration:** ~3m51s (started 2026-03-20T07:47:15Z, completed ~07:51Z UTC)
 
-**Follow-up (docs-only closeout on `main`):** [23334408261](https://github.com/m-cahill/serena/actions/runs/23334408261) @ `fe5b794f` — **87 passed**, **40%** coverage. **Ledger sync:** [23334543220](https://github.com/m-cahill/serena/actions/runs/23334543220) @ `5f5fd8c0` — **87 passed**, **40%** coverage.
+**Follow-up (docs-only closeout on `main`):** [23334408261](https://github.com/m-cahill/serena/actions/runs/23334408261) @ `fe5b794f` — **87 passed**, **40%** coverage. [23334543220](https://github.com/m-cahill/serena/actions/runs/23334543220) @ `5f5fd8c0` — **87 passed**, **40%** coverage.
+
+**Release tag:** annotated **`v0.0.20-m20`** points at **`9c7e693a`** (same tree as Quality **23333740069** above).
 
 ---
 
