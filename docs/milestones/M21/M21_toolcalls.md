@@ -21,4 +21,4 @@ Implementation checkpoints for Cursor execution (structural events only).
 | 2026-03-20 | run | Watch Quality on main | gh run watch 23361011739 | done |
 | 2026-03-20 | write | M21_summary.md, M21_audit.md; ledger complete | docs/ | done |
 | 2026-03-20 | run | Commit closeout on main | d0a9f001 | done |
-| 2026-03-20 | run | Tag v0.0.21-m21, push tag | git tag 081de7e7 | pending |
+| 2026-03-20 | run | Tag v0.0.21-m21 @ 081de7e7, push tag | git push origin v0.0.21-m21 | done |
