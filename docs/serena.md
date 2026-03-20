@@ -152,6 +152,7 @@ Core principles:
 | M19 | Model provider interface | Completed | m19-model-provider | #37, #38 | 8fb464e4 | Linter 23324037879 ?; Smoke 23324037884 ? (PR #37); Quality 23326003636 ? (83 pass, 40% cov) | 5.0 / 5 | 2026-03-20 02:09 UTC |
 | M20 | Runtime tests with mockable boundaries | Completed | m20-runtime-mock-tests | #39 | 9c7e693a | PR Linter 23331851493 ?; Smoke 23331851499 ?; Quality 23333740069 ? (87 pass, 40% cov) | 5.0 / 5 | 2026-03-20 07:51 UTC |
 | M21 | UI tab registry | Completed | m21-ui-tab-registry | #40 | 081de7e7 | Linter 23360537402; Smoke 23360545341; Quality 23361011739 (92 pass, 40% cov) | 5.0 / 5 | 2026-03-20 |
+| M22 | txt2img/img2img tab modularization | In progress | m22-tab-modularization | #41 | ? | PR merge pending | ? | ? |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -186,6 +187,8 @@ Core principles:
 **M20:** Added `FakeModel` / `FakeModelProvider` in `test/fixtures/fake_model.py` and `test/quality/test_runtime_mock.py` ? Quality integration tests run `ProcessingRunner` + `process_images_inner` without a real model (test-only stubs: fake sampler / `DecodedSamples`, minimal `setup_conds`, CPU-safe autocast, opts snapshot backfill for sparse CI `opts.data`). No runtime module edits. PR #39 merged; follow-up test fixes on `main` to satisfy dataclass init, TI reload skip, and CI CPU torch. Quality **23333740069** @ **9c7e693a**: 87 pass, 40% coverage. Tag **`v0.0.20-m20`** on `9c7e693a`. **Phase IV complete.**
 
 **M21:** Introduced `modules/ui_tab_registry.py` (`TabSpec`, `core_tab_specs`, merge of `ui_tabs_callback()` rows, Settings/Extensions append) and refactored `create_ui()` top-level `interfaces` assembly only. Preserved `script_callbacks.ui_tabs_callback()` then `ui_extensions.create_ui()` side-effect order, `shared.tab_names` pre-sort semantics, and existing `sorted_interfaces` / `hidden_tabs` logic. Quality **`test/quality/test_ui_tab_registry.py`** (five contract tests). PR **#40** squash-merged; Quality **23361011739** @ **081de7e7**: 92 pass, 40% coverage. Tag **`v0.0.21-m21`** on **`081de7e7`**. **First Phase V UI seam.**
+
+**M22:** *(in progress)* Extracted txt2img and img2img top-level `gr.Blocks` bodies to `modules/ui_txt2img_tab.py` and `modules/ui_img2img_tab.py` with `TabBuildResult` (`dummy_component`, `txt2img_preview_params`, `image_cfg_scale` for remaining `create_ui()` wiring). Registry public API unchanged. Import-light module entry points; lazy imports inside builders. CI: Smoke workflow also runs on feature-branch `push` (delivery fix). Quality **`test/quality/test_ui_tab_modularization.py`**. PR **#41**.
 
 ---
 

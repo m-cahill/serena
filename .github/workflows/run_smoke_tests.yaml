@@ -3,6 +3,12 @@ name: Smoke Tests
 on:
   pull_request:
     branches: [main]
+  # Same-repo PRs have not been receiving reliable pull_request deliveries for Smoke;
+  # push on feature branches mirrors how Linter already gets signal. Excludes main to
+  # avoid duplicating post-merge coverage (Quality runs on main).
+  push:
+    branches-ignore:
+      - main
 
 jobs:
   smoke:
@@ -16,6 +22,7 @@ jobs:
             exit 1
           fi
       - name: Verify base branch
+        if: github.event_name == 'pull_request'
         run: |
           if [ "$GITHUB_BASE_REF" != "main" ]; then
             echo "::error::Serena PRs must target main, not $GITHUB_BASE_REF"
