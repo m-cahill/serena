@@ -2,9 +2,20 @@
 
 **Generated:** 2026-03-21 (UTC, `gh` poll)  
 **Subject:** [PR #42](https://github.com/m-cahill/serena/pull/42) — M23 Settings & Extensions tab modularization  
-**Head:** `m23-settings-extensions-modularization` @ `0a312c47e5b0bebc04428b710f825c15bf9da4ee`  
+**Head:** `m23-settings-extensions-modularization` @ `0a312c47e5b0bebc04428b710f825c15bf9da4ee` *(report first drafted)*  
 **Base:** `main` @ `029b5610fbf904b5625efdecbe0e75cceb1b91b9`  
 **PR state:** OPEN, **MERGEABLE**
+
+### Errata — follow-up commits (docs + toolcalls log)
+
+After this report was first written, branch tip advanced with governance-only commits; **CI re-ran and stayed green** at **`efcd2030`** (latest at poll).
+
+| Event | Linter run ID | Smoke run ID |
+|--------|---------------|----------------|
+| `push` | `23370555167` | `23370555171` |
+| `pull_request` | `23370555893` | `23370555890` |
+
+All jobs: **success** (`gh pr checks 42`, 2026-03-21 UTC).
 
 ---
 
