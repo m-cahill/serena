@@ -108,6 +108,8 @@ Core principles:
 | M24 | Extension API version/contract |
 | M25 | Deprecation/compatibility scaffolding |
 
+**Progress (Phase V):** M21?M23 **completed**; M24?M25 **not started**.
+
 ### Phase VI ? Hardening & Reproducibility (M26?M30)
 | Milestone | Title |
 |-----------|-------|
@@ -153,7 +155,7 @@ Core principles:
 | M20 | Runtime tests with mockable boundaries | Completed | m20-runtime-mock-tests | #39 | 9c7e693a | PR Linter 23331851493 ?; Smoke 23331851499 ?; Quality 23333740069 ? (87 pass, 40% cov) | 5.0 / 5 | 2026-03-20 07:51 UTC |
 | M21 | UI tab registry | Completed | m21-ui-tab-registry | #40 | 081de7e7 | Linter 23360537402; Smoke 23360545341; Quality 23361011739 (92 pass, 40% cov) | 5.0 / 5 | 2026-03-20 |
 | M22 | txt2img/img2img tab modularization | Completed | m22-tab-modularization | #41 | 99b5f0c4 | Smoke 23365701378; Linter 23365701379; Quality 23365924953 (success, ?40% cov) | 5.0 / 5 | 2026-03-20 |
-| M23 | Settings/extensions modularization | In progress | m23-settings-extensions-modularization | ? | ? | ? | ? | ? |
+| M23 | Settings/extensions modularization | Completed | m23-settings-extensions-modularization | #42 | 64c232c3 | Linter 23370424058 (PR); Smoke 23370424057 (PR); Quality 23370952185 (102 pass, ~44% cov) | 5.0 / 5 | 2026-03-21 |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -191,6 +193,8 @@ Core principles:
 
 **M22:** Extracted txt2img and img2img top-level `gr.Blocks` bodies to `modules/ui_txt2img_tab.py` and `modules/ui_img2img_tab.py` with `TabBuildResult` (`dummy_component`, `txt2img_preview_params`, `image_cfg_scale` for remaining `create_ui()` wiring). Registry public API unchanged (`build_top_level_interface_tuples` still takes six interfaces). Dummy bridge: `ui_img2img_tab.img2img_dummy_component` set from txt2img before img2img build. Import-light entry points; lazy imports inside builders. CI: `.github/workflows/run_smoke_tests.yaml` ? `push` on non-`main` branches + PR to `main`; base-branch verify gated to `pull_request` (Smoke delivery fix). Quality **`test/quality/test_ui_tab_modularization.py`**. PR **#41** squash-merged; Quality **23365924953** @ **99b5f0c4**: coverage gate satisfied. Tag **`v0.0.22-m22`** on **`99b5f0c43806c3b521cbb6d8ef561fa87ef2c75d`**.
 
+**M23:** Added `modules/ui_settings_tab.py` (`create_settings_tab(settings, loadsave, dummy_component)` delegating to `UiSettings.create_ui`) and `modules/ui_extensions_tab.py` (`create_extensions_tab()` with lazy `ui_extensions` import). `UiSettings` lifecycle (`register_settings`, `add_quicksettings`, `add_functionality`, etc.) unchanged in `create_ui()`. Registry API unchanged (nine parameters, `ui_tabs_rows` before settings/extensions). Loadsave guard `ifid not in ["extensions", "settings"]` preserved. Quality **`test/quality/test_ui_settings_extensions_modularization.py`**. PR **#42** squash-merged; Quality **23370952185** @ **64c232c3**: 102 pass, combined coverage ~44%. Tag **`v0.0.23-m23`** on **`64c232c38e0483782126cf8c88f6e287a4de28ef`**. **Top-level tab bodies modularized; `ui.py` orchestration-only for all main tabs.**
+
 ---
 
 ### Phase IV ? Runtime Extraction (Complete)
@@ -203,7 +207,7 @@ Orchestration (M16), **sampler execution (M17)**, **decode/postprocess/save for 
 
 > **Runtime validated as fully mockable; end-to-end pipeline executes without real model. Phase IV complete.**
 
-**Next:** Phase V ? **M23 ? Settings & extensions modularization** (in progress on branch `m23-settings-extensions-modularization`).
+**Next:** Phase V ? **M24 ? Extension API version & contract stabilization** (planning; not started).
 
 ---
 

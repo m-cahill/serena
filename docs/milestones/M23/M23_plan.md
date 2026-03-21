@@ -4,7 +4,7 @@
 **Phase:** Phase V — UI & Extension Stabilization  
 **Branch:** `m23-settings-extensions-modularization`  
 **Baseline:** `main` @ M22 closeout (`99b5f0c4`)  
-**Status:** In progress
+**Status:** Completed (2026-03-21)
 
 ---
 
@@ -42,4 +42,4 @@ Relocate Settings and Extensions top-level tab assembly from `modules/ui.py` int
 
 ## 5. Definition of done
 
-- PR green; post-merge Quality green; ledger + tag `v0.0.23-m23` per program closeout (after merge approval).
+- PR green; post-merge Quality green; ledger + tag `v0.0.23-m23` on squash merge commit `64c232c3` (closeout complete).
