@@ -1,6 +1,7 @@
 """Settings top-level tab UI assembly (M23).
 
-Delegates to UiSettings.create_ui; lifecycle (register_settings, add_quicksettings, etc.) stays in modules.ui.create_ui.
+Delegates to UiSettings.create_ui. Lifecycle (register_settings,
+add_quicksettings, etc.) stays in modules.ui.create_ui.
 """
 from __future__ import annotations
 
