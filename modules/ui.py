@@ -10,7 +10,7 @@ from PIL import Image, PngImagePlugin  # noqa: F401
 from modules.call_queue import wrap_gradio_gpu_call, wrap_queued_call, wrap_gradio_call, wrap_gradio_call_no_job # noqa: F401
 
 from modules import gradio_extensons, sd_schedulers  # noqa: F401
-from modules import sd_hijack, sd_models, script_callbacks, ui_extensions, deepbooru, extra_networks, ui_common, ui_postprocessing, ui_loadsave, shared_items, ui_settings, timer, sysinfo, ui_checkpoint_merger, scripts, processing, launch_utils, ui_tab_registry, ui_txt2img_tab, ui_img2img_tab
+from modules import sd_hijack, sd_models, script_callbacks, deepbooru, extra_networks, ui_common, ui_postprocessing, ui_loadsave, shared_items, ui_settings, timer, sysinfo, ui_checkpoint_merger, scripts, processing, launch_utils, ui_tab_registry, ui_txt2img_tab, ui_img2img_tab, ui_settings_tab, ui_extensions_tab
 from modules.ui_components import FormRow, ResizeHandleRow
 from modules.paths import script_path
 from modules.ui_common import create_refresh_button
@@ -519,10 +519,11 @@ def create_ui():
     loadsave = ui_loadsave.UiLoadsave(cmd_opts.ui_config_file)
     ui_settings_from_file = loadsave.ui_settings.copy()
 
-    settings.create_ui(loadsave, dummy_component)
+    settings_tab = ui_settings_tab.create_settings_tab(settings, loadsave, dummy_component)
 
     ui_tabs_rows = script_callbacks.ui_tabs_callback()
-    extensions_interface = ui_extensions.create_ui()
+    extensions_tab = ui_extensions_tab.create_extensions_tab()
+    extensions_interface = extensions_tab.interface
     interfaces = ui_tab_registry.build_top_level_interface_tuples(
         txt2img_interface,
         img2img_interface,
@@ -531,7 +532,7 @@ def create_ui():
         modelmerger_ui.blocks,
         train_interface,
         ui_tabs_rows,
-        settings.interface,
+        settings_tab.interface,
         extensions_interface,
     )
 

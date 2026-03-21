@@ -1,25 +1,45 @@
-# M23 Plan — Settings & Extensions Modularization
+# M23 Plan — Settings & Extensions modularization
 
 **Milestone:** M23  
 **Phase:** Phase V — UI & Extension Stabilization  
-**Branch:** *(TBD)*  
-**Baseline:** `main` @ post-M22 merge (`99b5f0c4` / tag `v0.0.22-m22`)  
-**Status:** Stub — not started
+**Branch:** `m23-settings-extensions-modularization`  
+**Baseline:** `main` @ M22 closeout (`99b5f0c4`)  
+**Status:** In progress
 
 ---
 
 ## 1. Intent
 
-Modularize **Settings** and **Extensions** top-level tab construction behind the existing `ui_tab_registry` seam (per Phase V map: “Settings/extensions modularization”). Preserve M21/M22 ordering, `shared.tab_names` pre-sort behavior, `sorted_interfaces` / `hidden_tabs`, and extension callback semantics unless explicitly approved.
+Relocate Settings and Extensions top-level tab assembly from `modules/ui.py` into `modules/ui_settings_tab.py` and `modules/ui_extensions_tab.py`, returning `TabBuildResult` (unchanged dataclass). **Pure relocation:** no registry API change, no `UiSettings` lifecycle change, no extension behavior change.
 
 ---
 
-## 2. Deliverables (provisional)
+## 2. Locked design (preconditions)
 
-- Plan refinement after kickoff; contract tests as appropriate; ledger row; evidence at closeout.
+- **`create_settings_tab(settings, loadsave, dummy_component)`** — calls `settings.create_ui(loadsave, dummy_component)`; returns `TabBuildResult(interface=settings.interface, label="Settings", ifid="settings")`. `UiSettings()` and `register_settings()` remain in `create_ui()` before other tabs.
+- **`create_extensions_tab()`** — lazy-import `ui_extensions`, `return TabBuildResult(ui_extensions.create_ui(), "Extensions", "extensions")`.
+- **No** `TabBuildResult` extension; **no** new dataclasses.
+- **Loadsave guard** `ifid not in ["extensions", "settings"]` stays in `modules/ui.py`.
 
 ---
 
-## 3. Definition of done
+## 3. Deliverables
 
-- PR green; post-merge Quality green; ledger updated; annotated milestone tag per program rules.
+- `modules/ui_settings_tab.py`
+- `modules/ui_extensions_tab.py`
+- `modules/ui.py` — wire builders; drop unused `ui_extensions` import if only used for tab.
+- `test/quality/test_ui_settings_extensions_modularization.py`
+- `docs/serena.md` — M23 ledger row (in progress → completed at closeout)
+
+---
+
+## 4. Verification
+
+- PR: ruff, eslint, smoke  
+- Post-merge: Quality, coverage ≥ 40%
+
+---
+
+## 5. Definition of done
+
+- PR green; post-merge Quality green; ledger + tag `v0.0.23-m23` per program closeout (after merge approval).
