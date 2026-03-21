@@ -21,4 +21,5 @@ Log format: timestamp (UTC), tool, purpose, files/target, status.
 | 2026-03-21 | gh / write | CI report PR #42; `M23_run1.md` | docs/milestones/M23/M23_run1.md | push `26fc7928` |
 | 2026-03-21 | merge | PR #42 squash to `main` | — | merge `64c232c3` |
 | 2026-03-21 | gh | Quality on `main` post-merge | workflow | **23370952185** success, ~44% cov |
-| 2026-03-21 | write | M23 closeout: ledger, summary, audit, M24 stubs | docs/ | tag `v0.0.23-m23` on `64c232c3` |
+| 2026-03-21 | write | M23 closeout: ledger, summary, audit, M24 stubs | docs/ | commit `e77e23aa` on `main` |
+| 2026-03-21 | git | Push `main`; tag + push `v0.0.23-m23` | `64c232c38e0483782126cf8c88f6e287a4de28ef` | done |
