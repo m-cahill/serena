@@ -3,12 +3,14 @@ from __future__ import annotations
 import dataclasses
 import inspect
 import os
+import warnings
 from typing import Optional, Any
 
 from fastapi import FastAPI
 from gradio import Blocks
 
 from modules import errors, timer, extensions, shared, util
+from modules.deprecation import format_extension_api_deprecation
 
 
 def report_exception(c, job):
@@ -253,6 +255,30 @@ callback_map = dict(
     callbacks_list_unets=[],
     callbacks_before_token_counter=[],
 )
+
+# === M25 Deprecation & Compatibility Scaffolding ===
+# Policy: docs/architecture/extension_api_deprecation_policy.md
+#
+# Future compatibility (commented pattern only — not wired):
+# When introducing a renamed callback category in a future v1.x release,
+# keep the old ``callback_map`` entry and its dispatch temporarily, register
+# the same listeners on the new key, and call ``deprecate_callback`` from the
+# old dispatch path so authors migrate. Hard removal waits for a new
+# ``EXTENSION_API_VERSION`` and milestone approval (see extension API contract).
+
+
+def deprecate_callback(category: str, message: str) -> None:
+    """Emit a structured deprecation warning for a callback category (infrastructure only)."""
+    if message:
+        body = f"callback '{category}' is deprecated. {message}"
+    else:
+        body = f"callback '{category}' is deprecated."
+    warnings.warn(
+        format_extension_api_deprecation(body, None),
+        DeprecationWarning,
+        stacklevel=2,
+    )
+
 
 ordered_callbacks_map = {}
 
