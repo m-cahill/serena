@@ -108,7 +108,7 @@ Core principles:
 | M24 | Extension API version/contract |
 | M25 | Deprecation/compatibility scaffolding |
 
-**Progress (Phase V):** M21?M23 **completed**; M24?M25 **not started**.
+**Progress (Phase V):** M21?M23 **completed**; **M24** in progress (`m24-extension-api-contract`); M25 **not started**.
 
 ### Phase VI ? Hardening & Reproducibility (M26?M30)
 | Milestone | Title |
@@ -156,6 +156,7 @@ Core principles:
 | M21 | UI tab registry | Completed | m21-ui-tab-registry | #40 | 081de7e7 | Linter 23360537402; Smoke 23360545341; Quality 23361011739 (92 pass, 40% cov) | 5.0 / 5 | 2026-03-20 |
 | M22 | txt2img/img2img tab modularization | Completed | m22-tab-modularization | #41 | 99b5f0c4 | Smoke 23365701378; Linter 23365701379; Quality 23365924953 (success, ?40% cov) | 5.0 / 5 | 2026-03-20 |
 | M23 | Settings/extensions modularization | Completed | m23-settings-extensions-modularization | #42 | 64c232c3 | Linter 23370424058 (PR); Smoke 23370424057 (PR); Quality 23370952185 (102 pass, ~44% cov) | 5.0 / 5 | 2026-03-21 |
+| M24 | Extension API version/contract | In progress | m24-extension-api-contract | ? | ? | ? | — | — |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -207,7 +208,7 @@ Orchestration (M16), **sampler execution (M17)**, **decode/postprocess/save for 
 
 > **Runtime validated as fully mockable; end-to-end pipeline executes without real model. Phase IV complete.**
 
-**Next:** Phase V ? **M24 ? Extension API version & contract stabilization** (planning; not started).
+**Next:** Phase V ? **M24 ? Extension API version & contract stabilization** (in progress on branch `m24-extension-api-contract`).
 
 ---
 
