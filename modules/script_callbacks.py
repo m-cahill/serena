@@ -216,6 +216,20 @@ def enumerate_callbacks():
         yield category, callbacks
 
 
+# === Extension API Contract (v1.0) ===
+# This ``callback_map`` is the authoritative registry of extension hook
+# categories. Human-facing names are category strings: dict keys with the
+# ``callbacks_`` prefix removed (e.g. ``callbacks_on_reload`` -> ``on_reload``).
+#
+# Deprecation / stability (Serena M24):
+# - Within MAJOR.MINOR ``EXTENSION_API_VERSION`` (see
+#   ``modules.extension_api``), existing categories MUST NOT be removed or
+#   renamed without a version bump.
+# - New categories may be added in a minor documentation + contract update.
+# - Callables registered per category keep their historical signatures
+#   unless a new API version explicitly documents a breaking change.
+# - This block is policy only; it does not change execution.
+
 callback_map = dict(
     callbacks_app_started=[],
     callbacks_model_loaded=[],
