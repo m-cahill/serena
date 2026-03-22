@@ -6,7 +6,7 @@
 **PR:** [#43](https://github.com/m-cahill/serena/pull/43)  
 **Baseline:** `main` @ M23 closeout (merge `64c232c3`)  
 **Intent:** Formalize the extension callback surface into an explicit, versioned contract **without altering runtime behavior**.  
-**Status:** In progress
+**Status:** Completed (2026-03-22)
 
 ---
 
@@ -161,8 +161,7 @@ Parallel **push** wave (also green): Linter **`23395342959`**, Smoke **`23395342
 - `docs/architecture/extension_api_contract_v1.md`  
 - `test/quality/test_extension_api_contract.py`  
 - Milestone docs under `docs/milestones/M24/`  
-- Ledger: **In progress** in PR → **Completed** after merge + Quality  
-- Tag **`v0.0.24-m24`** on squash merge commit  
+- Ledger **Completed**; tag **`v0.0.24-m24`** on squash merge commit **`2c8bc5b7`**  
 
 ---
 
