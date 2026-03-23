@@ -11,7 +11,7 @@ Use before opening or merging a PR. This complements CI and `docs/serena.md` inv
 
 - [ ] **`package-lock.json`** is present, committed, and consistent with `package.json` (run **`npm ci`** locally when possible).
 - [ ] CI / docs use **`npm ci`**, not ad-hoc **`npm install`** in workflows.
-- [ ] **Quality CI** installs Python deps **only** from **`requirements-ci.txt`** (no extra unpinned runtime installs in that workflow).
+- [ ] **Quality CI** installs the locked tree from **`requirements-ci.txt`** and uses the **documented pinned CLIP URL + `pip` flags** from `run_quality_tests.yaml` (do not ad‑hoc change or drop the CLIP step without a milestone).
 - [ ] If you change Python deps for CI, regenerate **`requirements-ci.txt`** from **`requirements-ci.in`** per `docs/architecture/ci_environment_contract.md`.
 
 ## CI truthfulness

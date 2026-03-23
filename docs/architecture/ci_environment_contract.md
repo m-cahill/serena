@@ -4,27 +4,28 @@ This document defines **deterministic, reproducible** CI environments for the Se
 
 ## Guarantee
 
-**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt` plus the documented `pip-audit` bootstrap** (see below). For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
+**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt`**, a **pinned OpenAI CLIP URL** installed with fixed `pip` flags (workflow step, same commit as the lockfile), and the documented **`pip-audit` bootstrap** (see below). For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
 
 ## Python — Quality workflow (`run_quality_tests.yaml`)
 
 | Item | Source of truth |
 |------|-----------------|
 | Interpreter | GitHub **`actions/setup-python`** with **`python-version: 3.10.6`** (as declared in the workflow). |
-| Application + test + transitive deps | **`requirements-ci.txt`** (locked). |
+| Application + test + transitive deps | **`requirements-ci.txt`** (locked) **plus** OpenAI **CLIP** from the **pinned GitHub archive URL** in the workflow (not in the uv lockfile; see install rules). |
 | Pip cache key inputs | `requirements-ci.txt`, `requirements*.txt`, `launch.py` (see workflow `cache-dependency-path`). |
 
 ### Install rule
 
-1. **`pip install --no-build-isolation -r requirements-ci.txt`** — single install command for the locked environment (includes test tools such as `pytest`, `wait-for-it`, and runtime stack). **`--no-build-isolation`** is required because the **`clip`** direct reference (OpenAI GitHub archive) uses a legacy `setup.py` that expects **`pkg_resources`** in the active environment; PEP 517 isolated builds fail on modern runners (symptom: `ModuleNotFoundError: No module named 'pkg_resources'`). This matches pre‑M26 Quality, which installed CLIP with **`--no-build-isolation`** explicitly. **`setuptools`** and **`wheel`** must appear **before** the **`clip @ …`** line in `requirements-ci.txt`: `uv pip compile` sorts lines alphabetically, but pip installs top‑to‑bottom; without early **`wheel`**, CLIP metadata prep fails (`invalid command 'bdist_wheel'`). After recompiling with `uv`, move the two pinned lines up (and remove duplicates) per the **Regenerating** section below.
-2. **`pip install pip-audit`** — **documented exception**: the audit tool is not part of the application runtime; it is installed only to scan the frozen environment. Failures from **`pip-audit`** are **CI failures** (no `continue-on-error`).
-3. **`bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`** — verifies `pkg==version` pins and direct references (e.g. CLIP zip), and writes **`dependency_snapshot.txt`** (`pip freeze`).
+1. **`pip install -r requirements-ci.txt`** — installs the **uv-compiled** locked tree (pytest, torch, open-clip-torch, etc.). **OpenAI CLIP is intentionally omitted** from this file: treating the GitHub archive as a normal `requirements.txt` line drives **PEP 517** metadata generation, which fails on CI (`clip.py` not found, `invalid command 'bdist_wheel'`, etc.).
+2. **`pip install --no-build-isolation --no-use-pep517 https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip`** — **documented exception**, same URL and semantics as **pre‑M26** Quality (`--no-build-isolation` + legacy **`setup.py`** via **`--no-use-pep517`**). Changing this URL or flags requires an explicit milestone/review (runtime depends on this CLIP revision).
+3. **`pip install pip-audit`** — **documented exception**: audit tool only; failures are **CI failures** (no `continue-on-error`).
+4. **`bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`** — verifies pins in the lockfile and writes **`dependency_snapshot.txt`** (`pip freeze`, includes **clip** once step 2 has run).
 
 ### Regenerating `requirements-ci.txt`
 
 Input file: **`requirements-ci.in`** (ordered direct requirements mirroring post‑M25 Quality logic).
 
-The GitHub **`open_clip`** source ZIP is **not** listed in `requirements-ci.in` because some resolver tooling cannot extract that archive (duplicate ZIP entries). Resolution matches the **effective** post‑M25 state: **`open-clip-torch==2.20.0`** from PyPI after installs.
+The **OpenAI CLIP** GitHub archive is **not** in `requirements-ci.in` / `requirements-ci.txt` (install rule 2 above). The **`open_clip`** source ZIP is also **not** listed because some resolver tooling cannot extract that archive (duplicate ZIP entries). Resolution matches the **effective** post‑M25 state: **`open-clip-torch==2.20.0`** from PyPI.
 
 Regenerate the lock on a machine with **`uv`**:
 
@@ -36,8 +37,6 @@ uv pip compile requirements-ci.in -o requirements-ci.txt \
 ```
 
 Use **`x86_64-manylinux_2_28`** (or newer manylinux tag supported by `uv`) to align with **`ubuntu-latest`** runners.
-
-**Post-compile edit (required):** `uv` emits `setuptools` / `wheel` in alphabetical position (after `sentencepiece`, near the end). Cut **`setuptools==…`** and **`wheel==…`** and paste them **immediately after** the `--extra-index-url` line (dedupe — only one line each). Add a short comment noting this is for CLIP install order. Without this, Quality fails on the CLIP direct reference.
 
 **Do not** replace **`requirements.txt`** or **`requirements_versions.txt`**; they remain for non–Quality workflows and developer flows unless a later milestone consolidates them.
 
@@ -66,8 +65,9 @@ Smoke tests and the Python linter job **continue to use** the prior multi-step i
 Quality (Linux x86_64, Python 3.10.6):
 
 1. Create a virtualenv with Python **3.10.6**.
-2. `pip install --no-build-isolation -r requirements-ci.txt`
-3. `bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`
+2. `pip install -r requirements-ci.txt`
+3. `pip install --no-build-isolation --no-use-pep517 https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip`
+4. `bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`
 
 JavaScript:
 

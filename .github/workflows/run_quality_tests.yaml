@@ -38,11 +38,15 @@ jobs:
         with:
           path: models
           key: "2023-12-30"
-      # CLIP (GitHub archive) requires --no-build-isolation: its setup.py expects
-      # pkg_resources in the ambient env; PEP 517 isolated builds break (see Quality run 23422081467).
-      # Matches pre-M26: pip install ... CLIP.zip --no-build-isolation
+      # Locked tree (no OpenAI CLIP — uv lock + PEP 517 cannot build that GitHub archive on CI).
       - name: Install locked CI dependencies
-        run: pip install --no-build-isolation -r requirements-ci.txt
+        run: pip install -r requirements-ci.txt
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+          PIP_PROGRESS_BAR: "off"
+      # Same URL and flags as pre-M26 Quality: legacy setuptools path only (not PEP 517).
+      - name: Install OpenAI CLIP (pinned URL)
+        run: pip install --no-build-isolation --no-use-pep517 https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
