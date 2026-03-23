@@ -267,7 +267,7 @@ callback_map = dict(
 # ``EXTENSION_API_VERSION`` and milestone approval (see extension API contract).
 
 
-def deprecate_callback(category: str, message: str) -> None:
+def deprecate_callback(category: str, message: str = "") -> None:
     """Emit a structured deprecation warning for a callback category (infrastructure only)."""
     if message:
         body = f"callback '{category}' is deprecated. {message}"

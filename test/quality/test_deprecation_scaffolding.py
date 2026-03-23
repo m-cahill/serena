@@ -45,7 +45,7 @@ def test_deprecate_callback_emits_with_category_and_prefix():
 
 def test_deprecate_callback_empty_message():
     with pytest.warns(DeprecationWarning) as record:
-        script_callbacks.deprecate_callback("model_loaded", "")
+        script_callbacks.deprecate_callback("model_loaded")
     msg = str(record[0].message)
     assert "Serena extension API:" in msg
     assert "callback 'model_loaded' is deprecated." in msg
