@@ -44,5 +44,17 @@ jobs:
         uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020
         with:
           node-version: 18
-      - run: npm i --ci
-      - run: npm run lint
+      - name: Require npm lockfile
+        run: test -f package-lock.json
+      - name: Install JS dependencies (locked)
+        run: npm ci
+      - name: Run ESLint
+        run: npm run lint
+      - name: npm dependency snapshot
+        run: npm ls --all --json > npm_ls.json
+      - name: Upload npm dependency snapshot
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: npm-ls-json
+          path: npm_ls.json
