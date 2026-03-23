@@ -17,7 +17,7 @@ This document defines **deterministic, reproducible** CI environments for the Se
 ### Install rule
 
 1. **`pip install -r requirements-ci.txt`** — installs the **uv-compiled** locked tree (pytest, torch, open-clip-torch, etc.). **OpenAI CLIP is intentionally omitted** from this file: treating the GitHub archive as a normal `requirements.txt` line drives **PEP 517** metadata generation, which fails on CI (`clip.py` not found, `invalid command 'bdist_wheel'`, etc.).
-2. **`pip install --no-build-isolation --no-use-pep517 https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip`** — **documented exception**, same URL and semantics as **pre‑M26** Quality (`--no-build-isolation` + legacy **`setup.py`** via **`--no-use-pep517`**). Changing this URL or flags requires an explicit milestone/review (runtime depends on this CLIP revision).
+2. **OpenAI CLIP (pinned commit `d50d76daa670286dd6cacf3bcd80b5e4823fc8e1`)** — **documented exception**: download the GitHub **`.zip`** for that commit, unzip to `/tmp`, then **`pip install --no-build-isolation /tmp/CLIP-<sha>`** (directory install). This matches **pre‑M26** **`pip install …zip --no-build-isolation`** without relying on **`--no-use-pep517`** (not available on the runner’s pip). Changing the SHA or install mechanics requires an explicit milestone/review.
 3. **`pip install pip-audit`** — **documented exception**: audit tool only; failures are **CI failures** (no `continue-on-error`).
 4. **`bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`** — verifies pins in the lockfile and writes **`dependency_snapshot.txt`** (`pip freeze`, includes **clip** once step 2 has run).
 
@@ -66,7 +66,7 @@ Quality (Linux x86_64, Python 3.10.6):
 
 1. Create a virtualenv with Python **3.10.6**.
 2. `pip install -r requirements-ci.txt`
-3. `pip install --no-build-isolation --no-use-pep517 https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip`
+3. Download CLIP `d50d76daa670286dd6cacf3bcd80b5e4823fc8e1` archive, unzip, then `pip install --no-build-isolation /tmp/CLIP-d50d76daa670286dd6cacf3bcd80b5e4823fc8e1` (see workflow for exact commands).
 4. `bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`
 
 JavaScript:

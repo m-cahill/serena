@@ -44,9 +44,14 @@ jobs:
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
-      # Same URL and flags as pre-M26 Quality: legacy setuptools path only (not PEP 517).
-      - name: Install OpenAI CLIP (pinned URL)
-        run: pip install --no-build-isolation --no-use-pep517 https://github.com/openai/CLIP/archive/d50d76daa670286dd6cacf3bcd80b5e4823fc8e1.zip
+      # Pinned commit matches pre-M26. GHA pip has no --no-use-pep517; install from extracted
+      # tree so setuptools uses setup.py (same as legacy `pip install ...zip --no-build-isolation`).
+      - name: Install OpenAI CLIP (pinned archive)
+        run: |
+          CLIP_SHA=d50d76daa670286dd6cacf3bcd80b5e4823fc8e1
+          curl -fsSL -o /tmp/clip.zip "https://github.com/openai/CLIP/archive/${CLIP_SHA}.zip"
+          unzip -qo /tmp/clip.zip -d /tmp
+          pip install --no-build-isolation "/tmp/CLIP-${CLIP_SHA}"
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
