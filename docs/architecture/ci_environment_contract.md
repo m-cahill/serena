@@ -16,7 +16,7 @@ This document defines **deterministic, reproducible** CI environments for the Se
 
 ### Install rule
 
-1. **`pip install -r requirements-ci.txt`** — single step for the locked environment (includes test tools such as `pytest`, `wait-for-it`, and runtime stack).
+1. **`pip install --no-build-isolation -r requirements-ci.txt`** — single install command for the locked environment (includes test tools such as `pytest`, `wait-for-it`, and runtime stack). **`--no-build-isolation`** is required because the **`clip`** direct reference (OpenAI GitHub archive) uses a legacy `setup.py` that expects **`pkg_resources`** in the active environment; PEP 517 isolated builds fail on modern runners (symptom: `ModuleNotFoundError: No module named 'pkg_resources'`). This matches pre‑M26 Quality, which installed CLIP with **`--no-build-isolation`** explicitly.
 2. **`pip install pip-audit`** — **documented exception**: the audit tool is not part of the application runtime; it is installed only to scan the frozen environment. Failures from **`pip-audit`** are **CI failures** (no `continue-on-error`).
 3. **`bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`** — verifies `pkg==version` pins and direct references (e.g. CLIP zip), and writes **`dependency_snapshot.txt`** (`pip freeze`).
 
@@ -64,7 +64,7 @@ Smoke tests and the Python linter job **continue to use** the prior multi-step i
 Quality (Linux x86_64, Python 3.10.6):
 
 1. Create a virtualenv with Python **3.10.6**.
-2. `pip install -r requirements-ci.txt`
+2. `pip install --no-build-isolation -r requirements-ci.txt`
 3. `bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`
 
 JavaScript:

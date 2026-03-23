@@ -38,8 +38,11 @@ jobs:
         with:
           path: models
           key: "2023-12-30"
+      # CLIP (GitHub archive) requires --no-build-isolation: its setup.py expects
+      # pkg_resources in the ambient env; PEP 517 isolated builds break (see Quality run 23422081467).
+      # Matches pre-M26: pip install ... CLIP.zip --no-build-isolation
       - name: Install locked CI dependencies
-        run: pip install -r requirements-ci.txt
+        run: pip install --no-build-isolation -r requirements-ci.txt
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
