@@ -3,7 +3,7 @@
 **Milestone:** M25  
 **Phase:** Phase V — UI & Extension Stabilization  
 **Branch:** `m25-deprecation-compat-scaffolding`  
-**Status:** In progress
+**Status:** Completed (2026-03-23)
 
 ---
 
@@ -30,7 +30,7 @@ Add **non-breaking** deprecation and compatibility scaffolding: structured `Depr
 
 - Prefix: `Serena extension API: `; optional ` (since <version>)` when `version` is set.
 - `warnings.warn(..., DeprecationWarning, stacklevel=…)` — `warn_deprecated` uses `stacklevel=2`; decorator uses `stacklevel=3` so the caller of the wrapped callable is attributed.
-- `deprecate_callback(category, message)` message format per M25 lock; `stacklevel=2` (defined in `script_callbacks`).
+- `deprecate_callback(category, message="")` message format per M25 lock; `stacklevel=2` (defined in `script_callbacks`).
 
 ---
 

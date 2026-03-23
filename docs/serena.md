@@ -108,7 +108,7 @@ Core principles:
 | M24 | Extension API version/contract |
 | M25 | Deprecation/compatibility scaffolding |
 
-**Progress (Phase V):** M21?M24 **completed**; M25 **in progress** (deprecation scaffolding).
+**Progress (Phase V):** **Phase V complete ? M21?M25 finished.**
 
 ### Phase VI ? Hardening & Reproducibility (M26?M30)
 | Milestone | Title |
@@ -157,7 +157,7 @@ Core principles:
 | M22 | txt2img/img2img tab modularization | Completed | m22-tab-modularization | #41 | 99b5f0c4 | Smoke 23365701378; Linter 23365701379; Quality 23365924953 (success, ?40% cov) | 5.0 / 5 | 2026-03-20 |
 | M23 | Settings/extensions modularization | Completed | m23-settings-extensions-modularization | #42 | 64c232c3 | Linter 23370424058 (PR); Smoke 23370424057 (PR); Quality 23370952185 (102 pass, ~44% cov) | 5.0 / 5 | 2026-03-21 |
 | M24 | Extension API version/contract | Completed | m24-extension-api-contract | #43 | 2c8bc5b7 | Linter 23395414702 (PR); Smoke 23395414700 (PR); Quality 23395515966 (105 pass, 40% cov) | 5.0 / 5 | 2026-03-22 |
-| M25 | Deprecation/compatibility scaffolding | In progress | m25-deprecation-compat-scaffolding | ? | ? | (pending) | ? | ? |
+| M25 | Deprecation/compatibility scaffolding | Completed | m25-deprecation-compat-scaffolding | #44 | 46891797 | Linter 23417606838 (PR); Smoke 23417606843 (PR); Quality 23421440167 (112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -199,6 +199,18 @@ Core principles:
 
 **M24:** Introduced `modules/extension_api.py` (`EXTENSION_API_VERSION`, `SUPPORTED_CALLBACKS` category strings), **`docs/architecture/extension_api_contract_v1.md`**, policy block above `callback_map` in `script_callbacks.py`, and **`test/quality/test_extension_api_contract.py`** (exact set equality vs `callback_map` via `removeprefix("callbacks_")`). No invocation or loading changes. PR **#43** squash-merged; Quality **23395515966** @ **2c8bc5b7**: 105 pass, coverage gate satisfied (40% combined report). Tag **`v0.0.24-m24`** on **`2c8bc5b7b5f504597a41a00604f3e7119c22aba6`**. **Extension callback surface versioned and contract-tested.**
 
+**M25:** Added **`modules/deprecation.py`** (`warn_deprecated`, `@deprecated`, `format_extension_api_deprecation`), **`script_callbacks.deprecate_callback`**, separate M25 comment block below **`callback_map`**, **`docs/architecture/extension_api_deprecation_policy.md`**, and **`test/quality/test_deprecation_scaffolding.py`**. No change to **`callback_map`** contents, invocation order, **`ordered_callbacks`**, **`SUPPORTED_CALLBACKS`**, or runtime modules. PR **#44** squash-merged; Quality **23421440167** @ **46891797**: 112 pass, 40% combined coverage (gate). Tag **`v0.0.25-m25`** on **`468917974f9379ec1c514f995ab703c821078e45`**. **Deprecation channel and compatibility policy in place.**
+
+---
+
+### Phase V ? UI & Extension Stabilization (Complete)
+
+Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, extension API versioned, deprecation channel established.
+
+> **M21?M23:** Tab registry and modularized txt2img, img2img, settings, extensions. **M24:** Extension API v1 contract. **M25:** Deprecation scaffolding without registry drift.
+
+**Next:** Phase VI ? **M26 ? Locked manifests / npm ci / CI environment stabilization** (planning).
+
 ---
 
 ### Phase IV ? Runtime Extraction (Complete)
@@ -210,8 +222,6 @@ Orchestration (M16), **sampler execution (M17)**, **decode/postprocess/save for 
 > **Runtime decoupled from global model state via ModelProvider** (M19); **end-to-end inner pipeline executable without a real model in tests** (M20).
 
 > **Runtime validated as fully mockable; end-to-end pipeline executes without real model. Phase IV complete.**
-
-**Next:** Phase V ? **M25 ? Deprecation & compatibility scaffolding** (in progress on branch `m25-deprecation-compat-scaffolding`).
 
 ---
 
