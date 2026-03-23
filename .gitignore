@@ -7,6 +7,7 @@ __pycache__
 /SwinIR/*
 /repositories
 /venv
+/.venv-ci-resolve
 /tmp
 /model.ckpt
 /models/**/*
@@ -36,7 +37,6 @@ notification.mp3
 /cache.json*
 /config_states/
 /node_modules
-/package-lock.json
 /.coverage*
 /test/test_outputs
 /cache

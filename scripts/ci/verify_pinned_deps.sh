@@ -1,27 +1,54 @@
 #!/usr/bin/env bash
-# M04: Verify that every pinned package in requirements_versions.txt matches installed version.
-# Skips unversioned packages (e.g. torch). Fails CI on mismatch.
+# Verify that pinned packages in a lock/manifest match the active environment.
+# - For `pkg==version` lines: exact match via `pip show`.
+# - For PEP 508 direct refs (`name @ url`): require package import name installed.
+# - Emits pip freeze to dependency_snapshot.txt (or path from 2nd arg).
+# M04: originally requirements_versions.txt only.
+# M26: requirements-ci.txt + snapshot artifact for reproducibility evidence.
 set -euo pipefail
 
-REQUIREMENTS="${1:-requirements_versions.txt}"
+REQUIREMENTS="${1:-requirements-ci.txt}"
+SNAPSHOT_OUT="${2:-dependency_snapshot.txt}"
 
 if [[ ! -f "$REQUIREMENTS" ]]; then
   echo "::error::Requirements file not found: $REQUIREMENTS"
   exit 1
 fi
 
+pip freeze >"$SNAPSHOT_OUT"
+echo "Wrote dependency snapshot to $SNAPSHOT_OUT"
+
 errors=0
-while IFS= read -r line || [[ -n "$line" ]]; do
-  # Skip blank lines and comments
-  [[ -z "${line// }" ]] && continue
+while IFS= read -r raw || [[ -n "$raw" ]]; do
+  line="${raw#"${raw%%[![:space:]]*}"}"
+  line="${line%"${line##*[![:space:]]}"}"
+
+  [[ -z "$line" ]] && continue
   [[ "$line" =~ ^[[:space:]]*# ]] && continue
-  # Skip lines without == (unversioned)
+  [[ "$line" =~ ^--index-url ]] && continue
+  [[ "$line" =~ ^--extra-index-url ]] && continue
+  [[ "$line" =~ ^--find-links ]] && continue
+  [[ "$line" =~ ^--no-index ]] && continue
+
+  if [[ "$line" =~ ^https?:// ]]; then
+    continue
+  fi
+
+  if [[ "$line" =~ ^([a-zA-Z0-9][a-zA-Z0-9_.-]*)[[:space:]]+@ ]]; then
+    pkg="${BASH_REMATCH[1]}"
+    pkg="${pkg//[[:space:]]/}"
+    if ! pip show "$pkg" >/dev/null 2>&1; then
+      echo "::error::Package not installed (direct reference): $pkg"
+      ((errors++)) || true
+    fi
+    continue
+  fi
+
   [[ "$line" != *"=="* ]] && continue
 
-  # Extract package and version (strip inline comments)
   pkg="${line%%==*}"
   rest="${line#*==}"
-  expected="${rest%%[# ]*}"
+  expected="${rest%%[#]*}"
   pkg="${pkg//[[:space:]]/}"
   expected="${expected//[[:space:]]/}"
 
@@ -38,7 +65,7 @@ while IFS= read -r line || [[ -n "$line" ]]; do
     echo "::error::Package not installed: $pkg (expected $expected)"
     ((errors++)) || true
   fi
-done < "$REQUIREMENTS"
+done <"$REQUIREMENTS"
 
 if [[ $errors -gt 0 ]]; then
   echo "::error::$errors dependency mismatch(es) found"

@@ -1,13 +1,10 @@
-# M26 Tool call log — Locked manifests & CI environment stabilization
+# M26 — Tool calls log
 
-**Milestone:** M26  
-**Branch:** TBD  
-**Started:** (pending)
+**Branch:** `m26-locked-manifests-ci-env`  
+**Started:** 2026-03-22
 
-Log format: timestamp (UTC), tool, purpose, files/target, status.
+| Timestamp (UTC) | Tool / action | Purpose | Targets |
+|-----------------|---------------|---------|---------|
+| 2026-03-22 | Write | Seed milestone tracking | `M26_toolcalls.md`, `M26_plan.md` |
 
----
-
-| Timestamp (UTC) | Tool | Purpose | Files / target | Status |
-|-----------------|------|---------|----------------|--------|
-| 2026-03-23 | (init) | Stub folder at M25 closeout | this file | done |
+*(Append entries before significant tool invocations per `.cursorrules`.)*
