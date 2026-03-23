@@ -18,3 +18,4 @@ Log format: timestamp (UTC), tool, purpose, files/target, status.
 | 2026-03-22 | write | Quality tests | `test/quality/test_deprecation_scaffolding.py` | done |
 | 2026-03-22 | apply_patch | Ledger M25 in progress | `docs/serena.md` | done |
 | 2026-03-22 | pytest | Run new quality tests | `test/quality/test_deprecation_scaffolding.py` | done |
+| 2026-03-23 | gh / write | CI monitor PR #44; write run report | `docs/milestones/M25/M25_run1.md` | done |
