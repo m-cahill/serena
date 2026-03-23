@@ -1,7 +1,7 @@
 # M26 — CI run 1
 
 **Branch:** `m26-locked-manifests-ci-env`  
-**PR:** _(fill after open)_  
+**PR:** https://github.com/m-cahill/serena/pull/45  
 **Date:** 2026-03-22
 
 ## Workflows
