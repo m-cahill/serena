@@ -14,9 +14,8 @@ setuptools==70.0.0
 wheel==0.45.1
 torch==2.1.2
 torchvision==0.16.2
-# OpenAI CLIP: not in this lockfile — PEP 517 metadata for the GitHub archive fails on CI
-# (`clip.py` / `bdist_wheel`). Quality workflow installs the same URL with
-# `pip install --no-build-isolation --no-use-pep517` after the locked tree (matches legacy setup.py path).
+# OpenAI CLIP: not in this lockfile — PEP 517 metadata for the GitHub archive fails on CI.
+# Quality workflow downloads the pinned zip, unzips, and `pip install --no-build-isolation` the tree.
 # open_clip GitHub zip omitted: duplicate ZIP entries break uv; PyPI pin below matches post-install state.
 GitPython==3.1.32
 Pillow==9.5.0

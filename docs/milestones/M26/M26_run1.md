@@ -1,7 +1,7 @@
 # M26 — CI run 1
 
 **PRs:** [#45](https://github.com/m-cahill/serena/pull/45) (M26), [#46](https://github.com/m-cahill/serena/pull/46) (`--no-build-isolation`), [#47](https://github.com/m-cahill/serena/pull/47) (setuptools/wheel order)  
-**Follow-up (CLIP / PEP 517):** PR _TBD_ — remove CLIP from uv lockfile; **`pip install --no-use-pep517`** for pinned CLIP URL after locked tree  
+**Follow-up (CLIP / PEP 517):** [#48](https://github.com/m-cahill/serena/pull/48) (CLIP out of lockfile); [#49](https://github.com/m-cahill/serena/pull/49) _TBD_ — directory `pip install` (no `--no-use-pep517`)  
 **Date:** 2026-03-22–23 UTC
 
 ## Workflows
@@ -13,7 +13,8 @@
 | Quality **main** attempt 1 | [23422081467](https://github.com/m-cahill/serena/actions/runs/23422081467) | **fail** | CLIP PEP 517 isolation → `pkg_resources` |
 | Quality **main** attempt 2 (#46) | [23422117923](https://github.com/m-cahill/serena/actions/runs/23422117923) | **fail** | CLIP still via `pyproject.toml` path → `bdist_wheel` / `clip.py` |
 | Quality **main** attempt 3 (#47) | [23422156078](https://github.com/m-cahill/serena/actions/runs/23422156078) | **fail** | Same as attempt 2 (ordering alone insufficient) |
-| Quality **main** attempt 4 | _after PR merge_ | _TBD_ | **Fix:** CLIP **not** in `requirements-ci.txt`; workflow `pip install --no-use-pep517` + URL |
+| Quality **main** attempt 4 (#48) | [23422287711](https://github.com/m-cahill/serena/actions/runs/23422287711) | **fail** | Runner pip: **`no such option: --no-use-pep517`** |
+| Quality **main** attempt 5 | _after #49_ | _TBD_ | **Fix:** `curl` + `unzip` + `pip install --no-build-isolation /tmp/CLIP-<sha>` |
 
 ## Root cause (install)
 
