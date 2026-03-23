@@ -6,6 +6,8 @@
 **Base:** `main` @ `e46b51ac1a288a33a9f83f2b6f97c7e6a95c3a2c`  
 **PR state:** OPEN, **MERGEABLE** (`mergeStateStatus`: CLEAN)
 
+**CI snapshot SHA:** The workflow run IDs below correspond to PR head **`821c61e0`** (last code change). Commit **`8856a25b`** (this report + toolcalls log only) was pushed afterward and will schedule another CI wave; expect equivalent gates.
+
 ---
 
 ## Executive summary
