@@ -16,7 +16,7 @@ This document defines **deterministic, reproducible** CI environments for the Se
 
 ### Install rule
 
-1. **`pip install --no-build-isolation -r requirements-ci.txt`** — single install command for the locked environment (includes test tools such as `pytest`, `wait-for-it`, and runtime stack). **`--no-build-isolation`** is required because the **`clip`** direct reference (OpenAI GitHub archive) uses a legacy `setup.py` that expects **`pkg_resources`** in the active environment; PEP 517 isolated builds fail on modern runners (symptom: `ModuleNotFoundError: No module named 'pkg_resources'`). This matches pre‑M26 Quality, which installed CLIP with **`--no-build-isolation`** explicitly.
+1. **`pip install --no-build-isolation -r requirements-ci.txt`** — single install command for the locked environment (includes test tools such as `pytest`, `wait-for-it`, and runtime stack). **`--no-build-isolation`** is required because the **`clip`** direct reference (OpenAI GitHub archive) uses a legacy `setup.py` that expects **`pkg_resources`** in the active environment; PEP 517 isolated builds fail on modern runners (symptom: `ModuleNotFoundError: No module named 'pkg_resources'`). This matches pre‑M26 Quality, which installed CLIP with **`--no-build-isolation`** explicitly. **`setuptools`** and **`wheel`** must appear **before** the **`clip @ …`** line in `requirements-ci.txt`: `uv pip compile` sorts lines alphabetically, but pip installs top‑to‑bottom; without early **`wheel`**, CLIP metadata prep fails (`invalid command 'bdist_wheel'`). After recompiling with `uv`, move the two pinned lines up (and remove duplicates) per the **Regenerating** section below.
 2. **`pip install pip-audit`** — **documented exception**: the audit tool is not part of the application runtime; it is installed only to scan the frozen environment. Failures from **`pip-audit`** are **CI failures** (no `continue-on-error`).
 3. **`bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`** — verifies `pkg==version` pins and direct references (e.g. CLIP zip), and writes **`dependency_snapshot.txt`** (`pip freeze`).
 
@@ -36,6 +36,8 @@ uv pip compile requirements-ci.in -o requirements-ci.txt \
 ```
 
 Use **`x86_64-manylinux_2_28`** (or newer manylinux tag supported by `uv`) to align with **`ubuntu-latest`** runners.
+
+**Post-compile edit (required):** `uv` emits `setuptools` / `wheel` in alphabetical position (after `sentencepiece`, near the end). Cut **`setuptools==…`** and **`wheel==…`** and paste them **immediately after** the `--extra-index-url` line (dedupe — only one line each). Add a short comment noting this is for CLIP install order. Without this, Quality fails on the CLIP direct reference.
 
 **Do not** replace **`requirements.txt`** or **`requirements_versions.txt`**; they remain for non–Quality workflows and developer flows unless a later milestone consolidates them.
 
