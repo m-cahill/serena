@@ -42,4 +42,4 @@
 - Binding Quality: [23467772232](https://github.com/m-cahill/serena/actions/runs/23467772232) — **success**, **112 passed**, **40%** combined coverage (gate).
 - Linter: [23421937195](https://github.com/m-cahill/serena/actions/runs/23421937195); Smoke: [23421937182](https://github.com/m-cahill/serena/actions/runs/23421937182).
 - Implementation merge reference: **`676924349c3a296e8ef07ef09a588b472498e7fd`** (`67692434`).
-- Tag **`v0.0.26-m26`** (annotated) on **`25ebe51c3711cc379d1f50962dd78e9f20272bf7`** (`25ebe51c`). Ledger **Commit** column **`67692434`** = Quality binding merge **`676924349c3a296e8ef07ef09a588b472498e7fd`**.
+- Tag **`v0.0.26-m26`** (annotated) peels **`25ebe51c3711cc379d1f50962dd78e9f20272bf7`** (`25ebe51c`, closeout merge). Ledger **Commit** column **`67692434`** = Quality binding merge **`676924349c3a296e8ef07ef09a588b472498e7fd`**.
