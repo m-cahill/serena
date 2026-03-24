@@ -1,6 +1,6 @@
 # M26 — CI run 1
 
-**PRs:** [#45](https://github.com/m-cahill/serena/pull/45)–[#49](https://github.com/m-cahill/serena/pull/49), [#50](https://github.com/m-cahill/serena/pull/50), _pip-audit policy PR — add after merge_  
+**PRs:** [#45](https://github.com/m-cahill/serena/pull/45)–[#51](https://github.com/m-cahill/serena/pull/51), [#52](https://github.com/m-cahill/serena/pull/52) _verify order_  
 **Date:** 2026-03-22–23 UTC
 
 ## Governance — `pip-audit` (post–attempt 5)
@@ -20,7 +20,8 @@ Documented in **`docs/architecture/ci_environment_contract.md`** (section **pip-
 | Quality **main** attempt 3 (#47) | [23422156078](https://github.com/m-cahill/serena/actions/runs/23422156078) | **fail** | Same as attempt 2 |
 | Quality **main** attempt 4 (#48) | [23422287711](https://github.com/m-cahill/serena/actions/runs/23422287711) | **fail** | **`no such option: --no-use-pep517`** |
 | Quality **main** attempt 5 (#49) | [23422412262](https://github.com/m-cahill/serena/actions/runs/23422412262) | **fail** | Install + CLIP OK; **strict `pip-audit` exit 1** (many CVEs on frozen tree). |
-| Quality **main** attempt 6 | _fill after merge_ | _TBD_ | **Informational `pip-audit`** + **`pip_audit_report.txt`** artifact; expect full Quality green. |
+| Quality **main** attempt 6 (#51) | [23467606465](https://github.com/m-cahill/serena/actions/runs/23467606465) | **fail** | Informational **`pip-audit`** OK; **`verify_pinned_deps`**: `requests` expected **2.28.1**, got **2.32.5** — **`pip install pip-audit`** upgraded **`requests`** before verify ran. |
+| Quality **main** attempt 7 (#52) | _after merge_ | _TBD_ | **Fix:** run **verify lockfile** before **`pip-audit`** (workflow + contract). |
 
 ## Root cause (install) — resolved (#48 / #49)
 
@@ -28,4 +29,4 @@ OpenAI CLIP: use **workflow** `curl` + `unzip` + **`pip install --no-build-isola
 
 ## Final verdict
 
-**M26 closeout** pending **attempt 6** Quality green (verify, tests, coverage ≥ 40%, artifacts including **`pip-audit-report`**).
+**M26 closeout** pending **attempt 7** Quality green (verify, tests, coverage ≥ 40%, artifacts including **`pip-audit-report`**).
