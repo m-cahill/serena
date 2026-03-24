@@ -21,5 +21,8 @@
 | 2026-03-24 | gh | Watch Quality on `main` | run **23473843412** — fail `fail-under=42` (40% TOTAL) |
 | 2026-03-24 | Write | Add coverage tests + `M27_run1.md` | `test/quality/*_m27.py`, `test_api_extended.py`, `M27_run1.md` |
 | 2026-03-24 | gh | Open PR #55 (coverage follow-up) | https://github.com/m-cahill/serena/pull/55 |
+| 2026-03-24 | StrReplace | M27: pytest-only coverage — no server `coverage run`, no `combine` | `run_quality_tests.yaml` |
+| 2026-03-24 | StrReplace | Coverage policy (M27) in CI contract | `ci_environment_contract.md` |
+| 2026-03-24 | StrReplace | Governance decision + final verdict (measurement fix) | `M27_run1.md` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

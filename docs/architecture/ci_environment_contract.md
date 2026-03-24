@@ -58,6 +58,12 @@ Rationale: clearing all current advisories requires **upgrading major runtime pi
 
 Scope is intentionally limited to **`modules/`** (not `test/`, `scripts/`, or repository root files) so the signal matches the architectural surface under refactor.
 
+## Coverage policy (M27)
+
+- The **Quality coverage gate** is based on **pytest execution only** (`pytest` with **`--cov`** / pytest-cov). A single **`.coverage`** file from that run is the source for **`coverage report`**, **`coverage xml`**, and **`coverage html`**.
+- **Server startup is not included** in coverage measurement: the test server is started with plain **`python launch.py …`** (no **`coverage run`** on **`launch.py`**, no **`.coverage.server`**, and **no `coverage combine`** step).
+- **Rationale:** import and startup paths exercised when the server boots **artificially inflate** the covered share of the denominator relative to what tests actually exercise; **pytest-only** coverage better reflects **test value and progress** toward the documented **`--fail-under=42`** gate.
+
 ## Python — Smoke / Linter (unchanged in M26)
 
 Smoke tests and the Python linter job **continue to use** the prior multi-step install (`requirements-test.txt`, `requirements_versions.txt`, explicit torch/CLIP/open_clip steps, etc.). A later milestone may align them with `requirements-ci.txt`.
