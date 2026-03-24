@@ -4,7 +4,7 @@ This document defines **deterministic, reproducible** CI environments for the Se
 
 ## Guarantee
 
-**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt`**, a **pinned OpenAI CLIP URL** installed with fixed `pip` flags (workflow step, same commit as the lockfile), and **`pip-audit`** run for **visibility** (artifact + warning; **non-blocking** through M27 per **pip-audit policy** below). **Radon** runs on **`modules/`** for **cyclomatic complexity visibility** (artifact + optional warning for grade **D/E/F**; **non-blocking** through M27 per **complexity policy** below). For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
+**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt`**, a **pinned OpenAI CLIP URL** installed with fixed `pip` flags (workflow step, same commit as the lockfile), and **`pip-audit`** run as a **blocking merge gate** (artifact + **job fails** on unresolved advisories per **pip-audit policy** below; **M28a+**). **Radon** runs on **`modules/`** for **cyclomatic complexity visibility** (artifact + optional warning for grade **D/E/F**; **non-blocking** through M27 per **complexity policy** below). For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
 
 ## Python — Quality workflow (`run_quality_tests.yaml`)
 
@@ -19,7 +19,7 @@ This document defines **deterministic, reproducible** CI environments for the Se
 1. **`pip install -r requirements-ci.txt`** — installs the **uv-compiled** locked tree (pytest, torch, open-clip-torch, etc.). **OpenAI CLIP is intentionally omitted** from this file: treating the GitHub archive as a normal `requirements.txt` line drives **PEP 517** metadata generation, which fails on CI (`clip.py` not found, `invalid command 'bdist_wheel'`, etc.).
 2. **OpenAI CLIP (pinned commit `d50d76daa670286dd6cacf3bcd80b5e4823fc8e1`)** — **documented exception**: download the GitHub **`.zip`** for that commit, unzip to `/tmp`, then **`pip install --no-build-isolation /tmp/CLIP-<sha>`** (directory install). This matches **pre‑M26** **`pip install …zip --no-build-isolation`** without relying on **`--no-use-pep517`** (not available on the runner’s pip). Changing the SHA or install mechanics requires an explicit milestone/review.
 3. **`bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt`** — verifies pins in the lockfile and writes **`dependency_snapshot.txt`** (`pip freeze`, includes **clip** once step 2 has run). **Runs before `pip-audit`:** installing **`pip-audit`** can upgrade overlapping dependencies (e.g. **`requests`**) and would otherwise make the lockfile check falsely fail.
-4. **`pip-audit`** — runs after verify; output is captured to **`pip_audit_report.txt`** and uploaded as a CI artifact. **Failures are non-blocking (informational)** through **M27**; **strict enforcement** (exit non-zero fails the job) is planned for **M28 — Security & Supply Chain Hardening** (see **pip-audit policy** below).
+4. **`pip-audit`** — runs after verify; output is captured to **`pip_audit_report.txt`** and uploaded as a CI artifact. **M28a+:** non-zero exit **fails the Quality job** (blocking). Nightly remains informational (`pip-audit || true`). See **pip-audit policy** below.
 
 ### Regenerating `requirements-ci.txt`
 
@@ -44,10 +44,11 @@ Use **`x86_64-manylinux_2_28`** (or newer manylinux tag supported by `uv`) to al
 
 | Phase | Behavior |
 |-------|----------|
-| **M26–M27** | `pip-audit` runs on every Quality workflow. Findings are **surfaced** (console + **`pip_audit_report.txt`** artifact). The job **does not fail** solely because `pip-audit` reported vulnerabilities; a **visible** workflow warning is emitted when the audit exits non-zero. |
-| **M28+** | **Strict enforcement**: `pip-audit` (or successor gate) is expected to **fail the job** on unresolved advisories, aligned with supply-chain hardening and intentional dependency upgrades. |
+| **M26–M27** | `pip-audit` ran on every Quality workflow. Findings were **surfaced** (console + **`pip_audit_report.txt`** artifact). The job **did not fail** solely because `pip-audit` reported vulnerabilities; a **visible** workflow warning was emitted when the audit exited non-zero. |
+| **M28a+ (Quality)** | **Strict enforcement**: `pip-audit` **fails the job** on unresolved advisories. Remediation is **M28b** (small-batch dependency upgrades + regression tests). |
+| **Nightly** | **Informational only** (non-zero exit ignored in workflow): exploratory signal; not a merge gate. |
 
-Rationale: clearing all current advisories requires **upgrading major runtime pins** (e.g. gradio, pillow, transformers), which is **behavior and compatibility work**, not environment determinism. **M26** establishes reproducible installs; **M28** owns remediation and enforcement.
+Rationale: clearing all current advisories requires **upgrading major runtime pins** (e.g. gradio, pillow, transformers), which is **behavior and compatibility work**, not environment determinism. **M26** establishes reproducible installs; **M28** splits **enforcement** (M28a) from **remediation** (M28b).
 
 ## Complexity policy (Phase VI)
 
@@ -92,7 +93,7 @@ Quality (Linux x86_64, Python 3.10.6):
 2. `pip install -r requirements-ci.txt`
 3. Download CLIP `d50d76daa670286dd6cacf3bcd80b5e4823fc8e1` archive, unzip, then `pip install --no-build-isolation /tmp/CLIP-d50d76daa670286dd6cacf3bcd80b5e4823fc8e1` (see workflow for exact commands).
 4. `bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt` (before `pip-audit` if you run it locally)
-5. Optional: `pip install pip-audit` and `pip-audit` (informational; may upgrade shared packages)
+5. `pip install pip-audit` then `pip-audit` after the same install order as CI (install **before** `pip-audit` can upgrade shared deps). **M28a+:** expect non-zero exit until advisories are cleared in **M28b**.
 
 JavaScript:
 

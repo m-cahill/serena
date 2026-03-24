@@ -1,0 +1,109 @@
+# Baseline: pip-audit -r requirements-ci.txt (local Python 3.11).
+# CI audits the installed tree (Python 3.10.6 + CLIP); use Quality artifact pip_audit_report.txt as authoritative after merge.
+Found 100 known vulnerabilities in 17 packages
+Name              Version   ID                  Fix Versions
+----------------- --------- ------------------- --------------------
+pillow            9.5.0     PYSEC-2023-175      10.0.1
+pillow            9.5.0     PYSEC-2023-227      10.0.0
+pillow            9.5.0     CVE-2023-50447      10.2.0
+pillow            9.5.0     CVE-2023-4863       10.0.1
+pillow            9.5.0     CVE-2024-28219      10.3.0
+certifi           2022.12.7 PYSEC-2023-135      2023.7.22
+certifi           2022.12.7 PYSEC-2023-135      2023.7.22
+certifi           2022.12.7 PYSEC-2024-230      2024.7.4
+certifi           2022.12.7 PYSEC-2024-230      2024.7.4
+diskcache         5.6.3     CVE-2025-69872
+fastapi           0.94.0    PYSEC-2024-38       0.109.1
+starlette         0.26.1    PYSEC-2023-83       0.27.0
+starlette         0.26.1    PYSEC-2023-83       0.27.0
+starlette         0.26.1    CVE-2024-47874      0.40.0
+starlette         0.26.1    CVE-2025-54121      0.47.2
+filelock          3.20.0    CVE-2025-68146      3.20.1
+filelock          3.20.0    CVE-2026-22701      3.20.3
+gitpython         3.1.32    PYSEC-2024-4        3.1.41
+gitpython         3.1.32    PYSEC-2024-4        3.1.41
+gitpython         3.1.32    PYSEC-2023-161      3.1.33
+gitpython         3.1.32    PYSEC-2023-165      3.1.35
+gradio            3.41.2    PYSEC-2023-249      4.11.0
+gradio            3.41.2    PYSEC-2023-255      4.14.0
+gradio            3.41.2    PYSEC-2024-184      4.31.4
+gradio            3.41.2    PYSEC-2024-196      4.44.0
+gradio            3.41.2    PYSEC-2024-199      4.44.0
+gradio            3.41.2    PYSEC-2024-198      4.44.0
+gradio            3.41.2    PYSEC-2024-197      4.44.0
+gradio            3.41.2    PYSEC-2024-213      5.0.0
+gradio            3.41.2    PYSEC-2024-217      5.0.0
+gradio            3.41.2    PYSEC-2024-216      5.0.0
+gradio            3.41.2    PYSEC-2024-220      5.0.0
+gradio            3.41.2    PYSEC-2024-214      5.0.0
+gradio            3.41.2    PYSEC-2024-218      5.0.0
+gradio            3.41.2    PYSEC-2024-215      5.0.0
+gradio            3.41.2    PYSEC-2024-219      5.0.0
+gradio            3.41.2    PYSEC-2024-255      4.20.0
+gradio            3.41.2    CVE-2024-0964       4.9.0
+gradio            3.41.2    CVE-2024-1729       4.19.2
+gradio            3.41.2    CVE-2024-4940
+gradio            3.41.2    CVE-2024-2206       4.18.0
+gradio            3.41.2    CVE-2024-1183       4.10.0
+gradio            3.41.2    CVE-2024-1561       4.13.0
+gradio            3.41.2    CVE-2024-34511      4.13.0
+gradio            3.41.2    CVE-2024-1727       4.19.2
+gradio            3.41.2    CVE-2024-4325
+gradio            3.41.2    CVE-2024-1728       4.19.2
+gradio            3.41.2    GHSA-26jh-r8g2-6fpr 5.0.0
+gradio            3.41.2    CVE-2024-48052
+gradio            3.41.2    CVE-2024-8966
+gradio            3.41.2    CVE-2024-12217
+gradio            3.41.2    CVE-2024-8021
+gradio            3.41.2    CVE-2025-23042      5.11.0
+gradio            3.41.2    CVE-2025-48889      5.31.0
+gradio            3.41.2    CVE-2026-28414      6.7.0
+gradio            3.41.2    CVE-2026-28416      6.6.0
+gradio            3.41.2    CVE-2026-28415      6.6.0
+requests          2.28.1    PYSEC-2023-74       2.31.0
+requests          2.28.1    PYSEC-2023-74       2.31.0
+requests          2.28.1    CVE-2024-35195      2.32.0
+requests          2.28.1    CVE-2024-47081      2.32.4
+idna              3.4       PYSEC-2024-60       3.7
+idna              3.4       PYSEC-2024-60       3.7
+urllib3           1.26.13   PYSEC-2023-192      1.26.17,2.0.6
+urllib3           1.26.13   PYSEC-2023-192      1.26.17,2.0.6
+urllib3           1.26.13   PYSEC-2023-212      1.26.18,2.0.7
+urllib3           1.26.13   PYSEC-2023-212      1.26.18,2.0.7
+urllib3           1.26.13   CVE-2024-37891      1.26.19,2.2.2
+urllib3           1.26.13   CVE-2025-50181      2.5.0
+urllib3           1.26.13   CVE-2025-66418      2.6.0
+urllib3           1.26.13   CVE-2025-66471      2.6.0
+urllib3           1.26.13   CVE-2026-21441      2.6.3
+h11               0.12.0    CVE-2025-43859      0.16.0
+protobuf          3.20.2    CVE-2025-4565       4.25.8,5.29.5,6.31.1
+protobuf          3.20.2    CVE-2026-0994       5.29.6,6.33.5
+pytorch-lightning 1.9.4     CVE-2024-8019       2.4.0
+pytorch-lightning 1.9.4     CVE-2024-8020
+setuptools        70.0.0    PYSEC-2025-49       78.1.1
+setuptools        70.0.0    PYSEC-2025-49       78.1.1
+transformers      4.30.2    PYSEC-2023-301      4.36.0
+transformers      4.30.2    PYSEC-2023-300      4.36.0
+transformers      4.30.2    PYSEC-2024-227      4.48.0
+transformers      4.30.2    PYSEC-2024-228      4.48.0
+transformers      4.30.2    PYSEC-2024-229      4.48.0
+transformers      4.30.2    PYSEC-2024-229      4.48.0
+transformers      4.30.2    PYSEC-2024-228      4.48.0
+transformers      4.30.2    PYSEC-2024-227      4.48.0
+transformers      4.30.2    PYSEC-2025-40       4.49.0
+transformers      4.30.2    CVE-2024-3568       4.38.0
+transformers      4.30.2    CVE-2024-12720      4.48.0
+transformers      4.30.2    CVE-2025-1194       4.50.0
+transformers      4.30.2    CVE-2025-3263       4.51.0
+transformers      4.30.2    CVE-2025-3264       4.51.0
+transformers      4.30.2    CVE-2025-3777       4.52.1
+transformers      4.30.2    CVE-2025-3933       4.52.1
+transformers      4.30.2    CVE-2025-5197       4.53.0
+transformers      4.30.2    CVE-2025-6638       4.53.0
+transformers      4.30.2    CVE-2025-6051       4.53.0
+transformers      4.30.2    CVE-2025-6921       4.53.0
+wheel             0.45.1    CVE-2026-24049      0.46.2
+Name        Skip Reason
+----------- -------------------------------------------------------------------------------
+torch       Dependency not found on PyPI and could not be audited: torch (2.1.2+cpu)
+torchvision Dependency not found on PyPI and could not be audited: torchvision (0.16.2+cpu)
