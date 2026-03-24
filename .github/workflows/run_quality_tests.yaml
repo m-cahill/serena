@@ -99,11 +99,10 @@ jobs:
       - name: Smoke startup
         run: |
           python launch.py --skip-prepare-environment --skip-torch-cuda-test --test-server --use-cpu all --exit
+      # M27: server runs without coverage — gate uses pytest-cov `.coverage` only (no combine).
       - name: Start test server
         run: >
-          python -m coverage run
-          --data-file=.coverage.server
-          launch.py
+          python launch.py
           --skip-prepare-environment
           --skip-torch-cuda-test
           --test-server
@@ -123,7 +122,6 @@ jobs:
         run: curl -vv -XPOST http://127.0.0.1:7860/sdapi/v1/server-stop && sleep 10
       - name: Show coverage
         run: |
-          python -m coverage combine .coverage*
           python -m coverage report -i
           python -m coverage report --fail-under=42 -i
           python -m coverage xml -i
