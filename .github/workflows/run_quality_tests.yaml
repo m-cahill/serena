@@ -55,6 +55,9 @@ jobs:
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
+      # Must run before pip-audit: installing pip-audit can upgrade shared deps (e.g. requests).
+      - name: Verify lockfile vs environment
+        run: bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt
       # Informational until M28: strict pip-audit would require dep upgrades (behavior surface).
       - name: Dependency vulnerability scan
         shell: bash
@@ -70,8 +73,6 @@ jobs:
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
-      - name: Verify lockfile vs environment
-        run: bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt
       - name: Capture CI environment metadata
         run: |
           {
