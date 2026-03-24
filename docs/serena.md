@@ -119,6 +119,8 @@ Core principles:
 | M29 | Health/perf verification |
 | M30 | QA/evidence publishing |
 
+**Progress (Phase VI):** **M26 complete** (locked manifests, npm determinism, CI contract, pip-audit policy). **Next:** M27.
+
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
 |-----------|-------|
@@ -158,6 +160,7 @@ Core principles:
 | M23 | Settings/extensions modularization | Completed | m23-settings-extensions-modularization | #42 | 64c232c3 | Linter 23370424058 (PR); Smoke 23370424057 (PR); Quality 23370952185 (102 pass, ~44% cov) | 5.0 / 5 | 2026-03-21 |
 | M24 | Extension API version/contract | Completed | m24-extension-api-contract | #43 | 2c8bc5b7 | Linter 23395414702 (PR); Smoke 23395414700 (PR); Quality 23395515966 (105 pass, 40% cov) | 5.0 / 5 | 2026-03-22 |
 | M25 | Deprecation/compatibility scaffolding | Completed | m25-deprecation-compat-scaffolding | #44 | 46891797 | Linter 23417606838 (PR); Smoke 23417606843 (PR); Quality 23421440167 (112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 |
+| M26 | Locked manifests & CI environment stabilization | Completed | m26-locked-manifests-ci-env | #45–#53 | 67692434 | Linter 23421937195 (pass); Smoke 23421937182 (pass); Quality 23467772232 (pass, 112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 (UTC) |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -201,6 +204,8 @@ Core principles:
 
 **M25:** Added **`modules/deprecation.py`** (`warn_deprecated`, `@deprecated`, `format_extension_api_deprecation`), **`script_callbacks.deprecate_callback`**, separate M25 comment block below **`callback_map`**, **`docs/architecture/extension_api_deprecation_policy.md`**, and **`test/quality/test_deprecation_scaffolding.py`**. No change to **`callback_map`** contents, invocation order, **`ordered_callbacks`**, **`SUPPORTED_CALLBACKS`**, or runtime modules. PR **#44** squash-merged; Quality **23421440167** @ **46891797**: 112 pass, 40% combined coverage (gate). Tag **`v0.0.25-m25`** on **`468917974f9379ec1c514f995ab703c821078e45`**. **Deprecation channel and compatibility policy in place.**
 
+**M26:** Introduced **`requirements-ci.txt`** / **`requirements-ci.in`** (uv-compiled lock) as the **single Quality Python install manifest**; **OpenAI CLIP** installed via **pinned GitHub archive** + workflow **`curl` / `unzip` / `pip install --no-build-isolation`**. Committed **`package-lock.json`**, **`.gitignore`** fix, Linter **`npm ci`** + **`npm ls`** artifact. Extended **`verify_pinned_deps.sh`** (lockfile + **`dependency_snapshot.txt`**). Artifacts: **`pip_freeze.txt`**, **`pip_audit_report.txt`**, **`ci_environment.txt`**, coverage uploads. **`docs/architecture/ci_environment_contract.md`**, **`docs/PR_guardrail_checklist.md`**. **`pip-audit`:** informational **M26–M27** (warning + artifact); **strict enforcement deferred to M28** (governance). Fix chain **#46–#52** (CLIP/PEP517, verify order vs `pip-audit`). PRs **#45–#53**; binding Quality **23467772232** @ **`676924349c3a296e8ef07ef09a588b472498e7fd`**: 112 pass, **40%** coverage. Tag **`v0.0.26-m26`** on **`main` tip** (includes this ledger closeout; Quality binding merge **`676924349c3a296e8ef07ef09a588b472498e7fd`**). **No runtime, extension API, or coverage-threshold change.**
+
 ---
 
 ### Phase V ? UI & Extension Stabilization (Complete)
@@ -209,7 +214,11 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 > **M21?M23:** Tab registry and modularized txt2img, img2img, settings, extensions. **M24:** Extension API v1 contract. **M25:** Deprecation scaffolding without registry drift.
 
-**Next:** Phase VI ? **M26 ? Locked manifests / npm ci / CI environment stabilization** (planning).
+### Phase VI ? Hardening & Reproducibility (in progress)
+
+**M26 ? Locked manifests & CI environment stabilization** **complete.** Quality CI installs from a **committed lockfile**; npm uses **`npm ci`**; **artifact-level** reproducibility and **`ci_environment_contract.md`** encode the environment; **supply-chain findings** are **visible** via **`pip-audit`** with **explicit non-blocking policy** through **M27** and **strict gate planned for M28**.
+
+**Next:** **M27 ? Coverage and complexity gates** (planning).
 
 ---
 

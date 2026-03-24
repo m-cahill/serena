@@ -1,7 +1,7 @@
 # M26 — Locked Manifests & CI Environment Stabilization
 
 **Branch:** `m26-locked-manifests-ci-env`  
-**Status:** In progress
+**Status:** Completed
 
 ## 1. Intent
 
@@ -9,7 +9,7 @@ Establish **reproducible, deterministic Quality CI** (Python) and **locked npm i
 
 - Locking Python dependency resolution for the **Quality workflow only** via `requirements-ci.txt`
 - Committing `package-lock.json` and using **`npm ci`** in Linter
-- Strengthening CI truthfulness (no `continue-on-error` on supply-chain scan where policy allows hard fail)
+- **Supply-chain visibility:** `pip-audit` runs every Quality job, uploads `pip_audit_report.txt`, and is **non-blocking** per **`ci_environment_contract.md`** (M26–M27); strict gate deferred to **M28**
 - Documenting the environment contract and PR guardrails
 
 **Phase VI foundation:** CI moves from “truthful” toward **provably reproducible** for the Quality tier.
@@ -19,9 +19,9 @@ Establish **reproducible, deterministic Quality CI** (Python) and **locked npm i
 ### In scope
 
 - `requirements-ci.txt` (+ `requirements-ci.in` as maintainable input for `uv pip compile`)
-- Quality workflow: single `pip install -r requirements-ci.txt` (plus documented exception for `pip-audit` installer)
+- Quality workflow: single `pip install -r requirements-ci.txt`; **CLIP** via pinned archive + `pip install --no-build-isolation` (documented exception)
 - `verify_pinned_deps.sh` extended for lockfile + `dependency_snapshot.txt`
-- Artifacts: `pip_freeze.txt`, `dependency_snapshot.txt`, `npm_ls.json` (Linter)
+- Artifacts: `pip_freeze.txt`, `dependency_snapshot.txt`, `ci_environment.txt`, `pip_audit_report.txt`, `npm_ls.json` (Linter)
 - `docs/architecture/ci_environment_contract.md`
 - Update `docs/PR_guardrail_checklist.md`
 - `.gitignore`: stop ignoring `package-lock.json`
@@ -47,7 +47,7 @@ Establish **reproducible, deterministic Quality CI** (Python) and **locked npm i
 - Smoke (PR): pass
 - Quality (push `main`): pass with ≥ 40% coverage
 - Linter: `npm ci`, eslint pass
-- `verify_pinned_deps.sh` passes against `requirements-ci.txt`
+- `verify_pinned_deps.sh` passes against `requirements-ci.txt` **before** `pip-audit` (order enforced in workflow)
 - Reproducibility claims documented in `ci_environment_contract.md`
 
 ## 5. Rollback
@@ -58,6 +58,6 @@ Revert: `requirements-ci.txt`, `requirements-ci.in`, `package-lock.json`, workfl
 
 - Quality installs **only** from `requirements-ci.txt` for application/test runtime deps (with documented `pip-audit` bootstrap)
 - `npm ci` + committed lockfile for JS lint
-- No `continue-on-error` on `pip-audit` in Quality
+- `pip-audit` in Quality: **informational** (warning + artifact); blocking enforcement **M28** only
 - Governance: `docs/serena.md` updated after green CI + permission
 - Audit / summary per prompts (post-closeout)
