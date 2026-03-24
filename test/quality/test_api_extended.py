@@ -19,6 +19,9 @@ import requests
     "sdapi/v1/cmd-flags",
     "sdapi/v1/face-restorers",
     "sdapi/v1/prompt-styles",
+    "sdapi/v1/hypernetworks",
+    "sdapi/v1/realesrgan-models",
+    "sdapi/v1/embeddings",
 ])
 def test_get_api_endpoint(base_url, url):
     """Verify extended API endpoints return 200."""
@@ -49,3 +52,19 @@ def test_extra_batch_images(base_url, img2img_basic_image_base64):
         "imageList": [{"data": img2img_basic_image_base64, "name": "test.png"}],
     }
     assert requests.post(f"{base_url}/sdapi/v1/extra-batch-images", json=batch_payload).status_code == 200
+
+
+@pytest.mark.parametrize(
+    "path",
+    [
+        "sdapi/v1/interrupt",
+        "sdapi/v1/skip",
+        "sdapi/v1/refresh-embeddings",
+        "sdapi/v1/refresh-checkpoints",
+        "sdapi/v1/refresh-vae",
+    ],
+)
+def test_post_api_control_refresh_ok(base_url, path):
+    """M27: exercise control/refresh endpoints (no body) for API + shared coverage."""
+    r = requests.post(f"{base_url}/{path}", json={})
+    assert r.status_code == 200

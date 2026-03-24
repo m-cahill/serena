@@ -17,5 +17,9 @@
 | 2026-03-23 | StrReplace | Proactive coverage: deprecation format + class decorator | `test/quality/test_deprecation_scaffolding.py` |
 | 2026-03-23 | Shell | Git branch, commit, push, open PR to main | `m27-coverage-complexity-gates` |
 | 2026-03-23 | gh | Open PR #54 on fork (`-R m-cahill/serena`; default `gh` repo was upstream) | https://github.com/m-cahill/serena/pull/54 |
+| 2026-03-24 | gh | Squash-merge PR #54 (gate approved) | `m-cahill/serena` → `main` |
+| 2026-03-24 | gh | Watch Quality on `main` | run **23473843412** — fail `fail-under=42` (40% TOTAL) |
+| 2026-03-24 | Write | Add coverage tests + `M27_run1.md` | `test/quality/*_m27.py`, `test_api_extended.py`, `M27_run1.md` |
+| 2026-03-24 | gh | Open PR #55 (coverage follow-up) | https://github.com/m-cahill/serena/pull/55 |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*
