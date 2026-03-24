@@ -21,5 +21,9 @@
 | 2026-03-25T12:02Z | pip-audit | Measure findings after pillow bump | `requirements-ci.txt` |
 | 2026-03-25T12:03Z | read / search | Pillow touchpoints: `modules/images.py`, `modules/extras.py`, tests | — |
 | 2026-03-25T12:04Z | git | Commit M28b batch 2 | `requirements-ci.*`, `M28_run1.md`, `M28_toolcalls.md` |
+| 2026-03-25T14:00Z | edit | M28b batch 3: FastAPI / Starlette / h11 pins in `requirements-ci.in` | `requirements-ci.in` |
+| 2026-03-25T14:01Z | uv | Recompile lock (prior batches + fastapi/starlette/h11) | `requirements-ci.txt` |
+| 2026-03-25T14:02Z | pip-audit / read | Audit delta; skim `api.py`, `test_api_extended.py` | — |
+| 2026-03-25T14:03Z | git | Commit M28b batch 3 | `requirements-ci.*`, `M28_run1.md`, `M28_toolcalls.md` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

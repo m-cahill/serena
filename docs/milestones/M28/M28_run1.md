@@ -131,3 +131,43 @@ Same **`uv pip compile`** pattern as batch 1, with **`--upgrade-package pillow`*
 ### CI summary
 
 - **Quality:** `pip-audit` step still **expected to fail** until more packages are remediated; non-audit steps **expected green** if the environment matches the lock.
+
+---
+
+## M28b — Batch 3 (FastAPI / Starlette / h11) — 2026-03-25
+
+**Intent:** Raise **`fastapi`**, **`starlette`**, **`h11`** to advisory-safe ranges (`fastapi>=0.110,<1`, `starlette>=0.37,<1`, `h11>=0.14,<1` in `requirements-ci.in`).
+
+### Co-upgrades (required for a solvable graph)
+
+| Package | Issue | Resolution |
+|---------|--------|------------|
+| **`httpcore`** | `0.15.0` pins **`h11>=0.11,<0.13`** — conflicts with **`h11>=0.14`** | **`httpcore>=1.0,<2`** |
+| **`httpx`** | Old line tied to httpcore 0.15 | **`httpx>=0.27,<1`** (resolves to **0.28.1** with httpcore **1.x**) |
+
+### Resolver outcome (major)
+
+Upgrading FastAPI past **~0.100** pulls **Pydantic v2** (`pydantic==2.12.5`, `pydantic-core`). **Runtime updates (compatibility only):**
+
+- **`modules/api/models.py`:** `create_model(..., __config__=ConfigDict(populate_by_name=True, validate_assignment=True))` replaces v1 `__config__` mutation after `create_model`.
+- **`modules/api/api.py`:** helpers for **`model_dump` / `.dict`**, **`model_fields` / `__fields__`**, **`model_copy` / `.copy`** so infotext + txt2img/img2img API paths work on Pydantic v2.
+
+### Pin changes (lockfile excerpt)
+
+| Package | Before (post batch 2) | After batch 3 |
+|---------|------------------------|---------------|
+| fastapi | 0.94.0 | **0.135.2** |
+| starlette | 0.26.1 | **0.52.1** |
+| h11 | 0.12.0 | **0.16.0** |
+| httpcore | 0.15.0 | **1.0.9** |
+| httpx | 0.24.1 | **0.28.1** |
+| pydantic | 1.10.26 | **2.12.5** (transitive) |
+
+### pip-audit (local, `pip-audit -r requirements-ci.txt`)
+
+| Metric | After batch 2 | After batch 3 |
+|--------|---------------|---------------|
+| “Found N known vulnerabilities” | 77 | **71** |
+| Packages with findings | 13 | **13** |
+
+**Cleared from advisory output in this mode:** prior **fastapi / starlette / h11** rows (and **httpx** client CVE rows tied to the old pair). **CI summary:** binding pass/fail on **Quality** (non-audit steps) TBD on push; local full pytest not run.

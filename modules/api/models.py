@@ -1,6 +1,6 @@
 import inspect
 
-from pydantic import BaseModel, Field, create_model
+from pydantic import BaseModel, ConfigDict, Field, create_model
 from typing import Any, Optional, Literal
 from inflection import underscore
 from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img
@@ -92,10 +92,12 @@ class PydanticModelGenerator:
         fields = {
             d.field: (d.field_type, Field(default=d.field_value, alias=d.field_alias, exclude=d.field_exclude)) for d in self._model_def
         }
-        DynamicModel = create_model(self._model_name, **fields)
-        DynamicModel.__config__.allow_population_by_field_name = True
-        DynamicModel.__config__.allow_mutation = True
-        return DynamicModel
+        # Pydantic v2 (FastAPI 0.110+): ConfigDict replaces __config__ mutation (v1 allow_population_by_field_name / allow_mutation).
+        return create_model(
+            self._model_name,
+            __config__=ConfigDict(populate_by_name=True, validate_assignment=True),
+            **fields,
+        )
 
 StableDiffusionTxt2ImgProcessingAPI = PydanticModelGenerator(
     "StableDiffusionProcessingTxt2Img",
