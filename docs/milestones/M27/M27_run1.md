@@ -4,7 +4,9 @@
 **PR #55:** [merged](https://github.com/m-cahill/serena/pull/55) — coverage follow-up tests  
 **PR #56:** [merged](https://github.com/m-cahill/serena/pull/56) — drop flaky `refresh-embeddings` POST from Quality  
 **PR #57:** [merged](https://github.com/m-cahill/serena/pull/57) — prompt-parser + options API bulk coverage (**no net TOTAL delta** vs attempt 3: same **11237** miss).  
-**PR #58:** util + `errors` module tests _(pending merge)_.
+**PR #58:** [merged](https://github.com/m-cahill/serena/pull/58) — util + `errors` tests.  
+**PR #59:** [merged](https://github.com/m-cahill/serena/pull/59) — fix `display_once` assertion.  
+**PR #60:** `images` + `extras` cold-path tests _(pending merge)_.
 
 ---
 
@@ -53,11 +55,22 @@ Net vs attempt 1: **+36** covered statements (**7571 → 7607**), still **~308**
 
 ---
 
-## Quality attempt 5 (binding)
+## Quality attempt 5 — **fail (coverage, util/errors duplicate hits)**
 
 | Workflow | Run ID | Result | Notes |
 |----------|--------|--------|-------|
-| Quality (`main`) | _(after #58)_ | | **≥42%**, Radon artifact + D/E/F warning expected if green. |
+| Quality (`main`) | [23510044040](https://github.com/m-cahill/serena/actions/runs/23510044040) | **fail** | Pytest: `test_display_once_dedupes` _(fixed in **#59**)._ |
+| Quality (`main`) | [23510268169](https://github.com/m-cahill/serena/actions/runs/23510268169) | **fail** | Tests pass; **TOTAL** still **18844 / 11237 miss (40%)** — `util`/`errors` lines were **already** counted hit in the combined report. |
+
+**Remediation:** **#60** — `test_m27_images_extras_cold.py` (`image_grid`, `split_grid`/`combine_grid`, `extras.to_half`, etc.) to reach **uncovered** statements in **`modules/images.py`** / **`modules/extras.py`**.
+
+---
+
+## Quality attempt 6 (binding)
+
+| Workflow | Run ID | Result | Notes |
+|----------|--------|--------|-------|
+| Quality (`main`) | _(after #60)_ | | **≥42%**, Radon + artifact if green. |
 
 ---
 
@@ -71,4 +84,4 @@ Net vs attempt 1: **+36** covered statements (**7571 → 7607**), still **~308**
 
 ## Final verdict
 
-**Pending:** Quality **attempt 5** green on `main` after **#58**. Then audit / summary / `docs/serena.md` per permission.
+**Pending:** Quality **attempt 6** green on `main` after **#60**. Then audit / summary / `docs/serena.md` per permission.
