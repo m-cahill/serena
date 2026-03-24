@@ -4,7 +4,7 @@ This document defines **deterministic, reproducible** CI environments for the Se
 
 ## Guarantee
 
-**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt`**, a **pinned OpenAI CLIP URL** installed with fixed `pip` flags (workflow step, same commit as the lockfile), and **`pip-audit`** run for **visibility** (artifact + warning; **non-blocking** through M27 per **pip-audit policy** below). For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
+**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt`**, a **pinned OpenAI CLIP URL** installed with fixed `pip` flags (workflow step, same commit as the lockfile), and **`pip-audit`** run for **visibility** (artifact + warning; **non-blocking** through M27 per **pip-audit policy** below). **Radon** runs on **`modules/`** for **cyclomatic complexity visibility** (artifact + optional warning for grade **D/E/F**; **non-blocking** through M27 per **complexity policy** below). For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
 
 ## Python — Quality workflow (`run_quality_tests.yaml`)
 
@@ -49,6 +49,15 @@ Use **`x86_64-manylinux_2_28`** (or newer manylinux tag supported by `uv`) to al
 
 Rationale: clearing all current advisories requires **upgrading major runtime pins** (e.g. gradio, pillow, transformers), which is **behavior and compatibility work**, not environment determinism. **M26** establishes reproducible installs; **M28** owns remediation and enforcement.
 
+## Complexity policy (Phase VI)
+
+| Phase | Behavior |
+|-------|----------|
+| **M27** (warn-first) | **Radon** runs on every Quality workflow against **`modules/`** only (`radon cc modules -s -a`). Output is written to **`radon_report.txt`** and uploaded as a CI artifact. If any analyzed block has cyclomatic **rank D, E, or F**, the workflow emits a **visible** `::warning` (GitHub Actions). The job **does not fail** on complexity. Ranks **A–C** do not trigger a warning (legacy-heavy code is expected to include many **C** blocks). |
+| **Later** | **Blocking** complexity gates (fail the job) and/or refactors to reduce complexity are **out of scope for M27** and may be scheduled in a later milestone. |
+
+Scope is intentionally limited to **`modules/`** (not `test/`, `scripts/`, or repository root files) so the signal matches the architectural surface under refactor.
+
 ## Python — Smoke / Linter (unchanged in M26)
 
 Smoke tests and the Python linter job **continue to use** the prior multi-step install (`requirements-test.txt`, `requirements_versions.txt`, explicit torch/CLIP/open_clip steps, etc.). A later milestone may align them with `requirements-ci.txt`.
@@ -86,4 +95,4 @@ JavaScript:
 
 ## Artifacts (Quality)
 
-Typical uploads include **`coverage.xml`**, **`pip_freeze.txt`** (copy of `dependency_snapshot.txt`), **`dependency_snapshot.txt`**, **`pip_audit_report.txt`**, and **`ci_environment.txt`** (metadata + `requirements-ci.txt` digest).
+Typical uploads include **`coverage.xml`**, **`htmlcov/`**, **`pip_freeze.txt`** (copy of `dependency_snapshot.txt`), **`dependency_snapshot.txt`**, **`pip_audit_report.txt`**, **`radon_report.txt`**, and **`ci_environment.txt`** (metadata + `requirements-ci.txt` digest).

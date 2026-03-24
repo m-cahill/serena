@@ -18,7 +18,8 @@ Use before opening or merging a PR. This complements CI and `docs/serena.md` inv
 
 - [ ] Do not add **`continue-on-error`**, skipped checks, or lowered thresholds to “get green” without a milestone decision.
 - [ ] **`pip-audit`**: review **`pip_audit_report.txt`** (artifact) when touching dependencies. **M26–M27:** informational (non-blocking). **M28+:** expected to be blocking per `ci_environment_contract.md`.
-- [ ] Coverage gate remains **≥ 40%** until a later milestone changes it.
+- [ ] Coverage gate remains **≥ 42%** (Quality) until a later milestone changes it.
+- [ ] Complexity report reviewed (**`radon_report.txt`**) if touching core **`modules/`** behavior or large control-flow paths.
 
 ## Evidence
 

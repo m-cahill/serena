@@ -34,6 +34,18 @@ def test_warn_deprecated_includes_version_when_set():
     assert "(since 1.1)" in msg
 
 
+def test_format_extension_api_deprecation_without_version():
+    assert deprecation.format_extension_api_deprecation("x") == (
+        "Serena extension API: x"
+    )
+
+
+def test_format_extension_api_deprecation_with_version():
+    assert deprecation.format_extension_api_deprecation("x", version="2.0") == (
+        "Serena extension API: x (since 2.0)"
+    )
+
+
 def test_deprecate_callback_emits_with_category_and_prefix():
     with pytest.warns(DeprecationWarning) as record:
         script_callbacks.deprecate_callback("ui_tabs", "use ui_tabs_v2")
@@ -62,6 +74,20 @@ def test_deprecated_decorator_warns_on_function_call():
     assert "Serena extension API:" in msg
     assert "frobnicate is legacy" in msg
     assert "(since 9.9)" in msg
+
+
+def test_deprecated_decorator_warns_on_class_init():
+    @deprecation.deprecated("OldWidget is legacy", version="0.5")
+    class OldWidget:
+        def __init__(self):
+            pass
+
+    with pytest.warns(DeprecationWarning) as record:
+        OldWidget()
+    msg = str(record[0].message)
+    assert "Serena extension API:" in msg
+    assert "OldWidget is legacy" in msg
+    assert "(since 0.5)" in msg
 
 
 def test_supported_callbacks_exactly_matches_callback_map():
