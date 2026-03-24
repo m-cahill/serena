@@ -76,7 +76,7 @@ jobs:
       - name: Capture CI environment metadata
         run: |
           {
-            echo "# Serena Quality CI environment (M26)"
+            echo "# Serena Quality CI environment (M27)"
             date -u "+%Y-%m-%dT%H:%M:%SZ"
             python --version
             pip --version
@@ -125,9 +125,22 @@ jobs:
         run: |
           python -m coverage combine .coverage*
           python -m coverage report -i
-          python -m coverage report --fail-under=40 -i
+          python -m coverage report --fail-under=42 -i
           python -m coverage xml -i
           python -m coverage html -i
+      - name: Radon cyclomatic complexity (modules)
+        run: |
+          pip install radon
+          radon cc modules -s -a > radon_report.txt
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+          PIP_PROGRESS_BAR: "off"
+      - name: Complexity warning (grade D/E/F only)
+        shell: bash
+        run: |
+          if [ -f radon_report.txt ] && grep -qE ' - [DEF] \(' radon_report.txt; then
+            echo "::warning title=High complexity detected::Cyclomatic complexity grade D/E/F in modules/ — see radon_report.txt artifact."
+          fi
       - name: Upload main app output
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()
@@ -170,3 +183,8 @@ jobs:
         with:
           name: pip-audit-report
           path: pip_audit_report.txt
+      - name: Upload radon report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: radon-report
+          path: radon_report.txt
