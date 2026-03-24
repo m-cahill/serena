@@ -3,7 +3,8 @@
 **PR #54:** [merged](https://github.com/m-cahill/serena/pull/54) → `d1897cf2668b6df35b233e9b0da2e0d135aa4773`  
 **PR #55:** [merged](https://github.com/m-cahill/serena/pull/55) — coverage follow-up tests  
 **PR #56:** [merged](https://github.com/m-cahill/serena/pull/56) — drop flaky `refresh-embeddings` POST from Quality  
-**PR #57:** [wave 2 tests](https://github.com/m-cahill/serena/pull/57) — prompt-parser + options API bulk coverage _(merge pending when opened)_
+**PR #57:** [merged](https://github.com/m-cahill/serena/pull/57) — prompt-parser + options API bulk coverage (**no net TOTAL delta** vs attempt 3: same **11237** miss).  
+**PR #58:** util + `errors` module tests _(pending merge)_.
 
 ---
 
@@ -42,13 +43,21 @@ Net vs attempt 1: **+36** covered statements (**7571 → 7607**), still **~308**
 
 ---
 
-## Quality attempt 4 (binding)
-
-**Expected after #57 merge:** combined **≥ 42%**, Radon + **`radon_report.txt`**, D/E/F `::warning` likely.
+## Quality attempt 4 — **fail (coverage, no progress)**
 
 | Workflow | Run ID | Result | Notes |
 |----------|--------|--------|-------|
-| Quality (`main`) | _(after #57)_ | | |
+| Quality (`main`) | [23509818680](https://github.com/m-cahill/serena/actions/runs/23509818680) | **fail** | Tests passed; **TOTAL** unchanged (**18844** stmts, **11237** miss, **40%**). **#57** only re-hit already-covered lines (e.g. `prompt_parser`). Radon skipped. |
+
+**Remediation:** **#58** — `test_m27_util_errors_coverage.py` targets **`modules/util.py`** and **`modules/errors.py`** (previously thin in the combined report).
+
+---
+
+## Quality attempt 5 (binding)
+
+| Workflow | Run ID | Result | Notes |
+|----------|--------|--------|-------|
+| Quality (`main`) | _(after #58)_ | | **≥42%**, Radon artifact + D/E/F warning expected if green. |
 
 ---
 
@@ -62,4 +71,4 @@ Net vs attempt 1: **+36** covered statements (**7571 → 7607**), still **~308**
 
 ## Final verdict
 
-**Pending:** Quality **attempt 4** green on `main` after **#57**. Then audit / summary / `docs/serena.md` per permission.
+**Pending:** Quality **attempt 5** green on `main` after **#58**. Then audit / summary / `docs/serena.md` per permission.
