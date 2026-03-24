@@ -1,7 +1,7 @@
 # M27 — Coverage & complexity gates
 
-**Status:** In progress  
-**Branch:** `m27-coverage-complexity-gates` → `main` (PR, no direct push)
+**Status:** Completed  
+**Branch:** `m27-coverage-complexity-gates` → `main`; measurement fix **`m27-coverage-measurement-fix`** (**PR #63**)
 
 ## 1. Intent
 
@@ -52,11 +52,11 @@ Strengthen quality guarantees by:
 
 ## 5. Definition of done
 
-- [ ] `M27_plan.md` / `M27_toolcalls.md` present
-- [ ] Workflow updated (42% gate + Radon + warning + artifact)
-- [ ] Docs updated
-- [ ] Quality CI green; evidence captured (`M27_run1.md` etc. per prompts)
-- [ ] Ledger / audit / summary after user-approved closeout
+- [x] `M27_plan.md` / `M27_toolcalls.md` present
+- [x] Workflow updated (42% gate + Radon + warning + artifact; **PR #63** pytest-only measurement)
+- [x] Docs updated (`ci_environment_contract.md`, `M27_run1.md`, `M27_summary.md`, `M27_audit.md`, ledger)
+- [x] Quality CI green on **`main`**; evidence in `M27_run1.md` (**run 23513449859**)
+- [x] Tag **`v0.0.27-m27`** on M27 closeout commit (includes summary/audit/ledger; **PR #63** merge is **`e3c0d554`**)
 
 ## 6. Rollback
 

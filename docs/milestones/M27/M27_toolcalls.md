@@ -26,5 +26,8 @@
 | 2026-03-24 | StrReplace | Governance decision + final verdict (measurement fix) | `M27_run1.md` |
 | 2026-03-24 | Shell | Commit on `m27-coverage-measurement-fix`, push | `git` |
 | 2026-03-24 | gh | Open PR #63 (M27 pytest-only coverage) | https://github.com/m-cahill/serena/pull/63 |
+| 2026-03-24 | gh | Merge PR #63; watch Quality **23513449859** (pass, 47%, Radon) | `main` |
+| 2026-03-24 | Write / StrReplace | M27 closeout: `M27_run1` post-fix, `M27_summary`, `M27_audit`, ledger, `M27_plan`, M28 stubs | `docs/` |
+| 2026-03-24 | Shell | Annotated tag **`v0.0.27-m27`** on M27 closeout commit | `git` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

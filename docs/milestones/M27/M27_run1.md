@@ -104,11 +104,28 @@ The remaining **11237** misses are concentrated in code paths **neither** the se
 
 ---
 
-## Linter / Smoke
+## Linter / Smoke (PR #63)
 
 | Workflow | Run ID | Result | Notes |
 |----------|--------|--------|-------|
-| _(optional)_ | | | Fill from PR checks when closing M27. |
+| Linter (`pull_request`) | [23512022787](https://github.com/m-cahill/serena/actions/runs/23512022787) | **fail** | Pre-existing JS lint debt (unchanged in M27). |
+| Smoke (`pull_request`) | [23512022741](https://github.com/m-cahill/serena/actions/runs/23512022741) | **pass** | — |
+
+---
+
+## Quality attempt (post-fix) — **pass**
+
+Triggered by merge of **PR #63** to **`main`** (`e3c0d554`).
+
+| Workflow | Run ID | Result | Notes |
+|----------|--------|--------|-------|
+| Quality (`main`, push) | [23513449859](https://github.com/m-cahill/serena/actions/runs/23513449859) | **pass** | **TOTAL 47%** (20077 stmts, 10599 miss) ≥ **42%**; **198** tests passed in ~67s. |
+
+**Radon:** **Yes** — workflow **`::warning`** for cyclomatic complexity **D/E/F** in `modules/` (expected warn-first policy). Artifact **`radon-report`** uploaded.
+
+**Artifacts verified on run:** `coverage-xml`, `htmlcov`, `radon-report`, `pip-audit-report`, `dependency-snapshot`, `pip-freeze`, `ci-environment`, `output`.
+
+**Result:** PASS — pytest-only coverage ≥42%, Radon executed, artifacts present.
 
 ---
 
@@ -116,6 +133,6 @@ The remaining **11237** misses are concentrated in code paths **neither** the se
 
 **Pre-fix:** **`--fail-under=42`** was not satisfied on the **combined** server+pytest report (**40%**, **11237** miss); **Radon** did not run when coverage failed first.
 
-**Post-fix (expected after merge):** Gate evaluates **pytest-only** coverage; **TOTAL %** is expected to **rise** (often cited band **~45–55%**) without lowering the threshold. **Radon** runs when **Show coverage** passes, with existing D/E/F warning + artifact behavior unchanged.
+**Post-fix (recorded):** Gate uses **pytest-only** coverage (**47%** TOTAL on **20077** stmts vs **18844** under the old combined denominator). **PR #63** removed server **`coverage run`** and **`coverage combine`**. **Radon** ran with D/E/F warning + artifact. **`--fail-under=42`** unchanged.
 
-**Closeout:** Record the **Quality run ID**, final **coverage %**, and **Radon** artifact confirmation on the green **`main`** run after the measurement-fix PR merges.
+**Closeout:** See **Quality attempt (post-fix)** above; annotated tag **`v0.0.27-m27`** on the M27 closeout commit (documents + ledger; merge **`e3c0d554`** = **PR #63**).

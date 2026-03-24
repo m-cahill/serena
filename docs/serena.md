@@ -119,7 +119,7 @@ Core principles:
 | M29 | Health/perf verification |
 | M30 | QA/evidence publishing |
 
-**Progress (Phase VI):** **M26 complete** (locked manifests, npm determinism, CI contract, pip-audit policy). **Next:** M27.
+**Progress (Phase VI):** **M26–M27 complete.** **Next:** **M28** (security & supply-chain hardening).
 
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
@@ -161,6 +161,7 @@ Core principles:
 | M24 | Extension API version/contract | Completed | m24-extension-api-contract | #43 | 2c8bc5b7 | Linter 23395414702 (PR); Smoke 23395414700 (PR); Quality 23395515966 (105 pass, 40% cov) | 5.0 / 5 | 2026-03-22 |
 | M25 | Deprecation/compatibility scaffolding | Completed | m25-deprecation-compat-scaffolding | #44 | 46891797 | Linter 23417606838 (PR); Smoke 23417606843 (PR); Quality 23421440167 (112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 |
 | M26 | Locked manifests & CI environment stabilization | Completed | m26-locked-manifests-ci-env | #45–#53 | 67692434 | Linter 23421937195 (pass); Smoke 23421937182 (pass); Quality 23467772232 (pass, 112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 (UTC) |
+| M27 | Coverage and complexity gates | Completed | m27-coverage-complexity-gates; m27-coverage-measurement-fix | #54–#63 | e3c0d554 | Linter 23512022787 (PR, fail); Smoke 23512022741 (PR, pass); Quality **23513449859** (pass, 198 pass, **47%** cov pytest-only) | 5.0 / 5 | 2026-03-24 ~21:43 UTC |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -206,6 +207,8 @@ Core principles:
 
 **M26:** Introduced **`requirements-ci.txt`** / **`requirements-ci.in`** (uv-compiled lock) as the **single Quality Python install manifest**; **OpenAI CLIP** installed via **pinned GitHub archive** + workflow **`curl` / `unzip` / `pip install --no-build-isolation`**. Committed **`package-lock.json`**, **`.gitignore`** fix, Linter **`npm ci`** + **`npm ls`** artifact. Extended **`verify_pinned_deps.sh`** (lockfile + **`dependency_snapshot.txt`**). Artifacts: **`pip_freeze.txt`**, **`pip_audit_report.txt`**, **`ci_environment.txt`**, coverage uploads. **`docs/architecture/ci_environment_contract.md`**, **`docs/PR_guardrail_checklist.md`**. **`pip-audit`:** informational **M26–M27** (warning + artifact); **strict enforcement deferred to M28** (governance). Fix chain **#46–#52** (CLIP/PEP517, verify order vs `pip-audit`). PRs **#45–#53**; binding Quality **23467772232** @ **`676924349c3a296e8ef07ef09a588b472498e7fd`**: 112 pass, **40%** coverage. Tag **`v0.0.26-m26`** peels **`25ebe51c3711cc379d1f50962dd78e9f20272bf7`** (`25ebe51c`, closeout merge); Quality binding merge **`676924349c3a296e8ef07ef09a588b472498e7fd`** (`67692434`). **No runtime, extension API, or coverage-threshold change.**
 
+**M27:** Raised Quality coverage floor to **42%**; added **Radon** on **`modules/`** (warn-first **D/E/F**, artifact). **Measurement governance:** **PR #63** — pytest-only coverage (no **`coverage run launch.py`**, no **`coverage combine`**), documented in **`ci_environment_contract.md`** (**Coverage policy (M27)**). PRs **#54–#63** (tests + diagnosis + fix). Binding Quality **23513449859** @ **`e3c0d554fda4bcf24074e85bf43f3fc52bca8c61`**: **198** pass, **47%** TOTAL (pytest-only). **`docs/milestones/M27/M27_summary.md`**, **`M27_audit.md`**. Closeout documentation and annotated tag **`v0.0.27-m27`** (same commit as this closeout). **No runtime or API change;** threshold **42%** unchanged; **pip-audit** / Radon non-blocking per contract.
+
 ---
 
 ### Phase V ? UI & Extension Stabilization (Complete)
@@ -218,7 +221,7 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 **M26 ? Locked manifests & CI environment stabilization** **complete.** Quality CI installs from a **committed lockfile**; npm uses **`npm ci`**; **artifact-level** reproducibility and **`ci_environment_contract.md`** encode the environment; **supply-chain findings** are **visible** via **`pip-audit`** with **explicit non-blocking policy** through **M27** and **strict gate planned for M28**.
 
-**Next:** **M27 ? Coverage and complexity gates** (planning).
+**M27 ? Coverage and complexity gates** **complete** ? coverage enforced (**≥42%**, pytest-only gate post-**#63**), **Radon** visibility (warn-first), **measurement corrected** via explicit governance (**not** hidden CI hacks). **Next:** **M28 ? Security & supply-chain hardening** (blocking **`pip-audit`**, dependency upgrades, regression coverage).
 
 ---
 
