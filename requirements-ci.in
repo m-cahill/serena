@@ -9,22 +9,24 @@
 # M28b batch 1: HTTP stack — versions bumped via `uv pip compile --upgrade-package …` (see requirements-ci.txt header).
 # M28b batch 2: Pillow `>=10.3.0,<11` (CVE fixes). `blendmodes==2022` caps Pillow<10; bump to **2024** (Pillow 10 + numpy<2, no NumPy 2 jump).
 # M28b batch 3: API stack — `fastapi` / `starlette` / `h11` (see lock header `--upgrade-package` list).
+# M28b batch 4: tooling / infra — setuptools, wheel, filelock, GitPython (see lock header).
 wait-for-it==2.3.0
 pytest==7.4.4
 pytest-base-url==2.1.0
 pytest-cov==4.1.0
-setuptools==70.0.0
-wheel==0.45.1
+setuptools>=70,<80
+wheel>=0.43,<1
 torch==2.1.2
 torchvision==0.16.2
 # OpenAI CLIP: not in this lockfile — PEP 517 metadata for the GitHub archive fails on CI.
 # Quality workflow downloads the pinned zip, unzips, and `pip install --no-build-isolation` the tree.
 # open_clip GitHub zip omitted: duplicate ZIP entries break uv; PyPI pin below matches post-install state.
-GitPython==3.1.32
+GitPython>=3.1.40,<4
 pillow>=10.3.0,<11
 accelerate==0.21.0
 blendmodes==2024
 clean-fid==0.1.35
+filelock>=3.13,<4
 diskcache==5.6.3
 einops==0.4.1
 facexlib==0.3.0

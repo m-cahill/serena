@@ -171,3 +171,42 @@ Upgrading FastAPI past **~0.100** pulls **Pydantic v2** (`pydantic==2.12.5`, `py
 | Packages with findings | 13 | **13** |
 
 **Cleared from advisory output in this mode:** prior **fastapi / starlette / h11** rows (and **httpx** client CVE rows tied to the old pair). **CI summary:** binding pass/fail on **Quality** (non-audit steps) TBD on push; local full pytest not run.
+
+---
+
+## M28b — Batch 4 (setuptools / wheel / filelock / GitPython) — 2026-03-25
+
+**Intent:** Bump low-risk tooling / packaging / lock / Git bindings without touching ML or Pillow policy.
+
+### `requirements-ci.in`
+
+| Package | Spec |
+|---------|------|
+| setuptools | `>=70,<80` (was `==70.0.0`) |
+| wheel | `>=0.43,<1` (was `==0.45.1`) |
+| filelock | `>=3.13,<4` (new explicit line; was transitive only) |
+| GitPython | `>=3.1.40,<4` (was `==3.1.32`) |
+
+### Resolved pins (`requirements-ci.txt`)
+
+| Package | Before (batch 3 lock) | After batch 4 |
+|---------|------------------------|---------------|
+| setuptools | 70.0.0 | **79.0.1** |
+| wheel | 0.45.1 | **0.46.3** |
+| filelock | 3.20.0 | **3.25.2** |
+| gitpython | 3.1.32 | **3.1.46** |
+
+### pip-audit (local, `pip-audit -r requirements-ci.txt`)
+
+| Metric | After batch 3 | After batch 4 |
+|--------|---------------|---------------|
+| “Found N known vulnerabilities” | 71 | **62** |
+| Packages with findings | 13 | **12** |
+
+### Runtime
+
+- No application code changes; **GitPython** / **filelock** / **setuptools** / **wheel** are infrastructure-adjacent. **Local pytest / verify_pinned_deps** not run; **CI** is binding.
+
+### CI summary
+
+- **Quality:** `pip-audit` still expected to **fail** until ML / remaining stacks are addressed; other jobs expected **green** on matching install.
