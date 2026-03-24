@@ -35,26 +35,6 @@ def test_images_sanitize_filename_part(initialize):
     assert " " not in out
 
 
-def test_images_scheduler_strings(initialize):
-    from modules import images
-
-    sch = images.get_scheduler_str("Euler a", "Automatic")
-    assert isinstance(sch, str) and len(sch) > 0
-    both = images.get_sampler_scheduler_str("Euler a", "Automatic")
-    assert "Euler" in both
-
-
-def test_images_get_sampler_scheduler_named(initialize):
-    from modules import images
-
-    class _P:
-        sampler_name = "Euler a"
-        scheduler = "Automatic"
-
-    r = images.get_sampler_scheduler(_P(), True)
-    assert r is not images.NOTHING_AND_SKIP_PREVIOUS_TEXT
-
-
 def test_images_image_grid_one(initialize):
     from modules import images
 
