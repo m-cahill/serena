@@ -21,7 +21,7 @@ Documented in **`docs/architecture/ci_environment_contract.md`** (section **pip-
 | Quality **main** attempt 4 (#48) | [23422287711](https://github.com/m-cahill/serena/actions/runs/23422287711) | **fail** | **`no such option: --no-use-pep517`** |
 | Quality **main** attempt 5 (#49) | [23422412262](https://github.com/m-cahill/serena/actions/runs/23422412262) | **fail** | Install + CLIP OK; **strict `pip-audit` exit 1** (many CVEs on frozen tree). |
 | Quality **main** attempt 6 (#51) | [23467606465](https://github.com/m-cahill/serena/actions/runs/23467606465) | **fail** | Informational **`pip-audit`** OK; **`verify_pinned_deps`**: `requests` expected **2.28.1**, got **2.32.5** — **`pip install pip-audit`** upgraded **`requests`** before verify ran. |
-| Quality **main** attempt 7 (#52) | _after merge_ | _TBD_ | **Fix:** run **verify lockfile** before **`pip-audit`** (workflow + contract). |
+| Quality **main** attempt 7 (#52) | [23467772232](https://github.com/m-cahill/serena/actions/runs/23467772232) | **pass** | **112** tests passed; **combined coverage 40%** (meets **≥40%** gate). **`pip-audit`** informational (**`::warning`** + **`pip_audit_report.txt`** artifact). Artifacts: output, htmlcov, coverage-xml, ci-environment, pip-freeze, dependency-snapshot, **pip-audit-report**. |
 
 ## Root cause (install) — resolved (#48 / #49)
 
@@ -29,4 +29,6 @@ OpenAI CLIP: use **workflow** `curl` + `unzip` + **`pip install --no-build-isola
 
 ## Final verdict
 
-**M26 closeout** pending **attempt 7** Quality green (verify, tests, coverage ≥ 40%, artifacts including **`pip-audit-report`**).
+**Quality binding gate satisfied** on **attempt 7** ([23467772232](https://github.com/m-cahill/serena/actions/runs/23467772232)): locked install + CLIP step, **`verify_pinned_deps`** pass, **`pip-audit`** surfaced but non-blocking per governance, **112** tests, **40%** coverage, artifacts uploaded.
+
+**M26 program closeout** (ledger `docs/serena.md`, audit/summary prompts, tags) remains per your **permission** and `.cursorrules` sequence.
