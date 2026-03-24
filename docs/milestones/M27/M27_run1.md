@@ -6,7 +6,8 @@
 **PR #57:** [merged](https://github.com/m-cahill/serena/pull/57) — prompt-parser + options API bulk coverage (**no net TOTAL delta** vs attempt 3: same **11237** miss).  
 **PR #58:** [merged](https://github.com/m-cahill/serena/pull/58) — util + `errors` tests.  
 **PR #59:** [merged](https://github.com/m-cahill/serena/pull/59) — fix `display_once` assertion.  
-**PR #60:** `images` + `extras` cold-path tests _(pending merge)_.
+**PR #60:** [merged](https://github.com/m-cahill/serena/pull/60) — `images` + `extras` cold-path tests.  
+**PR #61:** [merged](https://github.com/m-cahill/serena/pull/61) — drop sampler-config image tests (CI has no `Euler a` config).
 
 ---
 
@@ -66,11 +67,26 @@ Net vs attempt 1: **+36** covered statements (**7571 → 7607**), still **~308**
 
 ---
 
-## Quality attempt 6 (binding)
+## Quality attempt 6 — **fail (pytest then coverage)**
 
 | Workflow | Run ID | Result | Notes |
 |----------|--------|--------|-------|
-| Quality (`main`) | _(after #60)_ | | **≥42%**, Radon + artifact if green. |
+| Quality (`main`) | [23510513615](https://github.com/m-cahill/serena/actions/runs/23510513615) | **fail** | **#60:** `get_scheduler_str` / `get_sampler_scheduler` — **`find_sampler_config` returned `None`** in CI. |
+| Quality (`main`) | [23510740367](https://github.com/m-cahill/serena/actions/runs/23510740367) | **fail** | **#61:** tests pass; **TOTAL** still **18844 / 11237 miss (40%)** — same as attempts 3–5. |
+
+---
+
+## Diagnosis — **why extra tests are not moving the gate**
+
+Quality **combines** coverage from (1) the **long-running server** (`coverage run … launch.py`) and (2) **pytest**. Any statement already executed during server startup stays **hit** in the merged data set; pytest tests that call the same `modules/*` paths **do not increase** the numerator.
+
+The remaining **11237** misses are concentrated in code paths **neither** the server nor the current tests reach (large legacy surfaces: merge/train/exotic model stacks, etc.). Raising **`fail-under` by +2** without changing **measurement scope** (omit list) or **which runs feed the gate** (e.g. pytest-only) implies **hundreds of genuinely new** statement executions — not duplicates of startup-imported modules.
+
+**Governance fork (needs explicit milestone decision, not silent CI weakening):**
+
+1. **Expand `[tool.coverage.run] omit`** for frozen legacy trees out of Serena scope (shrinks denominator; must be documented).  
+2. **Gate on pytest-only** combined data (excludes server `.coverage*`), or split metrics.  
+3. **Revert `fail-under` to 40%** until a dedicated coverage milestone maps cold paths (user has ruled this out unless re-approved).
 
 ---
 
@@ -84,4 +100,6 @@ Net vs attempt 1: **+36** covered statements (**7571 → 7607**), still **~308**
 
 ## Final verdict
 
-**Pending:** Quality **attempt 6** green on `main` after **#60**. Then audit / summary / `docs/serena.md` per permission.
+**Blocked on governance:** **`--fail-under=42`** is not satisfied with the **current** combined server+pytest report (**40%**, **11237** miss). Further **contract tests alone** are unlikely to move the TOTAL until one of the **Diagnosis** options above is chosen. **Radon** has not run on a green Quality job in this sequence (coverage step fails first).
+
+**Next:** program decision on **measurement scope** vs **threshold** vs **dedicated integration coverage** work — then either adjust contract explicitly or continue targeted cold-path work with a clear coverage map.
