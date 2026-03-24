@@ -16,5 +16,6 @@
 | 2026-03-23 | StrReplace | Fix complexity table phase label (M27 warn-first) | `ci_environment_contract.md` |
 | 2026-03-23 | StrReplace | Proactive coverage: deprecation format + class decorator | `test/quality/test_deprecation_scaffolding.py` |
 | 2026-03-23 | Shell | Git branch, commit, push, open PR to main | `m27-coverage-complexity-gates` |
+| 2026-03-23 | gh | Open PR #54 on fork (`-R m-cahill/serena`; default `gh` repo was upstream) | https://github.com/m-cahill/serena/pull/54 |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*
