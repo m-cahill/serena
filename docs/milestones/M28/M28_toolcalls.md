@@ -16,5 +16,10 @@
 | 2026-03-25T00:03Z | pytest | Sanity: smoke + quality (skipped locally — no full CI venv) | — |
 | 2026-03-25T00:04Z | pip-audit | Compare audit vs baseline (HTTP cluster) | `requirements-ci.txt` |
 | 2026-03-25T00:06Z | git | Commit M28b batch 1 | `requirements-ci.*`, `ci_environment_contract.md`, `M28_run1.md` |
+| 2026-03-25T12:00Z | edit | M28b batch 2: Pillow pin `>=10.3,<11` in `requirements-ci.in` | `requirements-ci.in` |
+| 2026-03-25T12:01Z | uv | Recompile lock (HTTP + pillow `--upgrade-package`) | `requirements-ci.txt` |
+| 2026-03-25T12:02Z | pip-audit | Measure findings after pillow bump | `requirements-ci.txt` |
+| 2026-03-25T12:03Z | read / search | Pillow touchpoints: `modules/images.py`, `modules/extras.py`, tests | — |
+| 2026-03-25T12:04Z | git | Commit M28b batch 2 | `requirements-ci.*`, `M28_run1.md`, `M28_toolcalls.md` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

@@ -94,3 +94,40 @@ Used **`uv pip compile`** with **`--index-strategy unsafe-best-match`** (PyTorch
 
 - `requirements-ci.in` documents batch intent in a comment; selective flags live in **`requirements-ci.txt`** autogen header.
 - `docs/architecture/ci_environment_contract.md` updated: **unsafe-best-match** + **`--upgrade-package`** for small-batch bumps.
+
+---
+
+## M28b — Batch 2 (Pillow / image stack) — 2026-03-25
+
+**Intent:** Move **Pillow** into the **10.3+** line (`pillow>=10.3.0,<11` per `requirements-ci.in`) to clear **Pillow 9.x** advisory rows.
+
+### Co-upgrade: `blendmodes`
+
+**`blendmodes==2022`** declares `pillow<10`, so a Pillow 10 upgrade is **unsatisfiable** without bumping blendmodes. **`blendmodes==2024`** supports **`Pillow>=10,<11`** and **`numpy<2`** (avoids the NumPy 2 jump required by **`blendmodes==2025`**). This is a **mandatory compatibility co-change**, not an unrelated dep bump.
+
+| Package     | Before   | After    |
+|-------------|----------|----------|
+| `pillow`    | 9.5.0    | **10.4.0** |
+| `blendmodes`| 2022     | **2024** |
+
+### Lockfile regeneration
+
+Same **`uv pip compile`** pattern as batch 1, with **`--upgrade-package pillow`** added to the header (HTTP upgrade packages retained).
+
+### pip-audit (local, `pip-audit -r requirements-ci.txt`)
+
+| Metric | After batch 1 | After batch 2 |
+|--------|---------------|---------------|
+| “Found N known vulnerabilities” | 81 | **77** |
+| Packages with findings | 13 | **13** |
+
+**Pillow:** All advisory rows tied to **Pillow 9.5.0** in the prior report are **gone** (replaced by a single row for **10.4.0**). **One** row remains for **`pillow 10.4.0`** (**CVE-2026-25990**; advisory fix version **12.1.1** — outside the **`<11`** cap for this batch). Further reduction may require a later milestone decision (Pillow 11+ / major).
+
+### Runtime / tests
+
+- No edits to **`modules/images.py`** or **`modules/extras.py`**; **`processing.py`** import **`from blendmodes.blend import blendLayers, BlendType`** unchanged for **blendmodes 2024**.
+- **Local:** full pytest / `verify_pinned_deps.sh` not run here; **CI** is the binding check.
+
+### CI summary
+
+- **Quality:** `pip-audit` step still **expected to fail** until more packages are remediated; non-audit steps **expected green** if the environment matches the lock.
