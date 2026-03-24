@@ -10,5 +10,11 @@
 | 2026-03-24T22:32Z | edit | M28a: Quality `pip-audit` blocking; contract + guardrails | `.github/workflows/run_quality_tests.yaml`, `docs/architecture/ci_environment_contract.md`, `docs/PR_guardrail_checklist.md` |
 | 2026-03-24T22:33Z | write | M28a evidence: `M28_run1.md` baseline + enforcement note | `docs/milestones/M28/M28_run1.md` |
 | 2026-03-24T22:40Z | git | Commit M28a (workflow + contract + baseline + run log) | branch `m28-security-supply-chain` |
+| 2026-03-25T00:00Z | edit | M28b batch 1: HTTP stack constraints in `requirements-ci.in` | `requirements-ci.in` |
+| 2026-03-25T00:01Z | uv | Regenerate `requirements-ci.txt` (manylinux 3.10) | `requirements-ci.in` → `requirements-ci.txt` |
+| 2026-03-25T00:02Z | bash | Determinism: `verify_pinned_deps.sh` | `requirements-ci.txt`, `dependency_snapshot.txt` |
+| 2026-03-25T00:03Z | pytest | Sanity: smoke + quality (skipped locally — no full CI venv) | — |
+| 2026-03-25T00:04Z | pip-audit | Compare audit vs baseline (HTTP cluster) | `requirements-ci.txt` |
+| 2026-03-25T00:06Z | git | Commit M28b batch 1 | `requirements-ci.*`, `ci_environment_contract.md`, `M28_run1.md` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

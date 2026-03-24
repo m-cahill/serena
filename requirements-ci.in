@@ -6,6 +6,7 @@
 
 --extra-index-url https://download.pytorch.org/whl/cpu
 
+# M28b batch 1: HTTP stack — versions bumped via `uv pip compile --upgrade-package …` (see requirements-ci.txt header).
 wait-for-it==2.3.0
 pytest==7.4.4
 pytest-base-url==2.1.0

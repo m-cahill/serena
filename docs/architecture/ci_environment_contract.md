@@ -38,6 +38,8 @@ uv pip compile requirements-ci.in -o requirements-ci.txt \
 
 Use **`x86_64-manylinux_2_28`** (or newer manylinux tag supported by `uv`) to align with **`ubuntu-latest`** runners.
 
+**PyTorch extra index vs PyPI:** The CPU wheel index can expose **outdated** versions of some pure-Python packages. When resolving upgrades for those, add **`--index-strategy unsafe-best-match`** so **PyPI** is considered (trusted indexes only; see `uv` docs). For **M28b-style** small batches that bump only named packages, use **`--upgrade-package <pkg>`** once per package and mirror the full command in the lockfile header **`#` comment** and in **`--custom-compile-command`**.
+
 **Do not** replace **`requirements.txt`** or **`requirements_versions.txt`**; they remain for non–Quality workflows and developer flows unless a later milestone consolidates them.
 
 ## pip-audit policy (Phase VI)

@@ -54,3 +54,43 @@ After this PR merges to `main`, **Quality** should **fail** at the dependency vu
 ## Deferrals
 
 None yet. Any deferral must list CVE, package, reason, follow-up, and still keep CI green via safest pin / isolation per locked policy.
+
+---
+
+## M28b — Batch 1 (HTTP stack) — 2026-03-25
+
+**Intent:** Upgrade only **`requests`**, **`urllib3`**, **`certifi`**, **`idna`** with minimal lockfile drift.
+
+### Lockfile regeneration
+
+Used **`uv pip compile`** with **`--index-strategy unsafe-best-match`** (PyTorch CPU index lists stale pure-Python stubs; PyPI must participate) and **selective** resolution:
+
+`--upgrade-package requests --upgrade-package urllib3 --upgrade-package certifi --upgrade-package idna`
+
+**Diff vs previous `requirements-ci.txt`:** only the four pins below (plus header comment / CLIP note preserved).
+
+| Package   | Before     | After      |
+|-----------|------------|------------|
+| certifi   | 2022.12.7  | 2026.2.25  |
+| idna      | 3.4        | 3.11       |
+| requests  | 2.28.1     | 2.32.5     |
+| urllib3   | 1.26.13    | 2.6.3      |
+
+### pip-audit (local, `pip-audit -r requirements-ci.txt`)
+
+| Metric | Before (baseline snapshot) | After batch 1 |
+|--------|---------------------------|---------------|
+| Vulnerability rows (same mode) | 100 | **81** (`pip-audit` “Found N known vulnerabilities”; no rows for certifi / idna / requests / urllib3) |
+| Packages with findings | 17 | **13** |
+
+**Cleared from advisory output in this mode:** HTTP cluster (`certifi`, `idna`, `requests`, `urllib3`). **Remaining:** pillow, diskcache, fastapi, starlette, filelock, gitpython, gradio, h11, protobuf, pytorch-lightning, setuptools, transformers, wheel (unchanged from baseline except HTTP).
+
+### CI expectation
+
+- **Quality:** still **fails** `pip-audit` until later batches; **tests / coverage / verify_pinned_deps** should pass if install matches lock.
+- **Local:** full `verify_pinned_deps.sh` / pytest not run here (no Linux CI-sized venv).
+
+### Notes
+
+- `requirements-ci.in` documents batch intent in a comment; selective flags live in **`requirements-ci.txt`** autogen header.
+- `docs/architecture/ci_environment_contract.md` updated: **unsafe-best-match** + **`--upgrade-package`** for small-batch bumps.
