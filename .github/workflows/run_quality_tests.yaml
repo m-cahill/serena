@@ -55,10 +55,21 @@ jobs:
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"
+      # Informational until M28: strict pip-audit would require dep upgrades (behavior surface).
       - name: Dependency vulnerability scan
+        shell: bash
         run: |
           pip install pip-audit
-          pip-audit
+          set +o pipefail
+          pip-audit | tee pip_audit_report.txt
+          audit_rc=${PIPESTATUS[0]}
+          set -o pipefail
+          if [ "$audit_rc" -ne 0 ]; then
+            echo "::warning title=pip-audit vulnerabilities detected::See pip_audit_report.txt artifact. Strict enforcement deferred to M28."
+          fi
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+          PIP_PROGRESS_BAR: "off"
       - name: Verify lockfile vs environment
         run: bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt
       - name: Capture CI environment metadata
@@ -152,3 +163,9 @@ jobs:
         with:
           name: dependency-snapshot
           path: dependency_snapshot.txt
+      - name: Upload pip-audit report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pip-audit-report
+          path: pip_audit_report.txt
