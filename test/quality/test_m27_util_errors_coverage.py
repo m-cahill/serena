@@ -180,6 +180,8 @@ def test_display_once_dedupes(capsys):
     err_mod.already_displayed.clear()
     e = RuntimeError("m27-once")
     err_mod.display_once(e, "m27-dedupe-task")
+    first = capsys.readouterr().err
     err_mod.display_once(e, "m27-dedupe-task")
-    err = capsys.readouterr().err
-    assert err.count("RuntimeError") == 1
+    second = capsys.readouterr().err
+    assert "RuntimeError" in first
+    assert second == ""
