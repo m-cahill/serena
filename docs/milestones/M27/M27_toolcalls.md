@@ -24,5 +24,7 @@
 | 2026-03-24 | StrReplace | M27: pytest-only coverage — no server `coverage run`, no `combine` | `run_quality_tests.yaml` |
 | 2026-03-24 | StrReplace | Coverage policy (M27) in CI contract | `ci_environment_contract.md` |
 | 2026-03-24 | StrReplace | Governance decision + final verdict (measurement fix) | `M27_run1.md` |
+| 2026-03-24 | Shell | Commit on `m27-coverage-measurement-fix`, push | `git` |
+| 2026-03-24 | gh | Open PR #63 (M27 pytest-only coverage) | https://github.com/m-cahill/serena/pull/63 |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*
