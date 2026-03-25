@@ -82,3 +82,18 @@ original_Blocks_get_config_file = patches.patch(__name__, obj=gr.blocks.Blocks, 
 
 
 ui_tempdir.install_ui_tempdir_override()
+
+# Gradio 6+: Button.__init__ validates kwargs before Component.__init__ runs; `tooltip` is not a
+# valid parameter (tooltips are handled via webui_tooltip in Component_init / get_config).
+_gradio_button_orig = gr.Button.__init__
+
+
+def _gradio_button_init(self, *args, **kwargs):
+    wt = kwargs.pop("tooltip", None)
+    res = _gradio_button_orig(self, *args, **kwargs)
+    if wt is not None:
+        self.webui_tooltip = wt
+    return res
+
+
+gr.Button.__init__ = _gradio_button_init
