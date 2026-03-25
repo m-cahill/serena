@@ -30,7 +30,13 @@ from modules.infotext_utils import image_from_url_text
 create_setting_component = ui_settings.create_setting_component
 
 warnings.filterwarnings("default" if opts.show_warnings else "ignore", category=UserWarning)
-warnings.filterwarnings("default" if opts.show_gradio_deprecation_warnings else "ignore", category=gr.deprecation.GradioDeprecationWarning)
+# Gradio 6+: `gr.deprecation` removed; keep filter when the category exists (Gradio 5.x).
+_gradio_dep = getattr(getattr(gr, "deprecation", None), "GradioDeprecationWarning", None)
+if _gradio_dep is not None:
+    warnings.filterwarnings(
+        "default" if opts.show_gradio_deprecation_warnings else "ignore",
+        category=_gradio_dep,
+    )
 
 # this is a fix for Windows users. Without it, javascript files will be served with text/html content-type and the browser will not show any UI
 mimetypes.init()
