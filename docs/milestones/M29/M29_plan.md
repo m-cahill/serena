@@ -23,5 +23,5 @@ Make Serena **observable and regression-resistant** via lightweight timing instr
 - [x] `ProcessingRunner` records `execute_time` and `total_time` on `p.runtime_metrics`.
 - [x] API txt2img/img2img handlers log wall time at DEBUG (non–user-facing).
 - [x] Quality test asserts metrics exist (no strict thresholds).
-- [x] CI generates and uploads `performance_snapshot.txt`.
+- [ ] CI generates and uploads `performance_snapshot.txt` — **pending green Quality** (see `M29_run1.md`).
 - [x] `docs/architecture/performance_baseline.md` documents baselines and caveats.
