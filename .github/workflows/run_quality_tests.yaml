@@ -59,12 +59,16 @@ jobs:
       - name: Verify lockfile vs environment
         run: bash scripts/ci/verify_pinned_deps.sh requirements-ci.txt dependency_snapshot.txt
       # M28a: blocking — merge gate fails on unresolved advisories (remediation in M28b).
+      # M28b Batch 5b: `--ignore-vuln` only for CVEs documented in docs/milestones/M28/M28_run1.md (no PyPI fix yet).
       - name: Dependency vulnerability scan
         shell: bash
         run: |
           pip install pip-audit
           set -o pipefail
-          pip-audit | tee pip_audit_report.txt
+          pip-audit \
+            --ignore-vuln CVE-2025-69872 \
+            --ignore-vuln CVE-2026-4539 \
+            | tee pip_audit_report.txt
         env:
           PIP_DISABLE_PIP_VERSION_CHECK: "1"
           PIP_PROGRESS_BAR: "off"

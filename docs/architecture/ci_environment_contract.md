@@ -50,6 +50,8 @@ Use **`x86_64-manylinux_2_28`** (or newer manylinux tag supported by `uv`) to al
 | **M28a+ (Quality)** | **Strict enforcement**: `pip-audit` **fails the job** on unresolved advisories. Remediation is **M28b** (small-batch dependency upgrades + regression tests). |
 | **Nightly** | **Informational only** (non-zero exit ignored in workflow): exploratory signal; not a merge gate. |
 
+**Documented deferrals (M28b+):** If an advisory has **no fixed release on PyPI**, the Quality workflow may pass **`pip-audit --ignore-vuln <CVE-ID>`** for that ID **only when** the CVE, package, reason, and follow-up are recorded in **`docs/milestones/M28/M28_run1.md`**. Remove ignores when a fixed wheel is published and pins are bumped.
+
 Rationale: clearing all current advisories requires **upgrading major runtime pins** (e.g. gradio, pillow, transformers), which is **behavior and compatibility work**, not environment determinism. **M26** establishes reproducible installs; **M28** splits **enforcement** (M28a) from **remediation** (M28b).
 
 ## Complexity policy (Phase VI)
