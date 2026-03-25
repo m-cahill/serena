@@ -53,7 +53,7 @@ After this PR merges to `main`, **Quality** should **fail** at the dependency vu
 
 ## Deferrals
 
-None yet. Any deferral must list CVE, package, reason, follow-up, and still keep CI green via safest pin / isolation per locked policy.
+See **M28b — Batch 5b** for **diskcache** (CVE-2025-69872) and **pygments** (CVE-2026-4539) — no fixed release on PyPI at lock time. Any deferral must list CVE, package, reason, follow-up, and still keep CI green via safest pin / isolation per locked policy.
 
 ---
 
@@ -269,3 +269,39 @@ A **pillow-only** bump is **unsatisfiable** with the pre-5a graph:
 **Local verification:** Full **Quality** suite not reproduced on this machine (missing **torchvision** / **piexif** in the dev env); **13** extension/deprecation contract tests passed. **CI** remains the binding gate for the full matrix.
 
 **Commits:** stabilization applied as **`m28b: fix gradio 6 compatibility (minimal adapter)`** (see git log).
+
+---
+
+## M28b — Batch 5b (ML stack: protobuf / pytorch-lightning / transformers) — 2026-03-26
+
+**Intent:** Close the **ML / heavy runtime** advisory cluster while micro-stepping upgrades.
+
+### Input pins (`requirements-ci.in`)
+
+| Step | Pin | Notes |
+|------|-----|--------|
+| 1 | `protobuf>=5,<6` | Required **`open-clip-torch>=2.24`** (older pins capped `protobuf<4`). |
+| 2 | `pytorch_lightning>=2.2,<3` | Resolved **2.6.1**; existing **`fix_pytorch_lightning()`** maps **`utilities.distributed` → `rank_zero`** for PL2. |
+| 3 | `transformers>=4.57,<5` | **4.49.x** still reported multiple CVEs in `pip-audit`; **4.57.6** clears those rows. Requires **`safetensors>=0.4.3`** (resolved **0.7.0**). |
+| — | `gradio>=6.7,<7` | Clears **Gradio 6.5.x** CVE rows; resolved **6.10.0** (with **`gradio-client` 2.4.0**, **`hf-gradio` 0.3.0** transitive). |
+
+### pip-audit (local, `pip-audit -r requirements-ci.txt`, Python 3.11)
+
+| Metric | After batch 5a stabilization | After batch 5b |
+|--------|---------------------------|----------------|
+| “Found N known vulnerabilities” | 30 | **2** |
+| Packages with findings | (mixed) | **2** |
+
+**Remaining (no installable fix on PyPI at lock time):**
+
+| CVE | Package | Version | Reason / follow-up |
+|-----|---------|---------|---------------------|
+| CVE-2025-69872 | **diskcache** | 5.6.3 (latest on PyPI) | Unsafe pickle deserialization; **no release >5.6.3** yet. **Follow-up:** bump `diskcache` when upstream publishes a fix; avoid loading attacker-controlled cache dirs. |
+| CVE-2026-4539 | **pygments** | 2.19.2 (latest on PyPI) | ReDoS in **AdlLexer**; advisory fix **≥2.19.3** but **2.19.3 not published**. **Follow-up:** pin **`pygments>=2.19.3`** on first PyPI release. |
+
+**Skipped audit (unchanged):** `torch` / `torchvision` **+cpu** wheels — not on PyPI for `pip-audit -r`; **CI** installs and may surface different rows.
+
+### CI expectation
+
+- **Quality:** `pip-audit` may still **exit non-zero** until **diskcache** / **pygments** ship fixes **or** policy allows documenting-only deferrals for unfixable rows.
+- **Regression focus:** `transformers` / **`safetensors`** loading paths, **Gradio 6.10** UI shim (same adapter pattern as 6.5).

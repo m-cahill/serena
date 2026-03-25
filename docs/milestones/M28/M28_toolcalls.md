@@ -40,8 +40,8 @@
 | 2026-03-26T12:01Z | git | `m28b: upgrade protobuf` | — |
 | 2026-03-26T12:02Z | edit + uv | M28b 5b step 2: `pytorch_lightning>=2.2,<3` | `requirements-ci.in`, `requirements-ci.txt` |
 | 2026-03-26T12:03Z | git | `m28b: upgrade pytorch-lightning` | — |
-| 2026-03-26T12:04Z | edit + uv | M28b 5b step 3: `transformers>=4.40,<5` | `requirements-ci.in`, `requirements-ci.txt` |
-| 2026-03-26T12:05Z | pip-audit | Audit after ML stack | `requirements-ci.txt` |
-| 2026-03-26T12:06Z | git | `m28b: upgrade transformers` + `M28_run1.md` | — |
+| 2026-03-26T12:04Z | edit + uv | M28b 5b step 3: `transformers>=4.57,<5` + **`safetensors>=0.4.3`** (required by transformers 4.57.x) + **`gradio>=6.7`** (CVE fixes; resolved **6.10.0**) | `requirements-ci.in`, `requirements-ci.txt` |
+| 2026-03-26T12:05Z | pip-audit | Audit after ML stack: **2** remaining (**diskcache**, **pygments** — no fix on PyPI yet) | `requirements-ci.txt` |
+| 2026-03-26T12:06Z | git | `m28b: upgrade transformers` (+ co-bumps) + `M28_run1.md` deferrals | — |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

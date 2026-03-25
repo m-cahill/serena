@@ -10,7 +10,7 @@
 # M28b batch 2: Pillow 10.x path; batch 5a moves to **12.x** (CVE-2026-25990). **Co-upgrades required by PyPI:** `blendmodes` 2024→2025 (Pillow<11→open), **numpy** 1.x→2.x, **gradio** 3.x→**6.5.x** (first line with `pillow<13`).
 # M28b batch 3: API stack — `fastapi` / `starlette` / `h11` (see lock header `--upgrade-package` list).
 # M28b batch 4: tooling / infra — setuptools, wheel, filelock, GitPython (see lock header).
-# M28b batch 5b: ML stack — protobuf → pytorch-lightning → transformers (micro-steps; see commits).
+# M28b batch 5b: ML stack — protobuf → pytorch-lightning → transformers (+ **safetensors** ≥0.4.3 for transformers 4.57.x; **gradio** ≥6.7 for Gradio CVE fixes; micro-steps; see commits).
 wait-for-it==2.3.0
 pytest==7.4.4
 pytest-base-url==2.1.0
@@ -34,7 +34,7 @@ facexlib==0.3.0
 fastapi>=0.110,<1
 starlette>=0.37,<1
 h11>=0.14,<1
-gradio==6.5.0
+gradio>=6.7,<7
 # httpcore 0.15 pins h11<0.13 — incompatible with M28b h11>=0.14; bump client stack with FastAPI batch.
 httpcore>=1.0,<2
 inflection==0.5.1
@@ -49,13 +49,13 @@ protobuf>=5,<6
 psutil==5.9.5
 pytorch_lightning>=2.2,<3
 resize-right==0.0.2
-safetensors==0.4.2
+safetensors>=0.4.3,<1
 scikit-image==0.21.0
 spandrel==0.3.4
 spandrel-extra-arches==0.1.1
 tomesd==0.1.3
 torchdiffeq==0.2.3
 torchsde==0.2.6
-transformers==4.30.2
+transformers>=4.57,<5
 httpx>=0.27,<1
 pillow-avif-plugin==1.4.3
