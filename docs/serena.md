@@ -162,7 +162,7 @@ Core principles:
 | M25 | Deprecation/compatibility scaffolding | Completed | m25-deprecation-compat-scaffolding | #44 | 46891797 | Linter 23417606838 (PR); Smoke 23417606843 (PR); Quality 23421440167 (112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 |
 | M26 | Locked manifests & CI environment stabilization | Completed | m26-locked-manifests-ci-env | #45–#53 | 67692434 | Linter 23421937195 (pass); Smoke 23421937182 (pass); Quality 23467772232 (pass, 112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 (UTC) |
 | M27 | Coverage and complexity gates | Completed | m27-coverage-complexity-gates; m27-coverage-measurement-fix | #54–#63 | e3c0d554 | Linter 23512022787 (PR, fail); Smoke 23512022741 (PR, pass); Quality **23513449859** (pass, 198 pass, **47%** cov pytest-only) | 5.0 / 5 | 2026-03-24 ~21:43 UTC |
-| M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | ? | 32b2f33a | Quality **TBD** (append run ID from first green gate); **pip-audit** blocking + **2** governed deferrals (**diskcache**, **pygments** — see `M28_run1.md`) | 5.0 / 5 | 2026-03-26 |
+| M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | ? | f88e1e9c | Quality **TBD** (append run ID from first green gate); **pip-audit** blocking + **2** governed deferrals (**diskcache**, **pygments** — see `M28_run1.md`) | 5.0 / 5 | 2026-03-26 |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
