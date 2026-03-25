@@ -33,5 +33,8 @@
 | 2026-03-25T18:01Z | uv | Recompile lock (full `--upgrade-package` list incl. numpy/gradio/blendmodes) | `requirements-ci.txt` |
 | 2026-03-25T18:02Z | pip-audit | Audit after Pillow 12 line | `requirements-ci.txt` |
 | 2026-03-25T18:03Z | git | Commit M28b batch 5a | `requirements-ci.*`, `M28_run1.md`, `M28_toolcalls.md` |
+| 2026-03-26T00:00Z | pytest / import | M28b 5a stabilization: surface Gradio 6 / NumPy 2 failures | `test/quality`, `modules/ui*.py` |
+| 2026-03-26T00:01Z | edit | Minimal compatibility fixes (no broad UI rewrite) | TBD from failures |
+| 2026-03-26T00:02Z | git | Commit stabilization (Gradio 6 shim + tempdir guard) | `gradio_extensons.py`, `ui_tempdir.py`, `script_callbacks.py` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

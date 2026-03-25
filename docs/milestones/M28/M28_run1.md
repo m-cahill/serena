@@ -251,3 +251,21 @@ A **pillow-only** bump is **unsatisfiable** with the pre-5a graph:
 
 - **Quality:** `pip-audit` should still **fail** on remaining packages (e.g. **transformers**, **protobuf**, **gradio-adjacent** noise if any); non-audit steps validate **install + tests + coverage** against this graph.
 - **Binding check:** full **Quality** run on the PR branch (Gradio 6 + NumPy 2 + Torch).
+
+---
+
+## M28b — Batch 5a stabilization (Gradio 6 / NumPy 2) — 2026-03-26
+
+**Observed breakages (import-time, Gradio 6):**
+
+| Symptom | Cause | Fix |
+|--------|--------|-----|
+| `AttributeError: module 'gradio.components' has no attribute 'IOComponent'` | Gradio 6 renamed **`IOComponent` → `Component`** | Patch **`gr.components.Component.__init__`** instead of `IOComponent` (`modules/gradio_extensons.py`) |
+| `gradio.components.IOComponent.pil_to_temp_file` missing | Temp-file hook removed from the base class; saving is internal to Gradio | **`install_ui_tempdir_override`**: only assign **`pil_to_temp_file`** when the attribute exists; otherwise no-op (`modules/ui_tempdir.py`). PNG metadata in temp paths may be reduced vs Gradio 3. |
+| Doc / extension API comments | Stale name | **`script_callbacks`**: docstring now references **`Component`** |
+
+**NumPy 2:** No code changes in this pass; repo had no `np.bool` / `np.int` aliases in `modules/` (common break pattern).
+
+**Local verification:** Full **Quality** suite not reproduced on this machine (missing **torchvision** / **piexif** in the dev env); **13** extension/deprecation contract tests passed. **CI** remains the binding gate for the full matrix.
+
+**Commits:** stabilization applied as **`m28b: fix gradio 6 compatibility (minimal adapter)`** (see git log).

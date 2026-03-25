@@ -588,7 +588,7 @@ def on_before_component(callback, *, name=None):
     """register a function to be called before a component is created.
     The callback is called with arguments:
         - component - gradio component that is about to be created.
-        - **kwargs - args to gradio.components.IOComponent.__init__ function
+        - **kwargs - args to ``Component.__init__`` (Gradio 6+; was ``IOComponent``).
 
     Use elem_id/label fields of kwargs to figure out which component it is.
     This can be useful to inject your own components somewhere in the middle of vanilla UI.
