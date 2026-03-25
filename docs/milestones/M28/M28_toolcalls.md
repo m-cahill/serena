@@ -29,5 +29,9 @@
 | 2026-03-25T16:01Z | uv | Recompile lock (+ `--upgrade-package` for batch 4) | `requirements-ci.txt` |
 | 2026-03-25T16:02Z | pip-audit | Audit count after tooling bump | `requirements-ci.txt` |
 | 2026-03-25T16:03Z | git | Commit M28b batch 4 | `requirements-ci.*`, `M28_run1.md`, `M28_toolcalls.md` |
+| 2026-03-25T18:00Z | edit | M28b batch 5a: Pillow 12 + required graph (numpy2, blendmodes 2025, gradio 6.5) | `requirements-ci.in` |
+| 2026-03-25T18:01Z | uv | Recompile lock (full `--upgrade-package` list incl. numpy/gradio/blendmodes) | `requirements-ci.txt` |
+| 2026-03-25T18:02Z | pip-audit | Audit after Pillow 12 line | `requirements-ci.txt` |
+| 2026-03-25T18:03Z | git | Commit M28b batch 5a | `requirements-ci.*`, `M28_run1.md`, `M28_toolcalls.md` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

@@ -7,7 +7,7 @@
 --extra-index-url https://download.pytorch.org/whl/cpu
 
 # M28b batch 1: HTTP stack — versions bumped via `uv pip compile --upgrade-package …` (see requirements-ci.txt header).
-# M28b batch 2: Pillow `>=10.3.0,<11` (CVE fixes). `blendmodes==2022` caps Pillow<10; bump to **2024** (Pillow 10 + numpy<2, no NumPy 2 jump).
+# M28b batch 2: Pillow 10.x path; batch 5a moves to **12.x** (CVE-2026-25990). **Co-upgrades required by PyPI:** `blendmodes` 2024→2025 (Pillow<11→open), **numpy** 1.x→2.x, **gradio** 3.x→**6.5.x** (first line with `pillow<13`).
 # M28b batch 3: API stack — `fastapi` / `starlette` / `h11` (see lock header `--upgrade-package` list).
 # M28b batch 4: tooling / infra — setuptools, wheel, filelock, GitPython (see lock header).
 wait-for-it==2.3.0
@@ -22,9 +22,9 @@ torchvision==0.16.2
 # Quality workflow downloads the pinned zip, unzips, and `pip install --no-build-isolation` the tree.
 # open_clip GitHub zip omitted: duplicate ZIP entries break uv; PyPI pin below matches post-install state.
 GitPython>=3.1.40,<4
-pillow>=10.3.0,<11
+pillow>=12.0.0,<13
 accelerate==0.21.0
-blendmodes==2024
+blendmodes==2025
 clean-fid==0.1.35
 filelock>=3.13,<4
 diskcache==5.6.3
@@ -33,14 +33,14 @@ facexlib==0.3.0
 fastapi>=0.110,<1
 starlette>=0.37,<1
 h11>=0.14,<1
-gradio==3.41.2
+gradio==6.5.0
 # httpcore 0.15 pins h11<0.13 — incompatible with M28b h11>=0.14; bump client stack with FastAPI batch.
 httpcore>=1.0,<2
 inflection==0.5.1
 jsonmerge==1.8.0
 kornia==0.6.7
 lark==1.1.2
-numpy==1.26.2
+numpy>=2.0.2,<3
 omegaconf==2.2.3
 open-clip-torch==2.20.0
 piexif==1.1.3

@@ -210,3 +210,44 @@ Upgrading FastAPI past **~0.100** pulls **Pydantic v2** (`pydantic==2.12.5`, `py
 ### CI summary
 
 - **Quality:** `pip-audit` still expected to **fail** until ML / remaining stacks are addressed; other jobs expected **green** on matching install.
+
+---
+
+## M28b — Batch 5a (Pillow 12.x — CVE-2026-25990) — 2026-03-25
+
+**Governance:** Proceed with **Pillow 12+** (not deferral).
+
+### Dependency reality (PyPI — not optional)
+
+A **pillow-only** bump is **unsatisfiable** with the pre-5a graph:
+
+| Blocker | Constraint |
+|---------|------------|
+| **blendmodes 2024** | `Pillow>=10,<11` — blocks Pillow 12 |
+| **gradio 3.41.2** | `pillow<11` — blocks Pillow 12 |
+| **blendmodes 2025** | `numpy>=2.0.2`, `pillow>=10.4` — requires **NumPy 2** |
+| **gradio 6.5.0** | First **Gradio** release checked with `pillow<13,>=8` (allows **Pillow 12**); also `numpy<3,>=1`, `fastapi>=0.115.2`, `starlette>=0.40` |
+
+**Batch 5a therefore includes mandatory co-upgrades** (same lockfile / CI install):
+
+| Package | Before | After (resolved) |
+|---------|--------|------------------|
+| **pillow** | 10.4.0 | **12.1.1** (`pillow>=12.0.0,<13`) |
+| **blendmodes** | 2024 | **2025** |
+| **numpy** | 1.26.2 | **2.2.6** (`numpy>=2.0.2,<3`) |
+| **gradio** | 3.41.2 | **6.5.0** |
+| **gradio-client** | (transitive 0.5.0) | **2.0.3** (via Gradio 6) |
+
+**Application code:** No edits in this commit; **Gradio 3 → 6** may require follow-up UI/API fixes if CI surfaces runtime errors — that is **expected risk** for this decision.
+
+### pip-audit (local, `pip-audit -r requirements-ci.txt`)
+
+| Metric | After batch 4 | After batch 5a |
+|--------|---------------|----------------|
+| “Found N known vulnerabilities” | 62 | **30** |
+| **pillow** rows (CVE-2026-25990, etc.) | present on 10.x | **cleared** at **12.1.1** |
+
+### CI summary
+
+- **Quality:** `pip-audit` should still **fail** on remaining packages (e.g. **transformers**, **protobuf**, **gradio-adjacent** noise if any); non-audit steps validate **install + tests + coverage** against this graph.
+- **Binding check:** full **Quality** run on the PR branch (Gradio 6 + NumPy 2 + Torch).
