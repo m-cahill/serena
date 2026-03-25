@@ -36,5 +36,12 @@
 | 2026-03-26T00:00Z | pytest / import | M28b 5a stabilization: surface Gradio 6 / NumPy 2 failures | `test/quality`, `modules/ui*.py` |
 | 2026-03-26T00:01Z | edit | Minimal compatibility fixes (no broad UI rewrite) | TBD from failures |
 | 2026-03-26T00:02Z | git | Commit stabilization (Gradio 6 shim + tempdir guard) | `gradio_extensons.py`, `ui_tempdir.py`, `script_callbacks.py` |
+| 2026-03-26T12:00Z | edit + uv | M28b 5b step 1: `protobuf>=5,<6` | `requirements-ci.in`, `requirements-ci.txt` |
+| 2026-03-26T12:01Z | git | `m28b: upgrade protobuf` | — |
+| 2026-03-26T12:02Z | edit + uv | M28b 5b step 2: `pytorch_lightning>=2.2,<3` | `requirements-ci.in`, `requirements-ci.txt` |
+| 2026-03-26T12:03Z | git | `m28b: upgrade pytorch-lightning` | — |
+| 2026-03-26T12:04Z | edit + uv | M28b 5b step 3: `transformers>=4.40,<5` | `requirements-ci.in`, `requirements-ci.txt` |
+| 2026-03-26T12:05Z | pip-audit | Audit after ML stack | `requirements-ci.txt` |
+| 2026-03-26T12:06Z | git | `m28b: upgrade transformers` + `M28_run1.md` | — |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*
