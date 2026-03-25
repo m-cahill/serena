@@ -303,5 +303,17 @@ A **pillow-only** bump is **unsatisfiable** with the pre-5a graph:
 
 ### CI expectation
 
-- **Quality:** `pip-audit` may still **exit non-zero** until **diskcache** / **pygments** ship fixes **or** policy allows documenting-only deferrals for unfixable rows.
+- **Quality:** `pip-audit` runs with **`--ignore-vuln`** only for the two rows above (**governed** in **`ci_environment_contract.md`**); **`set -o pipefail`** — any **other** advisory **fails** the job.
 - **Regression focus:** `transformers` / **`safetensors`** loading paths, **Gradio 6.10** UI shim (same adapter pattern as 6.5).
+
+---
+
+## M28 — Finalization (governance deferrals + Quality gate) — 2026-03-26
+
+**Workflow:** `.github/workflows/run_quality_tests.yaml` — **`pip-audit`** with **`--ignore-vuln CVE-2025-69872`** and **`--ignore-vuln CVE-2026-4539`** only; **`set -o pipefail`** unchanged.
+
+**pip-audit (effective):** **0** unresolved advisories after documented ignores. Expected output (installed env or `pip-audit -r requirements-ci.txt` with same flags): **“No known vulnerabilities found, 2 ignored”**. Raw lockfile audit without ignores: **2** rows (**diskcache**, **pygments**) — **no PyPI fix** at closeout.
+
+**Quality run ID:** *(Replace with the GitHub Actions run ID from the first green **Quality** workflow on the closing commit / merged PR.)*
+
+**Final verdict:** **M28 complete.** All **resolvable** CVEs were cleared via **M28b** dependency upgrades and minimal adapters; **diskcache** and **pygments** are **explicit, contract-backed deferrals** until upstream publishes fixed wheels — **not** a disabled audit or weakened gate.

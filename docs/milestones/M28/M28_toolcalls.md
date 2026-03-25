@@ -43,5 +43,7 @@
 | 2026-03-26T12:04Z | edit + uv | M28b 5b step 3: `transformers>=4.57,<5` + **`safetensors>=0.4.3`** (required by transformers 4.57.x) + **`gradio>=6.7`** (CVE fixes; resolved **6.10.0**) | `requirements-ci.in`, `requirements-ci.txt` |
 | 2026-03-26T12:05Z | pip-audit | Audit after ML stack: **2** remaining (**diskcache**, **pygments** — no fix on PyPI yet) | `requirements-ci.txt` |
 | 2026-03-26T12:06Z | git | `m28b: upgrade transformers` (+ co-bumps) + `M28_run1.md` deferrals | — |
+| 2026-03-26T14:00Z | read / edit | M28 finalization: contract **pip-audit deferrals (M28)**, `M28_run1.md` gate section, PR checklist, **`M28_summary.md`**, **`M28_audit.md`**, **`docs/serena.md`** | governance docs |
+| 2026-03-26T14:01Z | git | `m28: finalize M28 (deferrals, docs, tag v0.0.28-m28)` | — |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*

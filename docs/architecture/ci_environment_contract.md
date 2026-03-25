@@ -52,6 +52,15 @@ Use **`x86_64-manylinux_2_28`** (or newer manylinux tag supported by `uv`) to al
 
 **Documented deferrals (M28b+):** If an advisory has **no fixed release on PyPI**, the Quality workflow may pass **`pip-audit --ignore-vuln <CVE-ID>`** for that ID **only when** the CVE, package, reason, and follow-up are recorded in **`docs/milestones/M28/M28_run1.md`**. Remove ignores when a fixed wheel is published and pins are bumped.
 
+## pip-audit deferrals (M28)
+
+The following CVEs are temporarily ignored due to lack of upstream fixes on PyPI:
+
+- **CVE-2025-69872** (**diskcache**)
+- **CVE-2026-4539** (**pygments**)
+
+These **must** be removed from **`--ignore-vuln`** once fixed versions are published and **`requirements-ci.txt`** is updated.
+
 Rationale: clearing all current advisories requires **upgrading major runtime pins** (e.g. gradio, pillow, transformers), which is **behavior and compatibility work**, not environment determinism. **M26** establishes reproducible installs; **M28** splits **enforcement** (M28a) from **remediation** (M28b).
 
 ## Complexity policy (Phase VI)
