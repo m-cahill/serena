@@ -2,7 +2,7 @@
 
 **Status:** **Complete** (append **Quality run ID** to **`M28_run1.md`** after the first green **Quality** workflow on the release merge).  
 **Branch:** `m28-security-supply-chain`  
-**Annotated tag:** **`v0.0.28-m28`** — points at the M28 finalization commit (see **`git show v0.0.28-m28`**).
+**Annotated tag:** **`v0.0.28-m28`** → **`c97c4067820210f9c55e8fa56d363ddb21fdb547`** (ledger short-hash commit; finalization docs in parent **`f88e1e9c`**). Verify with **`git show v0.0.28-m28`**.
 
 ---
 

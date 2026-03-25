@@ -45,5 +45,7 @@
 | 2026-03-26T12:06Z | git | `m28b: upgrade transformers` (+ co-bumps) + `M28_run1.md` deferrals | — |
 | 2026-03-26T14:00Z | read / edit | M28 finalization: contract **pip-audit deferrals (M28)**, `M28_run1.md` gate section, PR checklist, **`M28_summary.md`**, **`M28_audit.md`**, **`docs/serena.md`** | governance docs |
 | 2026-03-26T14:01Z | git | `m28: finalize M28 (deferrals, docs, tag v0.0.28-m28)` | — |
+| 2026-03-26T14:02Z | git | `m28: serena M28 ledger short hash` | `docs/serena.md` |
+| 2026-03-26T14:03Z | git | `git tag -a v0.0.28-m28`; `git push origin v0.0.28-m28` | `c97c4067820210f9c55e8fa56d363ddb21fdb547` |
 
 *(Append entries before significant tool invocations per `.cursorrules`.)*
