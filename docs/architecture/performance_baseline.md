@@ -1,32 +1,43 @@
 # Performance baseline (M29)
 
-**Purpose:** Make generation and API latency **observable** without changing behavior or adding blocking performance gates.
+## Purpose
 
-## What is measured
+Serena records **lightweight timing** for the processing runner and logs API handler wall time at **DEBUG** — measurement only, not optimization targets.
 
-| Location | Metric | Storage |
-|----------|--------|---------|
-| **`ProcessingRunner`** | Wall time inside **`execute()`** (`process_images_inner`) | **`ProcessingRequest.runtime_metrics["execute_time"]`** (seconds) |
-| **`ProcessingRunner`** | Wall time for full **`run()`** (prepare → execute → finalize) | **`ProcessingRequest.runtime_metrics["runtime_total_time"]`** |
-| **`StableDiffusionProcessing`** | Same dict (reference) | **`p.runtime_metrics`** after **`process_images()`** |
-| **REST API** (`/sdapi/v1/txt2img`, `/sdapi/v1/img2img`) | Full handler wall time | **`logging.debug`**; last value in **`modules.api.api._m29_last_request_seconds`** (`txt2img` / `img2img` keys) |
+## Runner metrics
 
-No user-facing API or response schema changes are introduced for timing.
+`ProcessingRunner` sets on the processing object `p`:
 
-## CI artifact: `performance_snapshot.txt`
+| Key            | Meaning                                      |
+| -------------- | -------------------------------------------- |
+| `execute_time` | Seconds in the `execute` phase (`perf_counter`) |
+| `total_time`   | Seconds for full `run()` (prepare through finalize) |
 
-Quality tests write **`performance_snapshot.txt`** at the repository root when **`test_performance_baseline.py`** runs successfully. It contains sample **`execute_time`** / **`runtime_total_time`** and environment hints (Python version, platform).
+Values are **non-deterministic** across machines (CPU vs GPU, load, thermal throttling, CI virtualization).
 
-- **Non-blocking:** CI does **not** fail on slow runs.
-- **Variability:** Numbers depend on **CPU vs GPU**, **load**, **torch build**, and **cache** state. Treat snapshots as **ordinal** comparisons over time, not absolute SLAs.
+## API timing
+
+`text2imgapi` / `img2imgapi` log handler wall time at **DEBUG** when not using the CI fake inference path. JSON responses and schemas are **unchanged**; contract tests are unaffected.
+
+## CI artifact
+
+Quality workflow generates **`performance_snapshot.txt`** (not committed) and uploads it as an artifact. Example shape:
+
+```text
+# Serena performance_snapshot (M29)
+generated_utc=...
+python=3.10.x
+platform=...
+sample_runner_execute_time_s=...
+sample_runner_total_time_s=...
+```
+
+Use snapshots to compare **trends** on the same runner class, not as absolute SLAs.
 
 ## Non-deterministic factors
 
-- Hardware (GPU memory, CPU cores, thermal throttling)
-- First-run vs warm cache (model load, CUDA kernels)
-- CI `ubuntu-latest` vs developer machines
-- Concurrent jobs on shared runners
+- Hardware (GPU memory bandwidth, CPU cores)
+- Concurrent jobs on shared CI hosts
+- Torch / CUDA / driver versions (see `ci_environment_contract.md` for the Quality manifest)
 
-## Follow-up (later milestones)
-
-- M30+: optional **trend** reporting or **regression alerts** when baselines drift **significantly** (still **non-blocking** until explicitly adopted).
+M29 does **not** fail CI on performance; thresholds may be introduced in a later milestone after baselines stabilize.

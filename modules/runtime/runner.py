@@ -5,7 +5,7 @@ M11: Lifecycle surface (prepare → execute → finalize). Pass-through behavior
 M12: Instrumentation hooks (on_prepare, on_execute, on_finalize). No-op by default.
 M15: Queue insertion seam. Optional queue wraps execute only; default synchronous.
 M19: Injects model_provider onto processing; runtime uses get_model(p) only.
-M29: Wall-clock timing on ProcessingRequest.runtime_metrics (observability only).
+M29: Stores execute_time and total_time on processing.runtime_metrics (perf_counter).
 """
 
 import time
@@ -16,7 +16,6 @@ class ProcessingRequest:
 
     def __init__(self, processing):
         self.processing = processing
-        self.runtime_metrics = {}
 
 
 class ProcessingRunner:
@@ -39,7 +38,6 @@ class ProcessingRunner:
         """Execute processing pipeline via lifecycle stages."""
         t_run_start = time.perf_counter()
         state = self.prepare(request)
-        state.runtime_metrics.clear()
         self.on_prepare(state)
         if self.use_queue:
             result = self.queue.submit(state, self._execute)
@@ -48,16 +46,27 @@ class ProcessingRunner:
         self.on_execute(state, result)
         result = self.finalize(state, result)
         self.on_finalize(state, result)
-        state.runtime_metrics["runtime_total_time"] = time.perf_counter() - t_run_start
+        total = time.perf_counter() - t_run_start
+        p = state.processing
+        metrics = getattr(p, "runtime_metrics", None)
+        if not isinstance(metrics, dict):
+            metrics = {}
+        metrics["total_time"] = total
+        p.runtime_metrics = metrics
         return result
 
     def _execute(self, state):
         """Internal execution hook. Future insertion point for async, retries, cancellation."""
         t0 = time.perf_counter()
-        try:
-            return self.execute(state)
-        finally:
-            state.runtime_metrics["execute_time"] = time.perf_counter() - t0
+        result = self.execute(state)
+        dt = time.perf_counter() - t0
+        p = state.processing
+        metrics = getattr(p, "runtime_metrics", None)
+        if not isinstance(metrics, dict):
+            metrics = {}
+        metrics["execute_time"] = dt
+        p.runtime_metrics = metrics
+        return result
 
     def prepare(self, request):
         """Lifecycle stage 1: prepare request. M19: attach model_provider to processing."""

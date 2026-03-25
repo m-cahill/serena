@@ -35,8 +35,7 @@ import piexif.helper
 from contextlib import closing
 from modules.progress import create_task_id, add_task_to_queue, start_task, finish_task, current_task
 
-# M29: last API route wall times (seconds); for observability / tests — not a public contract.
-_m29_last_request_seconds = {}
+logger = logging.getLogger(__name__)
 
 
 def _pydantic_dump_exclude_unset(request):
@@ -465,18 +464,16 @@ class Api:
         return params
 
     def text2imgapi(self, txt2imgreq: models.StableDiffusionTxt2ImgProcessingAPI):
-        t0 = time.perf_counter()
-        try:
-            return self._text2imgapi_impl(txt2imgreq)
-        finally:
-            elapsed = time.perf_counter() - t0
-            logging.debug("api txt2img wall time: %.4fs", elapsed)
-            _m29_last_request_seconds["txt2img"] = elapsed
-
-    def _text2imgapi_impl(self, txt2imgreq: models.StableDiffusionTxt2ImgProcessingAPI):
         if os.getenv("CI") == "true":
             return ci_fake_txt2img()
 
+        _t0 = time.perf_counter()
+        try:
+            return self._text2imgapi_impl(txt2imgreq)
+        finally:
+            logger.debug("text2imgapi wall time: %.6fs", time.perf_counter() - _t0)
+
+    def _text2imgapi_impl(self, txt2imgreq: models.StableDiffusionTxt2ImgProcessingAPI):
         task_id = txt2imgreq.force_task_id or create_task_id("txt2img")
 
         script_runner = scripts.scripts_txt2img
@@ -537,18 +534,16 @@ class Api:
         return models.TextToImageResponse(images=b64images, parameters=vars(txt2imgreq), info=processed.js())
 
     def img2imgapi(self, img2imgreq: models.StableDiffusionImg2ImgProcessingAPI):
-        t0 = time.perf_counter()
-        try:
-            return self._img2imgapi_impl(img2imgreq)
-        finally:
-            elapsed = time.perf_counter() - t0
-            logging.debug("api img2img wall time: %.4fs", elapsed)
-            _m29_last_request_seconds["img2img"] = elapsed
-
-    def _img2imgapi_impl(self, img2imgreq: models.StableDiffusionImg2ImgProcessingAPI):
         if os.getenv("CI") == "true":
             return ci_fake_img2img()
 
+        _t0 = time.perf_counter()
+        try:
+            return self._img2imgapi_impl(img2imgreq)
+        finally:
+            logger.debug("img2imgapi wall time: %.6fs", time.perf_counter() - _t0)
+
+    def _img2imgapi_impl(self, img2imgreq: models.StableDiffusionImg2ImgProcessingAPI):
         task_id = img2imgreq.force_task_id or create_task_id("img2img")
 
         init_images = img2imgreq.init_images

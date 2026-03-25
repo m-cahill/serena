@@ -38,8 +38,9 @@ notification.mp3
 /config_states/
 /node_modules
 /.coverage*
-/performance_snapshot.txt
 /test/test_outputs
 /cache
 trace.json
 /sysinfo-????-??-??-??-??.json
+# M29: CI-generated performance artifact (do not commit)
+/performance_snapshot.txt
