@@ -5,7 +5,10 @@ M11: Lifecycle surface (prepare → execute → finalize). Pass-through behavior
 M12: Instrumentation hooks (on_prepare, on_execute, on_finalize). No-op by default.
 M15: Queue insertion seam. Optional queue wraps execute only; default synchronous.
 M19: Injects model_provider onto processing; runtime uses get_model(p) only.
+M29: Wall-clock timing on ProcessingRequest.runtime_metrics (observability only).
 """
+
+import time
 
 
 class ProcessingRequest:
@@ -13,6 +16,7 @@ class ProcessingRequest:
 
     def __init__(self, processing):
         self.processing = processing
+        self.runtime_metrics = {}
 
 
 class ProcessingRunner:
@@ -33,7 +37,9 @@ class ProcessingRunner:
 
     def run(self, request):
         """Execute processing pipeline via lifecycle stages."""
+        t_run_start = time.perf_counter()
         state = self.prepare(request)
+        state.runtime_metrics.clear()
         self.on_prepare(state)
         if self.use_queue:
             result = self.queue.submit(state, self._execute)
@@ -42,11 +48,16 @@ class ProcessingRunner:
         self.on_execute(state, result)
         result = self.finalize(state, result)
         self.on_finalize(state, result)
+        state.runtime_metrics["runtime_total_time"] = time.perf_counter() - t_run_start
         return result
 
     def _execute(self, state):
         """Internal execution hook. Future insertion point for async, retries, cancellation."""
-        return self.execute(state)
+        t0 = time.perf_counter()
+        try:
+            return self.execute(state)
+        finally:
+            state.runtime_metrics["execute_time"] = time.perf_counter() - t0
 
     def prepare(self, request):
         """Lifecycle stage 1: prepare request. M19: attach model_provider to processing."""

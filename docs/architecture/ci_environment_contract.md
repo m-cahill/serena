@@ -4,7 +4,7 @@ This document defines **deterministic, reproducible** CI environments for the Se
 
 ## Guarantee
 
-**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt`**, a **pinned OpenAI CLIP URL** installed with fixed `pip` flags (workflow step, same commit as the lockfile), and **`pip-audit`** run as a **blocking merge gate** (artifact + **job fails** on unresolved advisories per **pip-audit policy** below; **M28a+**). **Radon** runs on **`modules/`** for **cyclomatic complexity visibility** (artifact + optional warning for grade **D/E/F**; **non-blocking** through M27 per **complexity policy** below). For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
+**Committed manifests are the source of truth.** For the Quality workflow, **CI environments are reproducible from `requirements-ci.txt`**, a **pinned OpenAI CLIP URL** installed with fixed `pip` flags (workflow step, same commit as the lockfile), and **`pip-audit`** run as a **blocking merge gate** (artifact + **job fails** on unresolved advisories per **pip-audit policy** below; **M28a+**). **Radon** runs on **`modules/`** for **cyclomatic complexity visibility** (artifact + optional warning for grade **D/E/F**; **non-blocking** through M27 per **complexity policy** below). **M29:** **`performance_snapshot.txt`** is produced during **`pytest`** (or replaced by a stub if generation did not run) and uploaded as a **non-blocking** artifact — see **`docs/architecture/performance_baseline.md`**. For JavaScript lint, **CI installs are reproducible from `package-lock.json` via `npm ci`.**
 
 ## Python — Quality workflow (`run_quality_tests.yaml`)
 

@@ -116,6 +116,14 @@ jobs:
         run: |
           wait-for-it --service 127.0.0.1:7860 -t 20
           python -m pytest test/smoke test/quality -vv --junitxml=test/results.xml --cov . --cov-report=xml --cov-report=term --verify-base-url
+      # M29: performance_snapshot.txt is emitted by test/quality/test_performance_baseline.py on success.
+      - name: Ensure performance snapshot for artifact
+        if: always()
+        shell: bash
+        run: |
+          if [ ! -f performance_snapshot.txt ]; then
+            echo "# M29: performance_snapshot.txt not generated (pytest may have failed before baseline test)" > performance_snapshot.txt
+          fi
       - name: Kill test server
         if: always()
         run: curl -vv -XPOST http://127.0.0.1:7860/sdapi/v1/server-stop && sleep 10
@@ -185,3 +193,9 @@ jobs:
         with:
           name: radon-report
           path: radon_report.txt
+      - name: Upload performance snapshot
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: performance-snapshot
+          path: performance_snapshot.txt

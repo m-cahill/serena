@@ -38,6 +38,7 @@ notification.mp3
 /config_states/
 /node_modules
 /.coverage*
+/performance_snapshot.txt
 /test/test_outputs
 /cache
 trace.json
