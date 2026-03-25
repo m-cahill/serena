@@ -42,3 +42,5 @@ notification.mp3
 /cache
 trace.json
 /sysinfo-????-??-??-??-??.json
+# M29: CI-generated performance artifact (do not commit)
+/performance_snapshot.txt

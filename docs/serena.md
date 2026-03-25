@@ -119,7 +119,7 @@ Core principles:
 | M29 | Health/perf verification |
 | M30 | QA/evidence publishing |
 
-**Progress (Phase VI):** **M26–M27 complete.** **Next:** **M28** (security & supply-chain hardening).
+**Progress (Phase VI):** **M26–M28 complete.** **M29** (health & performance verification): implementation on branch `m29-health-performance-verification` (pending PR/CI). **Next:** **M30** (QA/evidence publishing) after M29 merge.
 
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
@@ -162,6 +162,8 @@ Core principles:
 | M25 | Deprecation/compatibility scaffolding | Completed | m25-deprecation-compat-scaffolding | #44 | 46891797 | Linter 23417606838 (PR); Smoke 23417606843 (PR); Quality 23421440167 (112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 |
 | M26 | Locked manifests & CI environment stabilization | Completed | m26-locked-manifests-ci-env | #45–#53 | 67692434 | Linter 23421937195 (pass); Smoke 23421937182 (pass); Quality 23467772232 (pass, 112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 (UTC) |
 | M27 | Coverage and complexity gates | Completed | m27-coverage-complexity-gates; m27-coverage-measurement-fix | #54–#63 | e3c0d554 | Linter 23512022787 (PR, fail); Smoke 23512022741 (PR, pass); Quality **23513449859** (pass, 198 pass, **47%** cov pytest-only) | 5.0 / 5 | 2026-03-24 ~21:43 UTC |
+| M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | ? | f88e1e9c | Quality **TBD** (append run ID from first green gate); **pip-audit** blocking + **2** governed deferrals (**diskcache**, **pygments** — see `M28_run1.md`) | 5.0 / 5 | 2026-03-26 |
+| M29 | Health / performance verification | Pending PR | m29-health-performance-verification | TBD | TBD | Quality TBD | `p.runtime_metrics` (execute/total); DEBUG API wall time; `performance_snapshot.txt` CI artifact; see `docs/architecture/performance_baseline.md` | TBD |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -209,6 +211,10 @@ Core principles:
 
 **M27:** Raised Quality coverage floor to **42%**; added **Radon** on **`modules/`** (warn-first **D/E/F**, artifact). **Measurement governance:** **PR #63** — pytest-only coverage (no **`coverage run launch.py`**, no **`coverage combine`**), documented in **`ci_environment_contract.md`** (**Coverage policy (M27)**). PRs **#54–#63** (tests + diagnosis + fix). Binding Quality **23513449859** @ **`e3c0d554fda4bcf24074e85bf43f3fc52bca8c61`**: **198** pass, **47%** TOTAL (pytest-only). **`docs/milestones/M27/M27_summary.md`**, **`M27_audit.md`**. Closeout documentation and annotated tag **`v0.0.27-m27`** (same commit as this closeout). **No runtime or API change;** threshold **42%** unchanged; **pip-audit** / Radon non-blocking per contract.
 
+**M28:** **Blocking `pip-audit`** on Quality (**M28a**); **M28b** small-batch dependency upgrades (HTTP, API, tooling, Pillow 12 / Gradio 6 / NumPy 2, ML stack: **protobuf**, **pytorch-lightning**, **transformers**, **safetensors**, **gradio** security line). **Governed deferrals** for **CVE-2025-69872** (**diskcache**) and **CVE-2026-4539** (**pygments**) — **no PyPI fix** at closeout; workflow **`--ignore-vuln`** only for those IDs; **`ci_environment_contract.md`** **pip-audit deferrals (M28)**. **`docs/milestones/M28/M28_summary.md`**, **`M28_audit.md`**, **`M28_run1.md`**. Commit **`896677d5a516da0b9fa7a50ec0a7a7268e55f0f0`** — deferral workflow + contract; **finalization** (summary, audit, ledger) in **`m28: finalize M28 (deferrals, docs, ledger)`**; annotated tag **`v0.0.28-m28`**. Coverage floor **≥42%** unchanged; **no** audit disable.
+
+**M29:** **`ProcessingRunner`** sets **`p.runtime_metrics`** with **`execute_time`** and **`total_time`** (`perf_counter`). **API** **`text2imgapi` / `img2imgapi`**: wall time logged at **DEBUG** only (no JSON change). **`scripts/ci/write_performance_snapshot.py`** emits **`performance_snapshot.txt`** in Quality CI (artifact **not** committed); **`docs/architecture/performance_baseline.md`**. **`test/quality/test_performance_baseline.py`**. Branch **`m29-health-performance-verification`**; PR pending; append Quality run ID and commit on merge.
+
 ---
 
 ### Phase V ? UI & Extension Stabilization (Complete)
@@ -217,11 +223,15 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 > **M21?M23:** Tab registry and modularized txt2img, img2img, settings, extensions. **M24:** Extension API v1 contract. **M25:** Deprecation scaffolding without registry drift.
 
-### Phase VI ? Hardening & Reproducibility (in progress)
+### Phase VI ? Hardening & Reproducibility (M26–M29)
 
-**M26 ? Locked manifests & CI environment stabilization** **complete.** Quality CI installs from a **committed lockfile**; npm uses **`npm ci`**; **artifact-level** reproducibility and **`ci_environment_contract.md`** encode the environment; **supply-chain findings** are **visible** via **`pip-audit`** with **explicit non-blocking policy** through **M27** and **strict gate planned for M28**.
+**M26 ? Locked manifests & CI environment stabilization** **complete.** Quality CI installs from a **committed lockfile**; npm uses **`npm ci`**; **artifact-level** reproducibility and **`ci_environment_contract.md`** encode the environment.
 
-**M27 ? Coverage and complexity gates** **complete** ? coverage enforced (**≥42%**, pytest-only gate post-**#63**), **Radon** visibility (warn-first), **measurement corrected** via explicit governance (**not** hidden CI hacks). **Next:** **M28 ? Security & supply-chain hardening** (blocking **`pip-audit`**, dependency upgrades, regression coverage).
+**M27 ? Coverage and complexity gates** **complete** — coverage enforced (**≥42%**, pytest-only gate post-**#63**), **Radon** visibility (warn-first), **measurement corrected** via explicit governance.
+
+**M28 ? Security & supply-chain hardening** **complete** — **blocking `pip-audit`** on Quality; **M28b** dependency remediation; **two** explicit **PyPI-unfixable** deferrals (**diskcache**, **pygments**) via **`--ignore-vuln`** + documentation; any new advisory **fails** until fixed or governed.
+
+**M29 ? Health & performance verification** — **runner** records **`p.runtime_metrics`** (`execute_time`, `total_time`); **API** logs handler wall time at **DEBUG** only (no JSON/schema change); Quality uploads **`performance_snapshot.txt`** (artifact, not committed); **`docs/architecture/performance_baseline.md`**. **Next:** **M30 ? QA / evidence publishing** (after M29 PR merge and green Quality).
 
 ---
 

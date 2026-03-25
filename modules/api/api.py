@@ -1,5 +1,6 @@
 import base64
 import io
+import logging
 import os
 import time
 import datetime
@@ -33,6 +34,33 @@ import piexif
 import piexif.helper
 from contextlib import closing
 from modules.progress import create_task_id, add_task_to_queue, start_task, finish_task, current_task
+
+logger = logging.getLogger(__name__)
+
+
+def _pydantic_dump_exclude_unset(request):
+    """Pydantic v1 `.dict` / v2 `.model_dump` (M28b: FastAPI stack pulls Pydantic v2)."""
+    dump = getattr(request, "model_dump", None)
+    if dump is not None:
+        return dump(exclude_unset=True)
+    return request.dict(exclude_unset=True)
+
+
+def _pydantic_field_annotation(request, name: str):
+    if hasattr(request, "model_fields"):
+        fi = request.model_fields.get(name)
+        return fi.annotation if fi is not None else None
+    fi = getattr(request, "__fields__", {}).get(name)
+    if fi is not None:
+        return getattr(fi, "type_", None)
+    return None
+
+
+def _model_copy_with_update(obj, update: dict):
+    if hasattr(obj, "model_copy"):
+        return obj.model_copy(update=update)
+    return obj.copy(update=update)
+
 
 def script_name_to_index(name, scripts):
     try:
@@ -373,7 +401,7 @@ class Api:
             return {}
 
         possible_fields = infotext_utils.paste_fields[tabname]["fields"]
-        set_fields = request.model_dump(exclude_unset=True) if hasattr(request, "request") else request.dict(exclude_unset=True)  # pydantic v1/v2 have different names for this
+        set_fields = _pydantic_dump_exclude_unset(request)
         params = infotext_utils.parse_generation_parameters(request.infotext)
 
         def get_field_value(field, params):
@@ -381,8 +409,13 @@ class Api:
             if value is None:
                 return None
 
-            if field.api in request.__fields__:
-                target_type = request.__fields__[field.api].type_
+            if hasattr(request, "model_fields"):
+                in_model = field.api in request.model_fields
+            else:
+                in_model = field.api in getattr(request, "__fields__", {})
+
+            if in_model:
+                target_type = _pydantic_field_annotation(request, field.api)
             else:
                 target_type = type(field.component.value)
 
@@ -434,6 +467,13 @@ class Api:
         if os.getenv("CI") == "true":
             return ci_fake_txt2img()
 
+        _t0 = time.perf_counter()
+        try:
+            return self._text2imgapi_impl(txt2imgreq)
+        finally:
+            logger.debug("text2imgapi wall time: %.6fs", time.perf_counter() - _t0)
+
+    def _text2imgapi_impl(self, txt2imgreq: models.StableDiffusionTxt2ImgProcessingAPI):
         task_id = txt2imgreq.force_task_id or create_task_id("txt2img")
 
         script_runner = scripts.scripts_txt2img
@@ -444,7 +484,7 @@ class Api:
         selectable_scripts, selectable_script_idx = self.get_selectable_script(txt2imgreq.script_name, script_runner)
         sampler, scheduler = sd_samplers.get_sampler_and_scheduler(txt2imgreq.sampler_name or txt2imgreq.sampler_index, txt2imgreq.scheduler)
 
-        populate = txt2imgreq.copy(update={  # Override __init__ params
+        populate = _model_copy_with_update(txt2imgreq, {  # Override __init__ params
             "sampler_name": validate_sampler_name(sampler),
             "do_not_save_samples": not txt2imgreq.save_images,
             "do_not_save_grid": not txt2imgreq.save_images,
@@ -497,6 +537,13 @@ class Api:
         if os.getenv("CI") == "true":
             return ci_fake_img2img()
 
+        _t0 = time.perf_counter()
+        try:
+            return self._img2imgapi_impl(img2imgreq)
+        finally:
+            logger.debug("img2imgapi wall time: %.6fs", time.perf_counter() - _t0)
+
+    def _img2imgapi_impl(self, img2imgreq: models.StableDiffusionImg2ImgProcessingAPI):
         task_id = img2imgreq.force_task_id or create_task_id("img2img")
 
         init_images = img2imgreq.init_images
@@ -515,7 +562,7 @@ class Api:
         selectable_scripts, selectable_script_idx = self.get_selectable_script(img2imgreq.script_name, script_runner)
         sampler, scheduler = sd_samplers.get_sampler_and_scheduler(img2imgreq.sampler_name or img2imgreq.sampler_index, img2imgreq.scheduler)
 
-        populate = img2imgreq.copy(update={  # Override __init__ params
+        populate = _model_copy_with_update(img2imgreq, {  # Override __init__ params
             "sampler_name": validate_sampler_name(sampler),
             "do_not_save_samples": not img2imgreq.save_images,
             "do_not_save_grid": not img2imgreq.save_images,

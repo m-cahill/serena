@@ -17,7 +17,8 @@ Use before opening or merging a PR. This complements CI and `docs/serena.md` inv
 ## CI truthfulness
 
 - [ ] Do not add **`continue-on-error`**, skipped checks, or lowered thresholds to “get green” without a milestone decision.
-- [ ] **`pip-audit`**: review **`pip_audit_report.txt`** (artifact) when touching dependencies. **M26–M27:** informational (non-blocking). **M28+:** expected to be blocking per `ci_environment_contract.md`.
+- [ ] **`pip-audit`**: review **`pip_audit_report.txt`** (artifact) when touching dependencies. **M28a+ (Quality):** **blocking** — merge requires a clean audit or documented deferral per milestone policy in `M28_run1.md` / `M28_audit.md`.
+- [ ] **No new CVEs introduced** beyond **`ci_environment_contract.md`** **pip-audit deferrals (M28)** (diskcache, pygments) — any additional advisory must be **remediated** or **governed** with an explicit doc + workflow update.
 - [ ] Coverage gate remains **≥ 42%** (Quality) until a later milestone changes it.
 - [ ] Complexity report reviewed (**`radon_report.txt`**) if touching core **`modules/`** behavior or large control-flow paths.
 
