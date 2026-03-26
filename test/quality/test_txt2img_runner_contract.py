@@ -3,7 +3,6 @@
 Verifies that the txt2img execution path flows through process_images → runner,
 not direct process_images_inner calls.
 """
-from modules.runtime.runner import ProcessingRunner
 
 
 def test_txt2img_path_uses_runner(monkeypatch, initialize):
@@ -15,14 +14,18 @@ def test_txt2img_path_uses_runner(monkeypatch, initialize):
 
     calls = []
 
-    class TestRunner(ProcessingRunner):
-        def execute(self, state):
-            calls.append("runner_execute")
-            return super().execute(state)
+    # Avoid real pipeline: patch runner.execute. Record the call here — do not
+    # replace ProcessingRunner with a subclass and then patch .execute again;
+    # the second patch overwrites the subclass method (M29.2 Quality failure).
+    def fake_execute(self, state):
+        from modules.processing import Processed
+
+        calls.append("runner_execute")
+        return Processed(state.processing, [], seed=-1, info="", comments="")
 
     monkeypatch.setattr(
-        "modules.runtime.runner.ProcessingRunner",
-        TestRunner,
+        "modules.runtime.runner.ProcessingRunner.execute",
+        fake_execute,
     )
 
     # Minimal processing object matching txt2img path
@@ -37,17 +40,6 @@ def test_txt2img_path_uses_runner(monkeypatch, initialize):
     )
     p.scripts = None
     p.comments = []
-
-    # Avoid real pipeline: patch runner.execute so inner import cannot bypass mocks.
-    def fake_execute(self, state):
-        from modules.processing import Processed
-
-        return Processed(state.processing, [], seed=-1, info="", comments="")
-
-    monkeypatch.setattr(
-        "modules.runtime.runner.ProcessingRunner.execute",
-        fake_execute,
-    )
 
     # Mock reload + token merge so None sd_model does not touch device
     import modules.sd_models as sd_models_mod

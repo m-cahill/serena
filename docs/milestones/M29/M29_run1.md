@@ -231,3 +231,101 @@ TypeError: Image.__init__() got an unexpected keyword argument 'source'
 **Also at risk:** **`api.py:742-744`** uses **`model_fields`** and **`model_validate`** (Pydantic v2-only); under v1 these would be **`__fields__`** and **`parse_obj`**. Fixed proactively.
 
 **Fix direction:** version-gate `generate_model()` — Pydantic ≥ 2 uses `ConfigDict`; Pydantic 1 uses the original `__config__` mutation style. Same pattern for `get_cmd_flags` in `api.py`.
+
+#### Round 7 — implementation (completed)
+
+**Gradio:** **`js ↔ _js`** shim confirmed active in smoke artifacts; event-kwarg drift is not the remaining blocker.
+
+**Pydantic:** Primary startup/bind blocker was **dual-stack incompatibility** — Quality uses **Pydantic v2**, smoke legacy stack uses **Pydantic 1.10.26**.
+
+**Files changed:** **`modules/api/models.py`** (`_PYDANTIC_V2` from `pydantic.VERSION`; v2 path: `ConfigDict` + `create_model(..., __config__=...)`; v1 path: `create_model(**fields)` then `__config__.allow_population_by_field_name` / `allow_mutation`). **`modules/api/api.py`** — **`get_cmd_flags`**: `model_fields` / `model_validate` when present, else **`__fields__`** / **`parse_obj`**.
+
+**PR #79 verification (post-fix):** eslint **pass**, ruff **pass**, smoke **pass** (e.g. workflow runs **`23582809675`**, **`23582812333`**). Server binds; smoke reaches pytest. **No merge** in this documentation-only follow-up unless policy gates are met separately.
+
+### Post-merge Quality — PR **#79** → `main` (2026-03-26)
+
+**Merge:** PR **#79** merged (**squash**), merge commit **`603b1dc026ee96e5e00c6aa0eda02f1306d12476`** (merged **`2026-03-26T20:17:11Z`**).
+
+**First Quality run on `main` after merge:** **`23615984557`** — https://github.com/m-cahill/serena/actions/runs/23615984557
+
+| Item | Value |
+|------|--------|
+| **Overall** | **failure** |
+| **Failed step** | **Run quality tests** (pytest exit **1**) |
+| **pip-audit (M28 policy)** | **pass** — dependency vulnerability scan step completed before pytest |
+| **Tests** | **196 passed**, **3 failed**, ~**75s** |
+| **Coverage (pytest `--cov`)** | **~48%** total line coverage (term report in log) |
+| **`performance_snapshot.txt`** | **Not produced** — **Write performance snapshot (M29)** skipped because pytest failed; upload step reported *No files were found with the provided path: performance_snapshot.txt* |
+
+**Failures (pytest short summary):**
+
+1. **`test/smoke/test_utils.py::test_get_api_url[sdapi/v1/cmd-flags]`** — `500` vs `200`
+2. **`test/quality/test_api_extended.py::test_get_api_endpoint[sdapi/v1/cmd-flags]`** — same
+3. **`test/quality/test_txt2img_runner_contract.py::test_txt2img_path_uses_runner`** — `AssertionError: assert 'runner_execute' in []`
+
+**First fatal API error (from `output` artifact, `output.txt`):** `GET /sdapi/v1/cmd-flags` returns **500** with **`ValidationError`**: **27 validation errors for `Flags`** — multiple fields (**`loglevel`**, **`models_dir`**, **`ckpt_dir`**, …) — **Input should be a valid string** with **`input_value=None`**. Under **Pydantic v2**, **`model_validate(...)`** rejects **`None`** for fields typed as **`str`** when those keys are present in the payload built from **`vars(shared.cmd_opts)`**.
+
+**Classification:**
+
+- **Continuation (with new symptom)** of the **M29.1 `get_cmd_flags` / FlagsModel** thread: Round 7 switched the v2 path to **`model_validate`**, which is **stricter** than the prior **`parse_obj`** / omitted-key behavior for optional CLI strings that are **`None`** at runtime.
+- **`test_txt2img_path_uses_runner`** looks **separate** (expects **`runner_execute`** in captured log lines); treat as a **second** failing assertion until triaged — may or may not share root cause with cmd-flags.
+
+**M29 closeout:** **blocked** — do **not** raise audit to **5.0 / 5**, do **not** tag **`v0.0.29-m29`**, do **not** mark M29 completed in the ledger until a **green** Quality run on **`main`** produces **`performance_snapshot.txt`**.
+
+---
+
+## M29.2 — post-merge Quality recovery (after run `23615984557`)
+
+**Canonical detail:** `docs/milestones/M29.2/M29.2_toolcalls.md`
+
+### Diagnosis (no code — evidence from `23615984557`)
+
+**Failing tests:**
+
+1. `test/smoke/test_utils.py::test_get_api_url[sdapi/v1/cmd-flags]` — `500` vs `200`
+2. `test/quality/test_api_extended.py::test_get_api_endpoint[sdapi/v1/cmd-flags]` — same
+3. `test/quality/test_txt2img_runner_contract.py::test_txt2img_path_uses_runner` — `assert 'runner_execute' in []`
+
+**Traceback snippets:**
+
+```text
+AssertionError: assert 500 == 200
+ +  where 500 = <Response [500]>.status_code
+# ... GET http://127.0.0.1:7860/sdapi/v1/cmd-flags
+```
+
+```text
+pydantic_core._pydantic_core.ValidationError: 27 validation errors for Flags
+loglevel
+  Input should be a valid string [type=string_type, input_value=None, input_type=NoneType]
+# ... (models_dir, ckpt_dir, vae_dir, gfpgan_model, …)
+```
+
+```text
+AssertionError: assert 'runner_execute' in []
+```
+
+**Classification:**
+
+| Failure | New vs continuation |
+|---------|---------------------|
+| cmd-flags **500** | **Continuation** — M29.1 **`model_validate`** path on Pydantic v2 rejects **`None`** for **`str`** `FlagsModel` fields when **`vars(shared.cmd_opts)`** supplies explicit **`None`**. |
+| **`test_txt2img_path_uses_runner`** | **New (test bug)** — **`TestRunner.execute`** is overwritten by a second monkeypatch on **`ProcessingRunner.execute`** after **`ProcessingRunner`** was aliased to **`TestRunner`**, so **`"runner_execute"`** is never appended. |
+
+**Root cause hypothesis:**
+
+- Optional CLI destinations are **`None`** at runtime; **`FlagsModel`** maps many to **`str`** + **`Field(default=None)`**; Pydantic v2 **`model_validate`** does not accept **`None`** for a plain **`str`** field when the key is present.
+- **Smoke** (Pydantic v1 + **`parse_obj`**) did not hit this failure mode on PR checks.
+- **Quality** (Pydantic v2) does.
+
+### Minimal fix plan (invariants)
+
+**Must not change:** API JSON shape/contract, CLI semantics, production runner behavior, smoke outcomes.
+
+**Allowed:** `get_cmd_flags` — omit **`None`** values before **`model_validate`** so missing keys resolve via model defaults. Runner contract test — smallest fix: record **`runner_execute`** inside **`fake_execute`** and remove the conflicting double-patch.
+
+**Preferred order:** (1) filter **`None`** in **`out`**; (2) fix test harness; (3) **`models.py`** only if still red.
+
+### Implementation / validation
+
+*(Updated after commits and CI — see **`M29.2_toolcalls.md`**.)*
