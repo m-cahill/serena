@@ -238,8 +238,19 @@ for key in _options:
     if(_options[key].dest != 'help'):
         flag = _options[key]
         _type = str
-        if _options[key].default is not None:
-            _type = type(_options[key].default)
+        if flag.default is not None:
+            _type = type(flag.default)
+        elif getattr(flag, "type", None) not in (None,):
+            # --port type=int, default=None → runtime still int (e.g. 7860)
+            arg_type = flag.type
+            if arg_type is int:
+                _type = int
+            elif arg_type is float:
+                _type = float
+            elif arg_type is bool:
+                _type = bool
+            else:
+                _type = str  # str, normalized_filepath, etc.
         flags.update({flag.dest: (_type, Field(default=flag.default, description=flag.help))})
 
 FlagsModel = create_model("Flags", **flags)
