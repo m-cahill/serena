@@ -11,7 +11,6 @@ def test_txt2img_path_uses_runner(monkeypatch, initialize):
     from modules.processing import (
         StableDiffusionProcessingTxt2Img,
         process_images,
-        Processed,
     )
 
     calls = []

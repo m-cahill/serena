@@ -7,12 +7,12 @@ import os
 import platform
 import sys
 import time
+from datetime import datetime, timezone
+from types import SimpleNamespace
 
 _REPO_ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if _REPO_ROOT not in sys.path:
     sys.path.insert(0, _REPO_ROOT)
-from datetime import datetime, timezone
-from types import SimpleNamespace
 
 
 def main() -> int:

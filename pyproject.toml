@@ -14,6 +14,7 @@ extend-select = [
 exclude = [
 	"extensions",
 	"extensions-disabled",
+	"modules/ui_components.pyi",
 ]
 
 ignore = [
@@ -29,6 +30,7 @@ ignore = [
 
 [tool.ruff.lint.per-file-ignores]
 "webui.py" = ["E402"]  # Module level import not at top of file
+"modules/processing.py" = ["F811"]  # dataclass field + @property name overlap (upstream pattern)
 
 [tool.ruff.lint.flake8-bugbear]
 # Allow default arguments like, e.g., `data: List[str] = fastapi.Query(None)`.
