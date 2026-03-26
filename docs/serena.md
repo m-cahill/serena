@@ -33,12 +33,15 @@ Core principles:
 5. **Evidence-based closeout**
    Each milestone must end with verifiable CI evidence.
 
-**Source-of-truth hierarchy:**
-1. `docs/serena.md` ? This ledger (phases, milestones, invariants)
-2. `docs/sdwebuirefactoraudit.md` ? Baseline audit (architecture, modularity, refactor strategy)
-3. `docs/sdwebuiaudit.md` ? Supplementary audit (DX, phased plan)
-4. Milestone docs under `docs/milestones/MNN/`
-5. **M30+:** Phase I–VI evidence bundle — `docs/architecture/serena_evidence_bundle.md` (see also `serena_case_study_summary.md`, `serena_evidence_matrix.md`)
+**Source-of-truth hierarchy (post–M31):**
+1. `docs/serena.md` — Program ledger (phases, milestones, invariants)
+2. `docs/architecture/serena_architecture_lock.md` — Approved steady-state architecture and locked boundaries (structural questions)
+3. `docs/architecture/serena_evidence_bundle.md` — Phase I–VI proof narrative (see also `serena_case_study_summary.md`, `serena_evidence_matrix.md`)
+4. Milestone docs under `docs/milestones/MNN/`, run records, milestone audits/summaries
+
+**Historical baseline (pre-refactor audits):** `docs/sdwebuirefactoraudit.md`, `docs/sdwebuiaudit.md` — baseline scores and strategy; subordinate to the ledger and architecture lock for *current* approved shape.
+
+**Allowed legacy glue (companion):** `docs/architecture/serena_allowed_legacy_surfaces.md` — tolerated seams vs locked architecture; not a second source of truth above the lock.
 
 ---
 
@@ -120,7 +123,9 @@ Core principles:
 | M29 | Health/perf verification |
 | M30 | QA/evidence publishing |
 
-**Progress (Phase VI):** **M26–M30 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **M30** closeout: **PR #82** → merge **`b663f735`**; evidence bundle **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (incl. **M28** / **`main`** / **PR #64** note); tag **`v0.0.30-m30`**. **M30** is **documentation / evidence only** — no runtime gate. **Next:** **Phase VII — M31** (architecture lock).
+**Progress (Phase VI):** **M26–M30 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **M30** closeout: **PR #82** → merge **`b663f735`**; evidence bundle **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (incl. **M28** / **`main`** / **PR #64** note); tag **`v0.0.30-m30`**. **M30** is **documentation / evidence only** — no runtime gate.
+
+**Progress (Phase VII):** **M31** (architecture lock) **complete** — **`docs/architecture/serena_architecture_lock.md`**, **`serena_allowed_legacy_surfaces.md`**; documentation only; no runtime/workflow/dependency changes. **Next:** **M32** (evidence/audit closure).
 
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
@@ -166,6 +171,7 @@ Core principles:
 | M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | **#64** (M28+M29 squash to `main` **f18b73f2**; topic finalize **f88e1e9c**) | f88e1e9c | No isolated green Quality on **`main`** for M28 alone; first post-**#64** run **23566817312** failed; stack + **`pip-audit`** proof **23618918747**; **2** deferrals — see **`M30_run1.md`** §3, `M28_run1.md` | 5.0 / 5 | 2026-03-26 |
 | M29 | Health / performance verification | Completed | `main`; m29.2-quality-recovery; m29.2-flags-argparse-types | #64–#71; **#79**; **#80**; **#81** | `1b2e2f69` | Quality **23618918747** (pass, **199** pass, **~48%** cov); **`performance_snapshot.txt`** | **5.0 / 5** — binding CI + artifact | 2026-03-26 |
 | M30 | QA / evidence publishing (documentation / evidence) | Completed | m30-qa-evidence-publishing | **#82** | **b663f735** | **Doc-only:** no binding runtime gate; post-merge **optional** provenance on **`b663f735`**: Linter **23620987714** pass; Quality **23620987702** pass; PR **#82** hygiene checks in `M30_run1.md` §6 | 5.0 / 5 | 2026-03-26 ~22:24 UTC |
+| M31 | Architecture lock (documentation) | Completed | m31-architecture-lock | *pending* | *pending* | **Doc-only:** no binding runtime gate; architecture lock + allowed-legacy docs; PR hygiene only; update commit after merge to `main` | 5.0 / 5 | 2026-03-26 ~23:55 UTC |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -219,6 +225,8 @@ Core principles:
 
 **M30:** **QA / evidence publishing** — **PR #82** squash-merge **`b663f735074e63055125c390aee8fc907c49e915`**; **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`docs/milestones/M30/M30_run1.md`**, **`M30_summary.md`**, **`M30_audit.md`**. **Documentation / evidence milestone only** — no workflow or module edits; **no** binding M30 runtime gate. Cross-check **M26–M29**; **M28** / **`main`** / **PR #64** **Quality** history documented (no fabricated run ID). Annotated tag **`v0.0.30-m30`** (final M30 closeout on `main` after merge **`b663f735`**).
 
+**M31:** **Architecture lock** — **`docs/architecture/serena_architecture_lock.md`** (authority order, locked boundaries, change-control, proof references); **`docs/architecture/serena_allowed_legacy_surfaces.md`** (tolerated `shared.sd_model` / `processing.py` glue vs M19 runtime modules); **`docs/milestones/M31/M31_plan.md`**; M32 stubs. **Documentation only** — no application code, workflow YAML, lockfiles, or dependency changes; PR checks are hygiene/provenance only. Completes formal steady-state baseline for **M32** evidence/audit closure.
+
 ---
 
 ### Phase V ? UI & Extension Stabilization (Complete)
@@ -237,7 +245,9 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 **M29 ? Health & performance verification** **complete** — runner **`runtime_metrics`**, DEBUG API timing, **`performance_snapshot.txt`** on binding **Quality `23618918747`** (**M29.1**/**M29.2** recovery: **PR #79**, **#80**, **#81**).
 
-**M30 ? QA / evidence publishing** **complete** — **PR #82** merge **`b663f735`**; **`serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (**M28**/`main`/`PR #64` note); tag **`v0.0.30-m30`**. **Doc-only** milestone. **Next:** **Phase VII — M31** (architecture lock).
+**M30 ? QA / evidence publishing** **complete** — **PR #82** merge **`b663f735`**; **`serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (**M28**/`main`/`PR #64` note); tag **`v0.0.30-m30`**. **Doc-only** milestone.
+
+**M31 ? Architecture lock** **complete** — **`serena_architecture_lock.md`**, **`serena_allowed_legacy_surfaces.md`**; ledger hierarchy updated; **doc-only** (2026-03-26 ~23:55 UTC). **Next:** **M32** (evidence/audit closure).
 
 ---
 
