@@ -741,7 +741,8 @@ class Api:
         schema_keys = getattr(models.FlagsModel, "model_fields", None)
         if schema_keys is None:
             schema_keys = models.FlagsModel.__fields__
-        out = {k: raw[k] for k in schema_keys if k in raw}
+        # Omit None so Pydantic v2 model_validate does not reject str-typed Flags fields (parse_obj was more lenient).
+        out = {k: raw[k] for k in schema_keys if k in raw and raw[k] is not None}
         validate = getattr(models.FlagsModel, "model_validate", None)
         if validate is not None:
             return validate(jsonable_encoder(out))
