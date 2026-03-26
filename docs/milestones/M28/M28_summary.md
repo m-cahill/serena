@@ -1,6 +1,6 @@
 # M28 — Summary (security & supply-chain hardening)
 
-**Status:** **Complete** (append **Quality run ID** to **`M28_run1.md`** after the first green **Quality** workflow on the release merge).  
+**Status:** **Complete** — **Quality run ID on `main`:** see **`M28_run1.md`** (M28 shipped with M29 in **PR #64**; no isolated green **`main`** run for M28 alone; stack proof cross-referenced in **`docs/milestones/M30/M30_run1.md`** §3).  
 **Branch:** `m28-security-supply-chain`  
 **Annotated tag:** **`v0.0.28-m28`** → **`c97c4067820210f9c55e8fa56d363ddb21fdb547`** (ledger short-hash commit; finalization docs in parent **`f88e1e9c`**). Verify with **`git show v0.0.28-m28`**.
 

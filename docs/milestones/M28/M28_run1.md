@@ -314,6 +314,6 @@ A **pillow-only** bump is **unsatisfiable** with the pre-5a graph:
 
 **pip-audit (effective):** **0** unresolved advisories after documented ignores. Expected output (installed env or `pip-audit -r requirements-ci.txt` with same flags): **“No known vulnerabilities found, 2 ignored”**. Raw lockfile audit without ignores: **2** rows (**diskcache**, **pygments**) — **no PyPI fix** at closeout.
 
-**Quality run ID:** *(Replace with the GitHub Actions run ID from the first green **Quality** workflow on the closing commit / merged PR.)*
+**Quality run ID (on `main`):** There is **no** run ID for “M28-only green on **`main`**.” M28 and M29 landed together in **PR #64** (squash merge **`f18b73f2`**). The first **`main`** Quality after that merge was **[23566817312](https://github.com/m-cahill/serena/actions/runs/23566817312)** — **failure** (start of the M29 recovery chain). Topic-branch finalize commits (**`f88e1e9c`**, tag **`c97c406`**) are not first-parent commits on current **`main`**. **Stack-level** verification of the locked manifest + blocking **`pip-audit`** + deferrals is evidenced by the later binding run **23618918747** (see **`docs/milestones/M30/M30_run1.md`** §3).
 
 **Final verdict:** **M28 complete.** All **resolvable** CVEs were cleared via **M28b** dependency upgrades and minimal adapters; **diskcache** and **pygments** are **explicit, contract-backed deferrals** until upstream publishes fixed wheels — **not** a disabled audit or weakened gate.
