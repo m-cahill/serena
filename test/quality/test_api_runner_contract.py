@@ -29,13 +29,14 @@ def test_api_txt2img_uses_runner(monkeypatch, initialize):
 
     monkeypatch.setattr(ProcessingRunner, "run", tracking_run)
 
-    # Mock process_images_inner to avoid full pipeline
-    def fake_inner(proc):
-        return Processed(proc, [], seed=-1, info="", comments="")
+    # Avoid real pipeline: patch runner.execute so inner import cannot bypass mocks.
+    def fake_execute(self, state):
+        return Processed(state.processing, [], seed=-1, info="", comments="")
 
-    import modules.processing as proc_mod
-
-    monkeypatch.setattr(proc_mod, "process_images_inner", fake_inner)
+    monkeypatch.setattr(
+        "modules.runtime.runner.ProcessingRunner.execute",
+        fake_execute,
+    )
 
     # Mock model reload and token merging to avoid model/device ops
     import modules.sd_models as sd_models_mod

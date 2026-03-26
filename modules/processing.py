@@ -793,7 +793,6 @@ def process_images(p: StableDiffusionProcessing) -> Processed:
                 runner = ProcessingRunner()
                 request = ProcessingRequest(p)
                 res = runner.run(request)
-                p.runtime_metrics = request.runtime_metrics
     finally:
         sd_models.apply_token_merging(p.sd_model, 0)
 

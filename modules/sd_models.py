@@ -394,7 +394,7 @@ def set_model_type(model, state_dict):
             model.model_type = ModelType.SSD
         else:
             model.model_type = ModelType.SDXL
-    elif hasattr(model.cond_stage_model, 'model'):
+    elif (cond_stage := getattr(model, "cond_stage_model", None)) is not None and hasattr(cond_stage, "model"):
         model.is_sd2 = True
         model.model_type = ModelType.SD2
     else:

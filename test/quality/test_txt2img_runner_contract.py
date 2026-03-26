@@ -11,7 +11,6 @@ def test_txt2img_path_uses_runner(monkeypatch, initialize):
     from modules.processing import (
         StableDiffusionProcessingTxt2Img,
         process_images,
-        Processed,
     )
 
     calls = []
@@ -39,16 +38,23 @@ def test_txt2img_path_uses_runner(monkeypatch, initialize):
     p.scripts = None
     p.comments = []
 
-    # Mock process_images_inner to avoid full pipeline (model, device, etc.)
-    def fake_inner(proc):
-        return Processed(proc, [], seed=-1, info="", comments="")
+    # Avoid real pipeline: patch runner.execute so inner import cannot bypass mocks.
+    def fake_execute(self, state):
+        from modules.processing import Processed
 
-    import modules.processing as proc_mod
-    monkeypatch.setattr(proc_mod, "process_images_inner", fake_inner)
+        return Processed(state.processing, [], seed=-1, info="", comments="")
 
-    # Mock model reload to avoid loading weights
+    monkeypatch.setattr(
+        "modules.runtime.runner.ProcessingRunner.execute",
+        fake_execute,
+    )
+
+    # Mock reload + token merge so None sd_model does not touch device
     import modules.sd_models as sd_models_mod
     monkeypatch.setattr(sd_models_mod, "reload_model_weights", lambda: None)
+    monkeypatch.setattr(
+        sd_models_mod, "apply_token_merging", lambda m, r: None
+    )
 
     process_images(p)
 

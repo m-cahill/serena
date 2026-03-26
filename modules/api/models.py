@@ -1,10 +1,13 @@
 import inspect
 
-from pydantic import BaseModel, ConfigDict, Field, create_model
-from typing import Any, Optional, Literal
+import pydantic
+from pydantic import BaseModel, Field, create_model
+from typing import Any, Literal, Optional, Union
 from inflection import underscore
 from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img
 from modules.shared import sd_upscalers, opts, parser
+
+_PYDANTIC_V2 = int(pydantic.VERSION.split(".", 1)[0]) >= 2
 
 API_NOT_ALLOWED = [
     "self",
@@ -92,12 +95,18 @@ class PydanticModelGenerator:
         fields = {
             d.field: (d.field_type, Field(default=d.field_value, alias=d.field_alias, exclude=d.field_exclude)) for d in self._model_def
         }
-        # Pydantic v2 (FastAPI 0.110+): ConfigDict replaces __config__ mutation (v1 allow_population_by_field_name / allow_mutation).
-        return create_model(
-            self._model_name,
-            __config__=ConfigDict(populate_by_name=True, validate_assignment=True),
-            **fields,
-        )
+        if _PYDANTIC_V2:
+            from pydantic import ConfigDict  # noqa: PLC0415
+
+            return create_model(
+                self._model_name,
+                __config__=ConfigDict(populate_by_name=True, validate_assignment=True),
+                **fields,
+            )
+        model = create_model(self._model_name, **fields)
+        model.__config__.allow_population_by_field_name = True
+        model.__config__.allow_mutation = True
+        return model
 
 StableDiffusionTxt2ImgProcessingAPI = PydanticModelGenerator(
     "StableDiffusionProcessingTxt2Img",
@@ -121,7 +130,9 @@ StableDiffusionImg2ImgProcessingAPI = PydanticModelGenerator(
         {"key": "sampler_index", "type": str, "default": "Euler"},
         {"key": "init_images", "type": list, "default": None},
         {"key": "denoising_strength", "type": float, "default": 0.75},
-        {"key": "mask", "type": str, "default": None},
+        {"key": "mask", "type": Optional[str], "default": None},
+        # Smoke JSON uses `false`; dataclass field is int — Pydantic v2 rejects bool for Optional[int].
+        {"key": "inpainting_mask_invert", "type": Union[int, bool], "default": 0},
         {"key": "include_init_images", "type": bool, "default": False, "exclude" : True},
         {"key": "script_name", "type": str, "default": None},
         {"key": "script_args", "type": list, "default": []},
@@ -192,8 +203,9 @@ class ProgressResponse(BaseModel):
     progress: float = Field(title="Progress", description="The progress with a range of 0 to 1")
     eta_relative: float = Field(title="ETA in secs")
     state: dict = Field(title="State", description="The current state snapshot")
-    current_image: str = Field(default=None, title="Current image", description="The current image in base64 format. opts.show_progress_every_n_steps is required for this to work.")
-    textinfo: str = Field(default=None, title="Info text", description="Info text used by WebUI.")
+    current_image: Optional[str] = Field(default=None, title="Current image", description="The current image in base64 format. opts.show_progress_every_n_steps is required for this to work.")
+    textinfo: Optional[str] = Field(default=None, title="Info text", description="Info text used by WebUI.")
+    current_task: Optional[str] = Field(default=None, title="Current task id", description="Active task id from the progress queue, if any.")
 
 class InterrogateRequest(BaseModel):
     image: str = Field(default="", title="Image", description="Image to work on, must be a Base64 string containing the image's data.")
@@ -235,7 +247,7 @@ FlagsModel = create_model("Flags", **flags)
 class SamplerItem(BaseModel):
     name: str = Field(title="Name")
     aliases: list[str] = Field(title="Aliases")
-    options: dict[str, str] = Field(title="Options")
+    options: dict[str, Any] = Field(title="Options")
 
 class SchedulerItem(BaseModel):
     name: str = Field(title="Name")

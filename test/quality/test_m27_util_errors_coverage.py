@@ -3,8 +3,6 @@ from __future__ import annotations
 
 import sys
 
-import pytest
-
 
 def test_natural_sort_key_orders_numeric_chunks():
     from modules.util import natural_sort_key
