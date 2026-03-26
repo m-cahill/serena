@@ -200,3 +200,7 @@ TypeError: Image.__init__() got an unexpected keyword argument 'source'
 **Fix direction (this round):** use **`sources=`** on **`gr.Image`** at WebUI call sites (and drop unsupported **`tool` / `brush_color`** on `Image` where present); guard **`set_model_type`** with **`getattr(model, "cond_stage_model", None)`** before probing **`.model`**.
 
 **Checklist:** `[x]` traceback extracted; `[x]` documented here; startup/bind fixes applied on branch; re-run PR **#79** checks; **do not** merge / audit bump / tag until policy gates (green Quality on `main` + **`performance_snapshot.txt`**).
+
+**Post-push smoke (`23578226657`, after `sources=` / `set_model_type` commit):** `output.txt` shows the **first process-fatal** error is **`TypeError: EventListenerMethod.__call__() got an unexpected keyword argument 'js'`** from **`modules/ui_toprow.py`** (Interrupt **`.click(..., js=...)`**). The img2img **`source=`** failure did not appear in that run (Image fixes are still kept). Background thread may still log **`load_state_dict`** on **`empty.pt`** after **`set_model_type`**; treat as secondary until main thread reaches **`create_img2img_tab`**.
+
+**Round 4b fix:** remove **`js=`** from Interrupt and clear-prompt **`.click`** in **`ui_toprow`** (no dependency change; JS confirm/placeholder hooks deferred).

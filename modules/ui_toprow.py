@@ -110,7 +110,8 @@ class Toprow:
                     shared.state.interrupt()
 
             self.skip.click(fn=shared.state.skip)
-            self.interrupt.click(fn=interrupt_function, js='function(){ showSubmitInterruptingPlaceholder("' + self.id_part + '"); }')
+            # Gradio 6.10 (CI): bound .click must not pass js= — EventListenerMethod path rejects it.
+            self.interrupt.click(fn=interrupt_function)
             self.interrupting.click(fn=interrupt_function)
 
     def create_tools_row(self):
@@ -134,7 +135,6 @@ class Toprow:
 
             self.clear_prompt_button.click(
                 fn=lambda *x: x,
-                js="confirm_clear_prompt",
                 inputs=[self.prompt, self.negative_prompt],
                 outputs=[self.prompt, self.negative_prompt],
             )
