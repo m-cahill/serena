@@ -15,6 +15,9 @@ Create a **documentation-only** milestone that locks Serena’s **approved post-
 | `docs/serena.md` | Ledger: M31 row, Phase VII progress, source-of-truth hierarchy update, completion timestamp |
 | `docs/milestones/M31/M31_plan.md` | This file |
 | `docs/milestones/M31/M31_toolcalls.md` | Tool log |
+| `docs/milestones/M31/M31_run1.md` | PR provenance, verification, CI hygiene notes |
+| `docs/milestones/M31/M31_summary.md` | Milestone summary |
+| `docs/milestones/M31/M31_audit.md` | Milestone audit |
 | `docs/milestones/M32/M32_plan.md` | Stub for next milestone |
 | `docs/milestones/M32/M32_toolcalls.md` | Stub for next milestone |
 
