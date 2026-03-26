@@ -138,3 +138,21 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 1. **img2img 422:** Smoke sends **`"inpainting_mask_invert": false`**; generated API field from the dataclass is **`Optional[int]`**, so Pydantic v2 rejects **`bool`**. Override **`inpainting_mask_invert`** to **`int | bool`** (minimal widen) in **`StableDiffusionImg2ImgProcessingAPI`** additional fields (last definition wins).
 2. **API 500s:** Rely on Round 2 schema fixes (**`SamplerItem.options`**, **`ProgressResponse`** nullables, **`get_cmd_flags`** encode + validate); re-verify in CI.
 3. **Seam tests:** Patch **`ProcessingRunner.execute`** to return a **`Processed`** stub instead of only mocking **`process_images_inner`**, so the runner’s inner **`from modules.processing import process_images_inner`** cannot bypass the mock and touch **`sd_model`**.
+
+### PR validation — recovery branch → `main` (2026-03-26)
+
+| Field | Value |
+|--------|--------|
+| **PR** | https://github.com/m-cahill/serena/pull/79 |
+| **Title** | M29.1: binding CI recovery for Gradio 6 / API / runner compatibility |
+| **Merge** | **Do not merge** without approval; binding **Quality** on **`main`** + **`performance_snapshot.txt`** still required for M29 closeout |
+
+**First PR checks snapshot** (immediately after PR open; Actions runs e.g. `23574993304` / `23574993308`):
+
+| Check | Result | Notes |
+|--------|--------|--------|
+| **eslint** | **pass** | — |
+| **ruff** | **fail** | Seam test duplicate/unused `Processed` import; plus repo-wide Ruff items addressed in follow-up commit |
+| **smoke** | **fail** | Await re-run after **`4611740b`** (Ruff + CI hygiene); capture logs if still red |
+
+**Follow-up on branch** (commit **`4611740b`**): Ruff clean — `test_txt2img_runner_contract` import fix; `write_performance_snapshot.py` import order; remove unused `pytest` in `test_m27_util_errors_coverage.py`; `pyproject.toml` per-file **`F811`** ignore for `modules/processing.py` (dataclass/property pattern); Ruff **exclude** `modules/ui_components.pyi` (local stub layout). **Re-verify** PR **ruff** + **smoke** on latest push.
