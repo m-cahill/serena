@@ -20,7 +20,6 @@ def imports():
     warnings.filterwarnings(action="ignore", category=UserWarning, module="torchvision")
 
     os.environ.setdefault('GRADIO_ANALYTICS_ENABLED', 'False')
-    from modules import gradio_event_compat  # noqa: F401 — patch EventListener before gradio components load
     import gradio  # noqa: F401
     startup_timer.record("import gradio")
 

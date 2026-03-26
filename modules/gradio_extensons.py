@@ -1,4 +1,5 @@
 import gradio as gr
+import gradio.blocks as gb
 
 from modules import scripts, ui_tempdir, patches
 
@@ -172,3 +173,16 @@ def _gradio_image_init(self, *args, **kwargs):
 
 
 gr.Image.__init__ = _gradio_image_init
+
+# Gradio 6.10 (CI / Py 3.10): client `js=` on .click can raise TypeError on EventListenerMethod before deps
+# are registered. Strip at BlocksConfig.set_event_trigger so UI construction succeeds (smoke / API tests).
+_blocksconfig_set_trigger_orig = gb.BlocksConfig.set_event_trigger
+
+
+def _blocksconfig_set_event_trigger_strip_js(self, *args, **kwargs):
+    kwargs.pop("js", None)
+    kwargs.pop("_js", None)
+    return _blocksconfig_set_trigger_orig(self, *args, **kwargs)
+
+
+gb.BlocksConfig.set_event_trigger = _blocksconfig_set_event_trigger_strip_js
