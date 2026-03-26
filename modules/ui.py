@@ -149,7 +149,7 @@ def interrogate_deepbooru(image):
 def connect_clear_prompt(button):
     """Given clear button, prompt, and token_counter objects, setup clear prompt button click event"""
     button.click(
-        _js="clear_prompt",
+        js="clear_prompt",
         fn=None,
         inputs=[],
         outputs=[],
@@ -451,7 +451,7 @@ def create_ui():
 
         train_embedding.click(
             fn=wrap_gradio_gpu_call(textual_inversion_ui.train_embedding, extra_outputs=[gr.update()]),
-            _js="start_training_textual_inversion",
+            js="start_training_textual_inversion",
             inputs=[
                 dummy_component,
                 train_embedding_name,
@@ -485,7 +485,7 @@ def create_ui():
 
         train_hypernetwork.click(
             fn=wrap_gradio_gpu_call(hypernetworks_ui.train_hypernetwork, extra_outputs=[gr.update()]),
-            _js="start_training_textual_inversion",
+            js="start_training_textual_inversion",
             inputs=[
                 dummy_component,
                 train_hypernetwork_name,

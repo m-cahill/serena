@@ -126,7 +126,7 @@ def create_txt2img_tab():
                 )
                 event(
                     None,
-                    _js="onCalcResolutionHires",
+                    js="onCalcResolutionHires",
                     inputs=hr_resolution_preview_inputs,
                     outputs=[],
                     show_progress=False,
@@ -168,7 +168,7 @@ def create_txt2img_tab():
 
             txt2img_args = dict(
                 fn=wrap_gradio_gpu_call(modules.txt2img.txt2img, extra_outputs=[None, '', '']),
-                _js="submit",
+                js="submit",
                 inputs=txt2img_inputs,
                 outputs=txt2img_outputs,
                 show_progress=False,
@@ -179,17 +179,17 @@ def create_txt2img_tab():
 
             output_panel.button_upscale.click(
                 fn=wrap_gradio_gpu_call(modules.txt2img.txt2img_upscale, extra_outputs=[None, '', '']),
-                _js="submit_txt2img_upscale",
+                js="submit_txt2img_upscale",
                 inputs=txt2img_inputs[0:1] + [output_panel.gallery, dummy_component, output_panel.generation_info] + txt2img_inputs[1:],
                 outputs=txt2img_outputs,
                 show_progress=False,
             )
 
-            res_switch_btn.click(fn=None, _js="function(){switchWidthHeight('txt2img')}", inputs=None, outputs=None, show_progress=False)
+            res_switch_btn.click(fn=None, js="function(){switchWidthHeight('txt2img')}", inputs=None, outputs=None, show_progress=False)
 
             toprow.restore_progress_button.click(
                 fn=progress.restore_progress,
-                _js="restoreProgressTxt2img",
+                js="restoreProgressTxt2img",
                 inputs=[dummy_component],
                 outputs=[
                     output_panel.gallery,
