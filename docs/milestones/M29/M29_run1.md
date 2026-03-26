@@ -166,3 +166,37 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 | **smoke** | **fail** | **`wait-for-it`** timed out on **`127.0.0.1:7860`** (20s) — test server did not accept connections in time. See workflow **`output.txt`** artifact on run **`23576902847`** for launch traceback / logs (not an HTTP 422/500 from pytest in this failure mode). |
 
 **Next:** Inspect **`output.txt`** from the failing smoke run; if startup is flaky, re-run workflow; if reproducible, fix **launch / server bind** path (outside HTTP handler fixes above).
+
+### Round 4 — smoke bind / startup (2026-03-26)
+
+**Failing smoke run(s):** **`23576902847`** (PR **#79** checks after **`4611740b`**; companion lint run **`23576902822`**).
+
+**Failure mode:** pytest never reached HTTP API assertions — **`wait-for-it`** timed out on **`127.0.0.1:7860`** because the Web UI process **crashed during `ui.create_ui()`** before Gradio listened. This is **not** the earlier **`23573723272`** cluster (422 / 500 on live server).
+
+**First tracebacks in smoke `output/output.txt` (authoritative):**
+
+1. **Background model load** (thread `initialize.load_model` / empty checkpoint **`test/test_files/empty.pt`**):
+
+```text
+AttributeError: 'LatentDiffusion' object has no attribute 'cond_stage_model'
+  ...
+  File ".../modules/sd_models.py", line 397, in set_model_type
+    elif hasattr(model.cond_stage_model, 'model'):
+```
+
+2. **Process-fatal UI build** (main thread — prevents bind):
+
+```text
+TypeError: Image.__init__() got an unexpected keyword argument 'source'
+  ...
+  File ".../modules/ui_img2img_tab.py", line 69, in create_img2img_tab
+    init_img = gr.Image(..., source="upload", ... tool="editor", ...)
+  File ".../gradio/component_meta.py", line 194, in wrapper
+    return fn(self, **kwargs)
+```
+
+**Classification:** **Gradio 6** constructor drift — legacy **`source=`** / sketch kwargs on **`gr.Image`** (CI uses **`gradio==6.10.0`** per `requirements-ci.txt`). Secondary: **`set_model_type`** must not assume **`cond_stage_model`** exists for partially constructed / minimal checkpoint paths.
+
+**Fix direction (this round):** use **`sources=`** on **`gr.Image`** at WebUI call sites (and drop unsupported **`tool` / `brush_color`** on `Image` where present); guard **`set_model_type`** with **`getattr(model, "cond_stage_model", None)`** before probing **`.model`**.
+
+**Checklist:** `[x]` traceback extracted; `[x]` documented here; startup/bind fixes applied on branch; re-run PR **#79** checks; **do not** merge / audit bump / tag until policy gates (green Quality on `main` + **`performance_snapshot.txt`**).
