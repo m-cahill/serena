@@ -97,3 +97,30 @@ def _gradio_button_init(self, *args, **kwargs):
 
 
 gr.Button.__init__ = _gradio_button_init
+
+# Gradio 6+: Dropdown / Slider validate kwargs before Component.__init__; strip `tooltip` like Button.
+_gradio_dropdown_orig = gr.Dropdown.__init__
+
+
+def _gradio_dropdown_init(self, *args, **kwargs):
+    wt = kwargs.pop("tooltip", None)
+    res = _gradio_dropdown_orig(self, *args, **kwargs)
+    if wt is not None:
+        self.webui_tooltip = wt
+    return res
+
+
+gr.Dropdown.__init__ = _gradio_dropdown_init
+
+_gradio_slider_orig = gr.Slider.__init__
+
+
+def _gradio_slider_init(self, *args, **kwargs):
+    wt = kwargs.pop("tooltip", None)
+    res = _gradio_slider_orig(self, *args, **kwargs)
+    if wt is not None:
+        self.webui_tooltip = wt
+    return res
+
+
+gr.Slider.__init__ = _gradio_slider_init
