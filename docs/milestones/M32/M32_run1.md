@@ -101,8 +101,11 @@ M32 **closes the evidence/audit story** for the Serena refactor **body of work**
 
 | Item | Value |
 |------|--------|
-| **PR** | *(Record at merge — branch `m32-evidence-audit-closure` → `main` on `m-cahill/serena`.)* |
-| **Merge commit (`main`)** | *(Record at merge.)* |
-| **Binding CI for M32** | **N/A** — documentation-only milestone; any PR checks are **provenance/hygiene** only, not a substitute for §4 binding proof |
+| **PR** | **[#86](https://github.com/m-cahill/serena/pull/86)** — `docs(M32): evidence/audit closure and M33 stubs` |
+| **Branch** | `m32-evidence-audit-closure` → `origin/m32-evidence-audit-closure` |
+| **Head SHA (pre-merge)** | **`105bf4b7f3a1984ceaffd882d5519c0cd1a1ca83`** (short **`105bf4b7`**) |
+| **Base** | `main` at branch creation (parent **`03a2e6ea`** on local `main` at commit time) |
+| **Merge** | *(Pending squash merge to `main` — record merge SHA here when merged.)* |
+| **Binding CI for M32** | **N/A** — documentation-only milestone; PR checks are **provenance/hygiene** only, not a substitute for §4 binding proof |
 
-*Update this section when the M32 PR is opened and merged so the audit trail matches GitHub.*
+*After merge, replace the merge row with the squash merge commit on `main` and optionally add post-merge Linter/Quality run IDs (optional provenance only).*

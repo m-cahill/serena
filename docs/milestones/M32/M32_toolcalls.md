@@ -9,3 +9,4 @@
 | 2026-03-26T23:50:49Z | Shell | Create branch `m32-evidence-audit-closure` from `main` | git |
 | 2026-03-26T23:50:49Z | Write | Author M32 plan, run1, summary, audit; update ledger; seed M33; align bundle/matrix | `docs/**` |
 | 2026-03-26T23:50:49Z | Shell | Commit, push, open PR to `m-cahill/serena` | git, gh |
+| 2026-03-26T23:55:00Z | gh | Open PR **#86** for M32 docs | https://github.com/m-cahill/serena/pull/86 |
