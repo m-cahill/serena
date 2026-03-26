@@ -118,3 +118,23 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 | **`GET /sdapi/v1/cmd-flags`** | Filtered values may still include **Path** / nested structures that do not match **`FlagsModel`** until JSON-coerced | **`jsonable_encoder`** before **`model_validate`** |
 
 **Validation:** next green **Quality** run on `main` (or PR branch) is the binding proof; **M29 audit remains 4.0 / 5** until then.
+
+### Round 3 — failure list + fix order (2026-03-26)
+
+**Anchor run (unchanged):** `23573723272` — **190 passed / 9 failed**, **47%** coverage, **no** `performance_snapshot.txt`.
+
+**Remaining failure classes (from that run; narrowed in prior rounds):**
+
+| # | Area | Tests / symptom |
+|---|------|-----------------|
+| 1 | **img2img 422** | `test_img2img_simple_performed`, `test_img2img_sd_upscale_performed` (and same payload family) |
+| 2 | **API 500** | `GET /sdapi/v1/cmd-flags`, `GET /sdapi/v1/samplers`, `GET /sdapi/v1/progress` (`test_get_api_endpoint` / extended API) |
+| 3 | **Pydantic / API path** | `sampler_index` / request validation (addressed in prior commits; re-verify) |
+| 4 | **Runner seam** | `test_api_txt2img_uses_runner`, `test_txt2img_path_uses_runner` (avoid real pipeline / `cond_stage_model`) |
+| 5 | **`runtime_metrics`** | Ownership on **`p`** only (already fixed; re-verify) |
+
+**Round 3 fix order (this pass):**
+
+1. **img2img 422:** Smoke sends **`"inpainting_mask_invert": false`**; generated API field from the dataclass is **`Optional[int]`**, so Pydantic v2 rejects **`bool`**. Override **`inpainting_mask_invert`** to **`int | bool`** (minimal widen) in **`StableDiffusionImg2ImgProcessingAPI`** additional fields (last definition wins).
+2. **API 500s:** Rely on Round 2 schema fixes (**`SamplerItem.options`**, **`ProgressResponse`** nullables, **`get_cmd_flags`** encode + validate); re-verify in CI.
+3. **Seam tests:** Patch **`ProcessingRunner.execute`** to return a **`Processed`** stub instead of only mocking **`process_images_inner`**, so the runner’s inner **`from modules.processing import process_images_inner`** cannot bypass the mock and touch **`sd_model`**.
