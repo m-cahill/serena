@@ -87,3 +87,18 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 **Example failures:** `test_img2img` → HTTP **422**; `sdapi/v1/cmd-flags`, `samplers`, `progress` → **500**; pydantic **`sampler_index`** validation; **`runtime_metrics`** contract test.
 
 **Binding verdict:** **not PASS** — ledger / audit **stay at 4.0 / 5 pending binding CI** until a **fully green** Quality run **and** confirmed **`performance_snapshot.txt`** artifact.
+
+---
+
+## M29.1 — Binding CI recovery (branch `m29.1-binding-ci-recovery`)
+
+**Diagnosis (pre-code, 2026-03-25):** targeted fixes below; no audit bump or `v0.0.29-m29` tag until a green Quality run with `performance_snapshot.txt`.
+
+| Symptom | Likely root cause | Fix direction |
+|--------|-------------------|---------------|
+| Pydantic error on **`sampler_index=None`** in **`_text2imgapi_impl` / `_img2imgapi_impl`** | `populate.sampler_index = None` after **`_model_copy_with_update`**; field is **`str`**, not optional | Remove assignment; rely on defaults / valid string (no `None`) |
+| **`ProcessingRequest` has no `runtime_metrics`** vs **`p.runtime_metrics = request.runtime_metrics`** in **`process_images`** | Runner already writes **`p.runtime_metrics`** in **`ProcessingRunner.run`** / **`_execute`** | Drop assignment from **`request`**; **`p`** is sole owner |
+| **`GET /sdapi/v1/cmd-flags` → 500** | **`get_cmd_flags`** returns **`vars(shared.cmd_opts)`**, which includes **extra attributes** (e.g. post-parse fields) **not** in **`FlagsModel`** | Return only keys (and values) compatible with **`FlagsModel`** |
+| **`GET /sdapi/v1/progress` → 500** (when job active path) | **`ProgressResponse`** missing **`current_task`**, but handler passes **`current_task=...`** → response validation failure | Add optional **`current_task`** to **`ProgressResponse`** |
+| Smoke **`POST /sdapi/v1/img2img` → 422** with **`mask: null`** | Img2img API model declares **`mask`** as plain **`str`** while smoke sends JSON **`null`** | **`Optional[str]`** (or **`str \| None`**) for **`mask`** |
+| **`test_txt2img_path_uses_runner`** touches real **`cond_stage_model`** / device | **`process_images`** still runs **`apply_token_merging`** etc. with minimal **`p`** | Mirror API contract test: mock **`apply_token_merging`** (and keep **`reload_model_weights`** mocked) |
