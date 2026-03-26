@@ -196,7 +196,7 @@ def _install_set_event_trigger_js_strip():
     def _blocksconfig_set_event_trigger_strip_js(self, *args, **kwargs):
         kwargs.pop("js", None)
         kwargs.pop("_js", None)
-        return _blocksconfig_set_trigger_orig(self, *args, **kwargs)
+        return _blocksconfig_set_trigger_orig(self, *args, js=None, **kwargs)
 
     _BlocksConfig.set_event_trigger = _blocksconfig_set_event_trigger_strip_js  # type: ignore[method-assign]
 
