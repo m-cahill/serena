@@ -119,7 +119,7 @@ Core principles:
 | M29 | Health/perf verification |
 | M30 | QA/evidence publishing |
 
-**Progress (Phase VI):** **M26–M28 complete.** **M29** (health & performance verification): **instrumentation merged** (PR **#64** + follow-ups **#65–#71** on `main`); **binding Quality green + `performance_snapshot.txt` artifact pending** (Gradio 6 UI vs `_js` / `.click` — see `docs/milestones/M29/M29_run1.md`). **Next:** unblock Quality (**Gradio 6 migration** or approved plan), then **M30** (QA/evidence publishing).
+**Progress (Phase VI):** **M26–M29 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **Next:** **M30** (QA/evidence publishing).
 
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
@@ -163,7 +163,7 @@ Core principles:
 | M26 | Locked manifests & CI environment stabilization | Completed | m26-locked-manifests-ci-env | #45–#53 | 67692434 | Linter 23421937195 (pass); Smoke 23421937182 (pass); Quality 23467772232 (pass, 112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 (UTC) |
 | M27 | Coverage and complexity gates | Completed | m27-coverage-complexity-gates; m27-coverage-measurement-fix | #54–#63 | e3c0d554 | Linter 23512022787 (PR, fail); Smoke 23512022741 (PR, pass); Quality **23513449859** (pass, 198 pass, **47%** cov pytest-only) | 5.0 / 5 | 2026-03-24 ~21:43 UTC |
 | M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | ? | f88e1e9c | Quality **TBD** (append run ID from first green gate); **pip-audit** blocking + **2** governed deferrals (**diskcache**, **pygments** — see `M28_run1.md`) | 5.0 / 5 | 2026-03-26 |
-| M29 | Health / performance verification | Partial — binding CI pending | `main` (see #64–#71) | #64–#71 | `cd56d7c6` | Quality **23569206049** (fail — see `M29_run1.md`) | Runner metrics + DEBUG API timing + snapshot script; **artifact** pending green run | 2026-03-25 |
+| M29 | Health / performance verification | Completed | `main`; m29.2-quality-recovery; m29.2-flags-argparse-types | #64–#71; **#79**; **#80**; **#81** | `1b2e2f69` | Quality **23618918747** (pass, **199** pass, **~48%** cov); **`performance_snapshot.txt`** | **5.0 / 5** — binding CI + artifact | 2026-03-26 |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -213,7 +213,7 @@ Core principles:
 
 **M28:** **Blocking `pip-audit`** on Quality (**M28a**); **M28b** small-batch dependency upgrades (HTTP, API, tooling, Pillow 12 / Gradio 6 / NumPy 2, ML stack: **protobuf**, **pytorch-lightning**, **transformers**, **safetensors**, **gradio** security line). **Governed deferrals** for **CVE-2025-69872** (**diskcache**) and **CVE-2026-4539** (**pygments**) — **no PyPI fix** at closeout; workflow **`--ignore-vuln`** only for those IDs; **`ci_environment_contract.md`** **pip-audit deferrals (M28)**. **`docs/milestones/M28/M28_summary.md`**, **`M28_audit.md`**, **`M28_run1.md`**. Commit **`896677d5a516da0b9fa7a50ec0a7a7268e55f0f0`** — deferral workflow + contract; **finalization** (summary, audit, ledger) in **`m28: finalize M28 (deferrals, docs, ledger)`**; annotated tag **`v0.0.28-m28`**. Coverage floor **≥42%** unchanged; **no** audit disable.
 
-**M29:** **`ProcessingRunner`** sets **`p.runtime_metrics`** with **`execute_time`** and **`total_time`** (`perf_counter`). **API** **`text2imgapi` / `img2imgapi`**: wall time logged at **DEBUG** only (no JSON change). **`scripts/ci/write_performance_snapshot.py`** + Quality artifact step; **`docs/architecture/performance_baseline.md`**; **`test/quality/test_performance_baseline.py`**. Merged via **#64**; CI follow-ups **#65–#71** (requests CVE, torch 2.2.2+cpu stack, scikit-image, Gradio 6 shims). **Binding green Quality + snapshot file:** pending — see **`M29_run1.md`**.
+**M29:** **`ProcessingRunner`** sets **`p.runtime_metrics`** with **`execute_time`** and **`total_time`** (`perf_counter`). **API** **`text2imgapi` / `img2imgapi`**: wall time logged at **DEBUG** only (no JSON change). **`scripts/ci/write_performance_snapshot.py`** + Quality artifact step; **`docs/architecture/performance_baseline.md`**; **`test/quality/test_performance_baseline.py`**. Merged via **#64**; CI follow-ups **#65–#71**; **M29.1** **PR #79** (Gradio / Pydantic dual-stack); **M29.2** **PR #80** / **#81** (`get_cmd_flags`, runner test, **`FlagsModel`** argparse types). Binding **Quality `23618918747`**: **199** pass, **`performance_snapshot.txt`** (**`sample_runner_execute_time_s`** / **`sample_runner_total_time_s`**). Annotated tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. See **`M29_run1.md`**, **`M29_audit.md`**.
 
 ---
 
@@ -231,7 +231,7 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 **M28 ? Security & supply-chain hardening** **complete** — **blocking `pip-audit`** on Quality; **M28b** dependency remediation; **two** explicit **PyPI-unfixable** deferrals (**diskcache**, **pygments**) via **`--ignore-vuln`** + documentation; any new advisory **fails** until fixed or governed.
 
-**M29 ? Health & performance verification** — **runner** + **DEBUG API** timing + **snapshot** pipeline merged; **binding Quality** and **artifact** pending **Gradio 6** UI compatibility (see **`M29_run1.md`**). **Next:** restore green Quality, then **M30 ? QA / evidence publishing**.
+**M29 ? Health & performance verification** **complete** — runner **`runtime_metrics`**, DEBUG API timing, **`performance_snapshot.txt`** on binding **Quality `23618918747`** (**M29.1**/**M29.2** recovery: **PR #79**, **#80**, **#81**). **Next:** **M30 ? QA / evidence publishing**.
 
 ---
 

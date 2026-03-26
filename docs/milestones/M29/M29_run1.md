@@ -328,4 +328,25 @@ AssertionError: assert 'runner_execute' in []
 
 ### Implementation / validation
 
-*(Updated after commits and CI — see **`M29.2_toolcalls.md`**.)*
+**PR #80** (`m29.2-quality-recovery` → `main`, squash merge **`03d9c167fb1abe929177aecf2e37837be766c091`**): docs + **`get_cmd_flags`** omit **`None`** + **`test_txt2img_runner_contract`** harness fix. PR checks: eslint / ruff / smoke **pass** (e.g. runs **`23617925743`**, **`23617934522`**).
+
+**Intermediate Quality on `main` (post–#80):** **`23618080882`** — **failure**. **197 passed**, **2 failed** (cmd-flags only; runner test **pass**). **`output.txt`:** `ValidationError` for **`port`**: **`input_value=7860`**, **`input_type=int`**, field typed **`str`** — **`FlagsModel`** used **`_type = str`** whenever argparse **`default is None`**, ignoring **`--port`** **`type=int`**.
+
+**PR #81** (`m29.2-flags-argparse-types` → `main`): **`modules/api/models.py`** — when **`flag.default is None`**, set field type from **`argparse` `type=`** (**`int`** / **`float`** / **`bool`** / else **`str`**). Merge: **`1b2e2f692d35365de584b7468e8bd9122617358a`**.
+
+### Binding Quality PASS (M29 evidence)
+
+**Run:** **`23618918747`** — https://github.com/m-cahill/serena/actions/runs/23618918747  
+**Head:** **`1b2e2f692d35365de584b7468e8bd9122617358a`** (post–PR **#81**)
+
+| Item | Result |
+|------|--------|
+| **Overall** | **success** |
+| **pytest** | **199 passed**, 13 warnings, ~63s |
+| **Coverage** | **~48%** total line coverage; **`--fail-under=42`** satisfied |
+| **pip-audit (M28)** | **pass** (blocking step) |
+| **Artifact `performance_snapshot.txt`** | **Yes** — workflow artifact name **`performance-snapshot`** |
+
+**Snapshot contents (representative):** header **`# Serena performance_snapshot (M29)`**, **`generated_utc`**, **`sample_runner_execute_time_s=0.001067741000042588`**, **`sample_runner_total_time_s=0.0010740239999904588`** — confirms M29 instrumentation path executed in CI.
+
+**M29 closeout:** **unblocked** — binding **Quality** green + **`performance_snapshot.txt`** present (see audit / ledger / tag **`v0.0.29-m29`**).
