@@ -1,3 +1,5 @@
-# M31 — Plan (placeholder)
+# M31 — Plan
 
-**Phase VII — Architecture lock** (per `docs/serena.md`). Detailed plan to be filled when M31 starts.
+**Phase VII — Architecture lock** (per `docs/serena.md`).
+
+**Status:** Not started — seeded for planning only; no M31 implementation work yet.

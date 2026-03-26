@@ -53,12 +53,38 @@
 
 ---
 
-## 5. M30 binding evidence
+## 5. M30 evidence record (ledger / PR)
 
 | Item | Value |
 |------|--------|
 | Milestone | M30 |
-| Merge commit | *Pending — fill when PR merges to `main`* |
-| Binding CI | **N/A** — documentation-only milestone; no workflow or runtime change |
+| **PR** | **[#82](https://github.com/m-cahill/serena/pull/82)** — `M30: QA / evidence publishing` |
+| Branch pushed | `m30-qa-evidence-publishing` → `origin` |
+| Merge commit (`main`) | *Fill after merge* |
+| **Binding CI for M30** | **N/A** — documentation-only milestone; no code-path or Quality gate required for M30 closeout |
 | Audit target | 5.0 / 5 (`M30_audit.md`) |
 | Key artifact(s) | `serena_evidence_bundle.md`, `serena_case_study_summary.md`, `serena_evidence_matrix.md`, this file, `M30_summary.md`, `M30_audit.md`, updated `docs/serena.md` |
+
+---
+
+## 6. PR #82 checks — provenance only
+
+These results are **PR hygiene** (eslint / ruff / smoke). They are **not** claimed as a “binding” M30 proof surface; M30 remains **doc-only**.
+
+| Check | Result | Representative workflow run(s) |
+|-------|--------|--------------------------------|
+| **eslint** | **pass** | Jobs under [23620057974](https://github.com/m-cahill/serena/actions/runs/23620057974), [23620061075](https://github.com/m-cahill/serena/actions/runs/23620061075) |
+| **ruff** | **pass** | Same workflow runs as eslint (paired jobs) |
+| **smoke tests** | **pass** | e.g. [23620057948](https://github.com/m-cahill/serena/actions/runs/23620057948) (~2m52s), [23620061105](https://github.com/m-cahill/serena/actions/runs/23620061105) (~3m7s) |
+
+*GitHub may show duplicate check rows for the same PR (multiple workflow runs); all completed **pass**.*
+
+---
+
+## 7. Post-merge (fill after merge to `main`)
+
+| Item | Value |
+|------|--------|
+| Merge commit | *TBD* |
+| Post-merge workflows on `main` | *Optional provenance only — e.g. if Quality runs on push; not required for M30* |
+| Annotated tag | `v0.0.30-m30` — *create/push after merge* |
