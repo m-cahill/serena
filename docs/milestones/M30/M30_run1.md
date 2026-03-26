@@ -102,4 +102,4 @@ Push to **`main`** triggered **Linter** and **Quality Tests** on merge commit **
 
 ### Annotated tag
 
-**`v0.0.30-m30`** — message `M30: QA / evidence publishing`. Created on the **M30 merge closeout** commit on **`main`** (ledger + §7 finalized); see `git show v0.0.30-m30`.
+**`v0.0.30-m30`** — message `M30: QA / evidence publishing`. Points to merge-closeout commit **`9f3a6f265e90181b632021f6c7cffd48fc12ae37`** on **`main`** (ledger + §7 finalized after **PR #82** merge **`b663f735`**); see `git show v0.0.30-m30`.
