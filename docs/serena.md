@@ -38,6 +38,7 @@ Core principles:
 2. `docs/sdwebuirefactoraudit.md` ? Baseline audit (architecture, modularity, refactor strategy)
 3. `docs/sdwebuiaudit.md` ? Supplementary audit (DX, phased plan)
 4. Milestone docs under `docs/milestones/MNN/`
+5. **M30+:** Phase I–VI evidence bundle — `docs/architecture/serena_evidence_bundle.md` (see also `serena_case_study_summary.md`, `serena_evidence_matrix.md`)
 
 ---
 
@@ -119,7 +120,7 @@ Core principles:
 | M29 | Health/perf verification |
 | M30 | QA/evidence publishing |
 
-**Progress (Phase VI):** **M26–M29 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **Next:** **M30** (QA/evidence publishing).
+**Progress (Phase VI):** **M26–M30 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **M30** closeout: **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`docs/milestones/M30/M30_run1.md`** (incl. **M28** / **`main`** / **PR #64** evidence note). **Next:** **Phase VII — M31** (architecture lock).
 
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
@@ -162,8 +163,9 @@ Core principles:
 | M25 | Deprecation/compatibility scaffolding | Completed | m25-deprecation-compat-scaffolding | #44 | 46891797 | Linter 23417606838 (PR); Smoke 23417606843 (PR); Quality 23421440167 (112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 |
 | M26 | Locked manifests & CI environment stabilization | Completed | m26-locked-manifests-ci-env | #45–#53 | 67692434 | Linter 23421937195 (pass); Smoke 23421937182 (pass); Quality 23467772232 (pass, 112 pass, 40% cov) | 5.0 / 5 | 2026-03-23 (UTC) |
 | M27 | Coverage and complexity gates | Completed | m27-coverage-complexity-gates; m27-coverage-measurement-fix | #54–#63 | e3c0d554 | Linter 23512022787 (PR, fail); Smoke 23512022741 (PR, pass); Quality **23513449859** (pass, 198 pass, **47%** cov pytest-only) | 5.0 / 5 | 2026-03-24 ~21:43 UTC |
-| M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | ? | f88e1e9c | Quality **TBD** (append run ID from first green gate); **pip-audit** blocking + **2** governed deferrals (**diskcache**, **pygments** — see `M28_run1.md`) | 5.0 / 5 | 2026-03-26 |
+| M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | **#64** (M28+M29 squash to `main` **f18b73f2**; topic finalize **f88e1e9c**) | f88e1e9c | No isolated green Quality on **`main`** for M28 alone; first post-**#64** run **23566817312** failed; stack + **`pip-audit`** proof **23618918747**; **2** deferrals — see **`M30_run1.md`** §3, `M28_run1.md` | 5.0 / 5 | 2026-03-26 |
 | M29 | Health / performance verification | Completed | `main`; m29.2-quality-recovery; m29.2-flags-argparse-types | #64–#71; **#79**; **#80**; **#81** | `1b2e2f69` | Quality **23618918747** (pass, **199** pass, **~48%** cov); **`performance_snapshot.txt`** | **5.0 / 5** — binding CI + artifact | 2026-03-26 |
+| M30 | QA / evidence publishing | Completed | m30-qa-evidence-publishing | — | — | N/A (doc-only milestone) | 5.0 / 5 | 2026-03-26 |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -211,9 +213,11 @@ Core principles:
 
 **M27:** Raised Quality coverage floor to **42%**; added **Radon** on **`modules/`** (warn-first **D/E/F**, artifact). **Measurement governance:** **PR #63** — pytest-only coverage (no **`coverage run launch.py`**, no **`coverage combine`**), documented in **`ci_environment_contract.md`** (**Coverage policy (M27)**). PRs **#54–#63** (tests + diagnosis + fix). Binding Quality **23513449859** @ **`e3c0d554fda4bcf24074e85bf43f3fc52bca8c61`**: **198** pass, **47%** TOTAL (pytest-only). **`docs/milestones/M27/M27_summary.md`**, **`M27_audit.md`**. Closeout documentation and annotated tag **`v0.0.27-m27`** (same commit as this closeout). **No runtime or API change;** threshold **42%** unchanged; **pip-audit** / Radon non-blocking per contract.
 
-**M28:** **Blocking `pip-audit`** on Quality (**M28a**); **M28b** small-batch dependency upgrades (HTTP, API, tooling, Pillow 12 / Gradio 6 / NumPy 2, ML stack: **protobuf**, **pytorch-lightning**, **transformers**, **safetensors**, **gradio** security line). **Governed deferrals** for **CVE-2025-69872** (**diskcache**) and **CVE-2026-4539** (**pygments**) — **no PyPI fix** at closeout; workflow **`--ignore-vuln`** only for those IDs; **`ci_environment_contract.md`** **pip-audit deferrals (M28)**. **`docs/milestones/M28/M28_summary.md`**, **`M28_audit.md`**, **`M28_run1.md`**. Commit **`896677d5a516da0b9fa7a50ec0a7a7268e55f0f0`** — deferral workflow + contract; **finalization** (summary, audit, ledger) in **`m28: finalize M28 (deferrals, docs, ledger)`**; annotated tag **`v0.0.28-m28`**. Coverage floor **≥42%** unchanged; **no** audit disable.
+**M28:** **Blocking `pip-audit`** on Quality (**M28a**); **M28b** small-batch dependency upgrades (HTTP, API, tooling, Pillow 12 / Gradio 6 / NumPy 2, ML stack: **protobuf**, **pytorch-lightning**, **transformers**, **safetensors**, **gradio** security line). **Governed deferrals** for **CVE-2025-69872** (**diskcache**) and **CVE-2026-4539** (**pygments**) — **no PyPI fix** at closeout; workflow **`--ignore-vuln`** only for those IDs; **`ci_environment_contract.md`** **pip-audit deferrals (M28)**. **`docs/milestones/M28/M28_summary.md`**, **`M28_audit.md`**, **`M28_run1.md`**. Commit **`896677d5a516da0b9fa7a50ec0a7a7268e55f0f0`** — deferral workflow + contract; **finalization** (summary, audit, ledger) in **`m28: finalize M28 (deferrals, docs, ledger)`**; annotated tag **`v0.0.28-m28`**. **Delivery to `main`:** squashed with M29 in **PR #64** (**`f18b73f2`**); topic-branch finalize **`f88e1e9c`** is not a first-parent commit on **`main`** — **Quality** clarification in **`M30_run1.md`** §3. Coverage floor **≥42%** unchanged; **no** audit disable.
 
 **M29:** **`ProcessingRunner`** sets **`p.runtime_metrics`** with **`execute_time`** and **`total_time`** (`perf_counter`). **API** **`text2imgapi` / `img2imgapi`**: wall time logged at **DEBUG** only (no JSON change). **`scripts/ci/write_performance_snapshot.py`** + Quality artifact step; **`docs/architecture/performance_baseline.md`**; **`test/quality/test_performance_baseline.py`**. Merged via **#64**; CI follow-ups **#65–#71**; **M29.1** **PR #79** (Gradio / Pydantic dual-stack); **M29.2** **PR #80** / **#81** (`get_cmd_flags`, runner test, **`FlagsModel`** argparse types). Binding **Quality `23618918747`**: **199** pass, **`performance_snapshot.txt`** (**`sample_runner_execute_time_s`** / **`sample_runner_total_time_s`**). Annotated tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. See **`M29_run1.md`**, **`M29_audit.md`**.
+
+**M30:** **QA / evidence publishing** — **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`docs/milestones/M30/M30_run1.md`**, **`M30_summary.md`**, **`M30_audit.md`**. **Doc-only**; no workflow or module edits. Cross-check **M26–M29**; **M28** / **`main`** / **PR #64** **Quality** history documented (no fabricated run ID).
 
 ---
 
@@ -223,7 +227,7 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 > **M21?M23:** Tab registry and modularized txt2img, img2img, settings, extensions. **M24:** Extension API v1 contract. **M25:** Deprecation scaffolding without registry drift.
 
-### Phase VI ? Hardening & Reproducibility (M26–M29)
+### Phase VI ? Hardening & Reproducibility (M26–M30)
 
 **M26 ? Locked manifests & CI environment stabilization** **complete.** Quality CI installs from a **committed lockfile**; npm uses **`npm ci`**; **artifact-level** reproducibility and **`ci_environment_contract.md`** encode the environment.
 
@@ -231,7 +235,9 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 **M28 ? Security & supply-chain hardening** **complete** — **blocking `pip-audit`** on Quality; **M28b** dependency remediation; **two** explicit **PyPI-unfixable** deferrals (**diskcache**, **pygments**) via **`--ignore-vuln`** + documentation; any new advisory **fails** until fixed or governed.
 
-**M29 ? Health & performance verification** **complete** — runner **`runtime_metrics`**, DEBUG API timing, **`performance_snapshot.txt`** on binding **Quality `23618918747`** (**M29.1**/**M29.2** recovery: **PR #79**, **#80**, **#81**). **Next:** **M30 ? QA / evidence publishing**.
+**M29 ? Health & performance verification** **complete** — runner **`runtime_metrics`**, DEBUG API timing, **`performance_snapshot.txt`** on binding **Quality `23618918747`** (**M29.1**/**M29.2** recovery: **PR #79**, **#80**, **#81**).
+
+**M30 ? QA / evidence publishing** **complete** — **`serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (**M28**/`main`/`PR #64` note). **Next:** **Phase VII — M31** (architecture lock).
 
 ---
 
