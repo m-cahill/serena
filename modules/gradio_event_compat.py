@@ -26,6 +26,15 @@ def _wrap_listener(raw):
     return wrapped
 
 
-for _ev_name, _ev in vars(ge.Events).items():
-    if isinstance(_ev, ge.EventListener):
+_EL = getattr(ge, "EventListener", None)
+if _EL is not None:
+    _to_patch: list = []
+    _all = getattr(ge, "all_events", None)
+    if _all:
+        _to_patch = [e for e in _all if isinstance(e, _EL)]
+    else:
+        _evs = getattr(ge, "Events", None)
+        if _evs is not None:
+            _to_patch = [v for v in vars(_evs).values() if isinstance(v, _EL)]
+    for _ev in _to_patch:
         _ev.listener = _wrap_listener(_ev.listener)
