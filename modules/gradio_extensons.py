@@ -2,6 +2,10 @@ import gradio as gr
 
 from modules import scripts, ui_tempdir, patches
 
+# Gradio 6+: `Box` removed — alias to `Group` for legacy `with gr.Box(...)` layouts.
+if not hasattr(gr, "Box"):
+    gr.Box = gr.Group
+
 
 def add_classes_to_gradio_component(comp):
     """
