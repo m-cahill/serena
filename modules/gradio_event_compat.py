@@ -1,8 +1,9 @@
 """
-Gradio 6.10 + Python 3.10 (CI): strip `js=` / `_js=` from all built-in event listeners.
+Gradio 6.10 + Python 3.10 (CI): strip `js=` / `_js=` from event listener callables.
 
-Some CI builds raise TypeError when client JS is passed into the event path. Wrapping each
-`gradio.events.Events.*.listener` before component classes are defined avoids per-call-site edits.
+`ComponentMeta` uses `EventListener.copy()` and `EventListener(...)` for each component;
+wrapping only `Events.*` is insufficient because `.copy()` rebuilds listeners via `__init__`.
+Patch `EventListener.__init__` to wrap `self.listener` after the stock `_setup` runs.
 
 Import this module before `import gradio` (see `initialize.imports`).
 """
@@ -14,6 +15,9 @@ import gradio.events as ge
 
 
 def _wrap_listener(raw):
+    if getattr(raw, "_webui_strip_js", False):
+        return raw
+
     @functools.wraps(raw)
     def wrapped(block, fn="decorator", **kwargs):
         kwargs.pop("js", None)
@@ -23,18 +27,16 @@ def _wrap_listener(raw):
     for meta in ("event_name", "has_trigger", "callback", "connection", "event_specific_args"):
         if hasattr(raw, meta):
             setattr(wrapped, meta, getattr(raw, meta))
+    wrapped._webui_strip_js = True  # type: ignore[attr-defined]
     return wrapped
 
 
-_EL = getattr(ge, "EventListener", None)
-if _EL is not None:
-    _to_patch: list = []
-    _all = getattr(ge, "all_events", None)
-    if _all:
-        _to_patch = [e for e in _all if isinstance(e, _EL)]
-    else:
-        _evs = getattr(ge, "Events", None)
-        if _evs is not None:
-            _to_patch = [v for v in vars(_evs).values() if isinstance(v, _EL)]
-    for _ev in _to_patch:
-        _ev.listener = _wrap_listener(_ev.listener)
+_el = getattr(ge, "EventListener", None)
+if _el is not None:
+    _orig_init = _el.__init__
+
+    def _init_strip_js(self, *args, **kwargs):
+        _orig_init(self, *args, **kwargs)
+        self.listener = _wrap_listener(self.listener)
+
+    _el.__init__ = _init_strip_js  # type: ignore[method-assign]
