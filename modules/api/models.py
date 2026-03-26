@@ -192,8 +192,8 @@ class ProgressResponse(BaseModel):
     progress: float = Field(title="Progress", description="The progress with a range of 0 to 1")
     eta_relative: float = Field(title="ETA in secs")
     state: dict = Field(title="State", description="The current state snapshot")
-    current_image: str = Field(default=None, title="Current image", description="The current image in base64 format. opts.show_progress_every_n_steps is required for this to work.")
-    textinfo: str = Field(default=None, title="Info text", description="Info text used by WebUI.")
+    current_image: Optional[str] = Field(default=None, title="Current image", description="The current image in base64 format. opts.show_progress_every_n_steps is required for this to work.")
+    textinfo: Optional[str] = Field(default=None, title="Info text", description="Info text used by WebUI.")
     current_task: Optional[str] = Field(default=None, title="Current task id", description="Active task id from the progress queue, if any.")
 
 class InterrogateRequest(BaseModel):
@@ -236,7 +236,7 @@ FlagsModel = create_model("Flags", **flags)
 class SamplerItem(BaseModel):
     name: str = Field(title="Name")
     aliases: list[str] = Field(title="Aliases")
-    options: dict[str, str] = Field(title="Options")
+    options: dict[str, Any] = Field(title="Options")
 
 class SchedulerItem(BaseModel):
     name: str = Field(title="Name")
