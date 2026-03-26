@@ -83,15 +83,18 @@ This demonstrates **fix-forward** under blocking gates rather than disabling aud
 
 ## 7. What remains (post–M30)
 
-- **Phase VII (M31–M33):** Architecture lock, evidence/audit closure, release-ready 5/5 close — **out of scope for M30**.
+- **M31 (Phase VII):** **Architecture lock** — `docs/architecture/serena_architecture_lock.md`, `serena_allowed_legacy_surfaces.md` (documentation only; see ledger).
+- **M32–M33:** Evidence/audit closure, release-ready 5/5 close — **out of scope for M30** and **M31**.
 
 ---
 
-## 8. Document index (M30)
+## 8. Document index (M30+)
 
 | Document | Role |
 |----------|------|
 | `docs/serena.md` | Authoritative ledger |
+| `docs/architecture/serena_architecture_lock.md` | **M31:** Locked steady-state architecture (structural authority) |
+| `docs/architecture/serena_allowed_legacy_surfaces.md` | **M31:** Tolerated legacy glue vs locked architecture |
 | `docs/milestones/M30/M30_run1.md` | Cross-check log and M28/M29 CI clarification |
 | `docs/architecture/serena_case_study_summary.md` | Shorter external-facing summary |
 | `docs/architecture/serena_evidence_matrix.md` | Phase → gain → proof |

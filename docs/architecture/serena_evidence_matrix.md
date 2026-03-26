@@ -59,4 +59,5 @@ Compact mapping: **phase** → **milestone range** → **primary gain** → **bi
 
 | Milestone range | Primary gain | Binding proof |
 |-----------------|--------------|---------------|
-| M31–M33 | Architecture lock, audit closure, 5/5 release readiness | *Not started at M30 closeout* |
+| **M31** | Architecture lock (`serena_architecture_lock.md`, `serena_allowed_legacy_surfaces.md`); documentation only | Ledger + lock docs; no runtime gate (same posture as M30 for doc-only) |
+| M32–M33 | Evidence/audit closure, 5/5 release readiness | *Pending* |
