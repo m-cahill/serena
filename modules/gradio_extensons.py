@@ -160,50 +160,87 @@ gr.Number.__init__ = _gradio_number_init
 
 # Gradio 6+: `Image` uses `sources=` (not `source=`). Sketch/editor kwargs (`tool`, `brush_color`) belong on
 # `ImageEditor`; strip them here so legacy `gr.Image(..., tool=...)` calls still construct (upload-only).
+# Smoke CI still installs Gradio 3.x (`requirements_versions.txt`); map `sources=` → `source=` there.
 _gradio_image_orig = gr.Image.__init__
 _IMAGE_LEGACY_KWARGS = frozenset({"tool", "brush_color"})
 
 
+def _gradio_major() -> int:
+    try:
+        return int(str(gr.__version__).split(".", 1)[0])
+    except (ValueError, IndexError):
+        return 6
+
+
 def _gradio_image_init(self, *args, **kwargs):
-    if "source" in kwargs and "sources" not in kwargs:
-        kwargs["sources"] = kwargs.pop("source")
-    for k in _IMAGE_LEGACY_KWARGS:
-        kwargs.pop(k, None)
+    if _gradio_major() < 6:
+        if "sources" in kwargs and "source" not in kwargs:
+            sources = kwargs.pop("sources")
+            if isinstance(sources, (list, tuple)):
+                kwargs["source"] = sources[0] if sources else "upload"
+            else:
+                kwargs["source"] = sources
+    else:
+        if "source" in kwargs and "sources" not in kwargs:
+            kwargs["sources"] = kwargs.pop("source")
+        for k in _IMAGE_LEGACY_KWARGS:
+            kwargs.pop(k, None)
     return _gradio_image_orig(self, *args, **kwargs)
 
 
 gr.Image.__init__ = _gradio_image_init
 
-# Gradio 6.10 (CI / Py 3.10): client `js=` on .click can raise TypeError on EventListenerMethod before deps
-# are registered. Strip at BlocksConfig.set_event_trigger so UI construction succeeds (smoke / API tests).
-def _install_set_event_trigger_js_strip():
+
+def _normalize_gradio_event_js_kwargs(kwargs: dict) -> None:
+    """Smoke (Gradio 3.x) uses `_js=` on events; Quality / locked CI (Gradio 6+) uses `js=`."""
+    if _gradio_major() < 6:
+        if "js" in kwargs and "_js" not in kwargs:
+            kwargs["_js"] = kwargs.pop("js")
+    elif "_js" in kwargs and "js" not in kwargs:
+        kwargs["js"] = kwargs.pop("_js")
+
+
+def _install_event_js_compat():
+    """Translate `js` ↔ `_js` so one codebase works on legacy smoke and Gradio 6+ Quality."""
+    try:
+        from gradio.events import EventListenerMethod  # noqa: PLC0415
+
+        _elm_call = EventListenerMethod.__call__
+
+        def _elm_compat(self, *args, **kwargs):
+            _normalize_gradio_event_js_kwargs(kwargs)
+            return _elm_call(self, *args, **kwargs)
+
+        EventListenerMethod.__call__ = _elm_compat  # type: ignore[method-assign]
+    except ImportError:
+        pass
+
     _seen: set[int] = set()
 
-    def _patch_class(_cls: type):
+    def _patch_blocks_config(_cls: type):
         if id(_cls) in _seen or not callable(getattr(_cls, "set_event_trigger", None)):
             return
         _seen.add(id(_cls))
         _orig = _cls.set_event_trigger
 
-        def _strip(self, *args, **kwargs):
-            kwargs.pop("js", None)
-            kwargs.pop("_js", None)
-            return _orig(self, *args, js=None, **kwargs)
+        def _cfg_compat(self, *args, **kwargs):
+            _normalize_gradio_event_js_kwargs(kwargs)
+            return _orig(self, *args, **kwargs)
 
-        _cls.set_event_trigger = _strip  # type: ignore[method-assign]
+        _cls.set_event_trigger = _cfg_compat  # type: ignore[method-assign]
 
     _primary = vars(gb).get("BlocksConfig")
     if _primary is not None:
-        _patch_class(_primary)
+        _patch_blocks_config(_primary)
     try:
         from gradio.blocks import BlocksConfig as _imp_bc  # noqa: PLC0415
 
-        _patch_class(_imp_bc)
+        _patch_blocks_config(_imp_bc)
     except ImportError:
         pass
     for _candidate in vars(gb).values():
         if isinstance(_candidate, type) and _candidate.__name__ == "BlocksConfig":
-            _patch_class(_candidate)
+            _patch_blocks_config(_candidate)
     for _candidate in vars(gb).values():
         if (
             isinstance(_candidate, type)
@@ -211,7 +248,7 @@ def _install_set_event_trigger_js_strip():
             and _candidate.__name__.endswith("Config")
             and callable(getattr(_candidate, "set_event_trigger", None))
         ):
-            _patch_class(_candidate)
+            _patch_blocks_config(_candidate)
 
 
-_install_set_event_trigger_js_strip()
+_install_event_js_compat()

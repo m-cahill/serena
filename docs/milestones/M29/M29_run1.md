@@ -206,3 +206,11 @@ TypeError: Image.__init__() got an unexpected keyword argument 'source'
 **Round 4b fix:** remove **`js=`** from Interrupt and clear-prompt **`.click`** in **`ui_toprow`** (no dependency change; JS confirm/placeholder hooks deferred).
 
 **Round 4c fix:** Smoke failed on successive **`js=`** call sites (**`ui_prompt_styles`**, etc.). **`gradio_event_compat`** (early **`EventListener.__init__`** patch) was abandoned: Gradio 6 **`Component`** cooperatively calls **`EventListener.__init__(self)`**, and CI layouts differ on **`Events` / `_setup`**. **Working approach:** strip **`js` / `_js`** in **`gradio.blocks.BlocksConfig.set_event_trigger`** (see **`modules/gradio_extensons.py`**), loaded with **`gradio_extensons`** after **`import gradio`** in **`initialize.imports()`**.
+
+### Round 5 — dual-Gradio compatibility (2026-03-26)
+
+**Stacks:** **Smoke** CI installs the legacy pin set (**`requirements_versions.txt`**, e.g. **Gradio 3.41.2** / older Pillow). **Quality** CI uses the locked manifest (**`requirements-ci.txt`**, **Gradio 6.x** / newer Pillow). They are intentionally different until dependency alignment is a separate milestone.
+
+**Bind blocker under smoke:** **`TypeError: EventListenerMethod.__call__() got an unexpected keyword argument 'js'`** — Gradio 3 expects **`_js=`** on event bindings; M29.1 migrated call sites to **`js=`** for Gradio 6. Stripping all client **`js`** (Round 4c) avoided the crash but removed essential UI behavior (interrupt placeholder, clear-prompt confirm, style dialogs).
+
+**Fix direction (this round):** centralized **`js` ↔ `_js`** normalization in **`modules/gradio_extensons.py`** (**`EventListenerMethod.__call__`** + **`BlocksConfig.set_event_trigger`**) so the repo keeps a **single** convention (**`js=`**) while smoke translates to **`_js`** at runtime. **`gr.Image`**: branch **`sources=`** vs **`source=`** by major version (G6-style vs G3). **No** workflow or requirements file changes in this pass; **no** broad callsite **`js`** removal as the primary strategy.
