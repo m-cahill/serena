@@ -1,10 +1,13 @@
 import inspect
 
-from pydantic import BaseModel, ConfigDict, Field, create_model
+import pydantic
+from pydantic import BaseModel, Field, create_model
 from typing import Any, Literal, Optional, Union
 from inflection import underscore
 from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img
 from modules.shared import sd_upscalers, opts, parser
+
+_PYDANTIC_V2 = int(pydantic.VERSION.split(".", 1)[0]) >= 2
 
 API_NOT_ALLOWED = [
     "self",
@@ -92,12 +95,18 @@ class PydanticModelGenerator:
         fields = {
             d.field: (d.field_type, Field(default=d.field_value, alias=d.field_alias, exclude=d.field_exclude)) for d in self._model_def
         }
-        # Pydantic v2 (FastAPI 0.110+): ConfigDict replaces __config__ mutation (v1 allow_population_by_field_name / allow_mutation).
-        return create_model(
-            self._model_name,
-            __config__=ConfigDict(populate_by_name=True, validate_assignment=True),
-            **fields,
-        )
+        if _PYDANTIC_V2:
+            from pydantic import ConfigDict  # noqa: PLC0415
+
+            return create_model(
+                self._model_name,
+                __config__=ConfigDict(populate_by_name=True, validate_assignment=True),
+                **fields,
+            )
+        model = create_model(self._model_name, **fields)
+        model.__config__.allow_population_by_field_name = True
+        model.__config__.allow_mutation = True
+        return model
 
 StableDiffusionTxt2ImgProcessingAPI = PydanticModelGenerator(
     "StableDiffusionProcessingTxt2Img",

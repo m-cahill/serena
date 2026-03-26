@@ -214,3 +214,20 @@ TypeError: Image.__init__() got an unexpected keyword argument 'source'
 **Bind blocker under smoke:** **`TypeError: EventListenerMethod.__call__() got an unexpected keyword argument 'js'`** — Gradio 3 expects **`_js=`** on event bindings; M29.1 migrated call sites to **`js=`** for Gradio 6. Stripping all client **`js`** (Round 4c) avoided the crash but removed essential UI behavior (interrupt placeholder, clear-prompt confirm, style dialogs).
 
 **Fix direction (this round):** centralized **`js` ↔ `_js`** normalization in **`modules/gradio_extensons.py`** (**`EventListenerMethod.__call__`** + **`BlocksConfig.set_event_trigger`**) so the repo keeps a **single** convention (**`js=`**) while smoke translates to **`_js`** at runtime. **`gr.Image`**: branch **`sources=`** vs **`source=`** by major version (G6-style vs G3). **No** workflow or requirements file changes in this pass; **no** broad callsite **`js`** removal as the primary strategy.
+
+### Round 7 — Pydantic v1/v2 dual-stack compatibility (2026-03-26)
+
+**Failing smoke run(s):** **`23580424792`** (PR **#79** checks after Round 5 commit **`f661bc8e`**).
+
+**Confirmed:** Round 5 **`js ↔ _js`** shim **IS reached** (`output.txt` line 152 shows **`_elm_compat`** in the call stack). The event kwarg translation works.
+
+**New bind blocker — cascade failure from Pydantic v1 metaclass conflict:**
+
+1. **`modules/api/models.py:115`** — M29.1 migrated `generate_model()` to use **`ConfigDict(populate_by_name=True, ...)`** as `__config__=` param to `create_model`. Under smoke's **Pydantic 1.10.26**, `ConfigDict` is a `TypedDict` (not a config class) → **`TypeError: metaclass conflict`** on every `create_model` call.
+2. This crashes the **import of `modules.api.models`** — which is done inside **`create_script_ui_inner()`** for every script → **9 scripts** fail UI creation (non-fatal, caught by try/except).
+3. The **Sampler** script's `steps` Slider is never created → `steps = None`.
+4. **`ui_txt2img_tab.py:245`** passes `steps` (= `None`) as input to **`.change()`** → **`AttributeError: 'NoneType' object has no attribute '_id'`** — **process-fatal**, server never binds.
+
+**Also at risk:** **`api.py:742-744`** uses **`model_fields`** and **`model_validate`** (Pydantic v2-only); under v1 these would be **`__fields__`** and **`parse_obj`**. Fixed proactively.
+
+**Fix direction:** version-gate `generate_model()` — Pydantic ≥ 2 uses `ConfigDict`; Pydantic 1 uses the original `__config__` mutation style. Same pattern for `get_cmd_flags` in `api.py`.

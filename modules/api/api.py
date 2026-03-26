@@ -737,11 +737,15 @@ class Api:
         return
 
     def get_cmd_flags(self):
-        # `cmd_opts` gains post-parse attributes not present on FlagsModel; filter to schema keys only.
         raw = vars(shared.cmd_opts)
-        keys = models.FlagsModel.model_fields.keys()
-        out = {k: raw[k] for k in keys if k in raw}
-        return models.FlagsModel.model_validate(jsonable_encoder(out))
+        schema_keys = getattr(models.FlagsModel, "model_fields", None)
+        if schema_keys is None:
+            schema_keys = models.FlagsModel.__fields__
+        out = {k: raw[k] for k in schema_keys if k in raw}
+        validate = getattr(models.FlagsModel, "model_validate", None)
+        if validate is not None:
+            return validate(jsonable_encoder(out))
+        return models.FlagsModel.parse_obj(jsonable_encoder(out))
 
     def get_samplers(self):
         return [{"name": sampler[0], "aliases":sampler[2], "options":sampler[3]} for sampler in sd_samplers.all_samplers]
