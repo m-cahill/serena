@@ -103,7 +103,7 @@ M32 **closes the evidence/audit story** for the Serena refactor **body of work**
 |------|--------|
 | **PR** | **[#86](https://github.com/m-cahill/serena/pull/86)** — `docs(M32): evidence/audit closure and M33 stubs` |
 | **Branch** | `m32-evidence-audit-closure` → `origin/m32-evidence-audit-closure` |
-| **Head SHA (pre-merge)** | **`f31754936c0c4428e45af01e538c7acaad64fc0c`** (short **`f3175493`**) |
+| **Branch tip (pre-merge)** | Latest commit on **[PR #86](https://github.com/m-cahill/serena/pull/86)** (not the eventual squash merge SHA on `main`) |
 | **Base** | `main` at branch creation (merge-base **`03a2e6ea`**) |
 | **Merge** | *(Pending squash merge to `main` — record merge SHA here when merged.)* |
 | **Binding CI for M32** | **N/A** — documentation-only milestone; PR checks are **provenance/hygiene** only, not a substitute for §4 binding proof |
