@@ -1,7 +1,7 @@
 import inspect
 
 from pydantic import BaseModel, ConfigDict, Field, create_model
-from typing import Any, Optional, Literal
+from typing import Any, Literal, Optional, Union
 from inflection import underscore
 from modules.processing import StableDiffusionProcessingTxt2Img, StableDiffusionProcessingImg2Img
 from modules.shared import sd_upscalers, opts, parser
@@ -122,6 +122,8 @@ StableDiffusionImg2ImgProcessingAPI = PydanticModelGenerator(
         {"key": "init_images", "type": list, "default": None},
         {"key": "denoising_strength", "type": float, "default": 0.75},
         {"key": "mask", "type": Optional[str], "default": None},
+        # Smoke JSON uses `false`; dataclass field is int — Pydantic v2 rejects bool for Optional[int].
+        {"key": "inpainting_mask_invert", "type": Union[int, bool], "default": 0},
         {"key": "include_init_images", "type": bool, "default": False, "exclude" : True},
         {"key": "script_name", "type": str, "default": None},
         {"key": "script_args", "type": list, "default": []},
