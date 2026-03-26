@@ -318,8 +318,8 @@ def setup_dialog(button_show, dialog, *, button_close=None):
         fn=lambda: gr.update(visible=True),
         inputs=[],
         outputs=[dialog],
-    ).then(fn=None, js="function(){ popupId('" + dialog.elem_id + "'); }")
+    )
 
     if button_close:
-        button_close.click(fn=None, js="closePopup")
+        button_close.click(fn=lambda: gr.update(visible=False), inputs=[], outputs=[dialog])
 

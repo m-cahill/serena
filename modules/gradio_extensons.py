@@ -177,28 +177,41 @@ gr.Image.__init__ = _gradio_image_init
 # Gradio 6.10 (CI / Py 3.10): client `js=` on .click can raise TypeError on EventListenerMethod before deps
 # are registered. Strip at BlocksConfig.set_event_trigger so UI construction succeeds (smoke / API tests).
 def _install_set_event_trigger_js_strip():
-    _BlocksConfig = vars(gb).get("BlocksConfig")
-    if _BlocksConfig is None:
-        try:
-            from gradio.blocks import BlocksConfig as _BlocksConfig  # noqa: PLC0415
-        except ImportError:
-            _BlocksConfig = None
-    if _BlocksConfig is None:
-        for _candidate in vars(gb).values():
-            if isinstance(_candidate, type) and _candidate.__name__ == "BlocksConfig":
-                if callable(getattr(_candidate, "set_event_trigger", None)):
-                    _BlocksConfig = _candidate
-                    break
-    if _BlocksConfig is None:
-        return
-    _blocksconfig_set_trigger_orig = _BlocksConfig.set_event_trigger
+    _seen: set[int] = set()
 
-    def _blocksconfig_set_event_trigger_strip_js(self, *args, **kwargs):
-        kwargs.pop("js", None)
-        kwargs.pop("_js", None)
-        return _blocksconfig_set_trigger_orig(self, *args, js=None, **kwargs)
+    def _patch_class(_cls: type):
+        if id(_cls) in _seen or not callable(getattr(_cls, "set_event_trigger", None)):
+            return
+        _seen.add(id(_cls))
+        _orig = _cls.set_event_trigger
 
-    _BlocksConfig.set_event_trigger = _blocksconfig_set_event_trigger_strip_js  # type: ignore[method-assign]
+        def _strip(self, *args, **kwargs):
+            kwargs.pop("js", None)
+            kwargs.pop("_js", None)
+            return _orig(self, *args, js=None, **kwargs)
+
+        _cls.set_event_trigger = _strip  # type: ignore[method-assign]
+
+    _primary = vars(gb).get("BlocksConfig")
+    if _primary is not None:
+        _patch_class(_primary)
+    try:
+        from gradio.blocks import BlocksConfig as _imp_bc  # noqa: PLC0415
+
+        _patch_class(_imp_bc)
+    except ImportError:
+        pass
+    for _candidate in vars(gb).values():
+        if isinstance(_candidate, type) and _candidate.__name__ == "BlocksConfig":
+            _patch_class(_candidate)
+    for _candidate in vars(gb).values():
+        if (
+            isinstance(_candidate, type)
+            and _candidate.__module__ == gb.__name__
+            and _candidate.__name__.endswith("Config")
+            and callable(getattr(_candidate, "set_event_trigger", None))
+        ):
+            _patch_class(_candidate)
 
 
 _install_set_event_trigger_js_strip()
