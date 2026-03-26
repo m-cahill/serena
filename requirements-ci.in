@@ -14,14 +14,15 @@ requests>=2.33.0,<3
 # M28b batch 4: tooling / infra — setuptools, wheel, filelock, GitPython (see lock header).
 # M28b batch 5b: ML stack — protobuf → pytorch-lightning → transformers (+ **safetensors** ≥0.4.3; **gradio** ≥6.7 for Gradio CVE fixes; micro-steps; see commits).
 # M29 CI: PyTorch **2.2+** so `transformers` 4.57.x matches `torch.utils._pytree` APIs and pip-audit fix versions (torch 2.1 + transformers 4.39 tripped audit vs runtime).
+# M29.1b: PyTorch **2.4+** — **2.2.2+cpu** wheels are not compatible with **NumPy 2.x** (`_ARRAY_API`); 2.4+cpu supports NumPy 2 alongside blendmodes 2025.
 wait-for-it==2.3.0
 pytest==7.4.4
 pytest-base-url==2.1.0
 pytest-cov==4.1.0
 setuptools>=70,<80
 wheel>=0.43,<1
-torch==2.2.2
-torchvision==0.17.2
+torch==2.4.0
+torchvision==0.19.0
 # OpenAI CLIP: not in this lockfile — PEP 517 metadata for the GitHub archive fails on CI.
 # Quality workflow downloads the pinned zip, unzips, and `pip install --no-build-isolation` the tree.
 # open_clip GitHub zip omitted: duplicate ZIP entries break uv; PyPI pin below matches post-install state.
