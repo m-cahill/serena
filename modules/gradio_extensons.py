@@ -156,3 +156,19 @@ def _gradio_number_init(self, *args, **kwargs):
 
 
 gr.Number.__init__ = _gradio_number_init
+
+# Gradio 6+: `Image` uses `sources=` (not `source=`). Sketch/editor kwargs (`tool`, `brush_color`) belong on
+# `ImageEditor`; strip them here so legacy `gr.Image(..., tool=...)` calls still construct (upload-only).
+_gradio_image_orig = gr.Image.__init__
+_IMAGE_LEGACY_KWARGS = frozenset({"tool", "brush_color"})
+
+
+def _gradio_image_init(self, *args, **kwargs):
+    if "source" in kwargs and "sources" not in kwargs:
+        kwargs["sources"] = kwargs.pop("source")
+    for k in _IMAGE_LEGACY_KWARGS:
+        kwargs.pop(k, None)
+    return _gradio_image_orig(self, *args, **kwargs)
+
+
+gr.Image.__init__ = _gradio_image_init
