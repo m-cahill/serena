@@ -11,11 +11,12 @@ import functools
 
 import gradio.events as ge
 
-_el_setup_raw = ge.EventListener.__dict__["_setup"]
-_orig_el_setup_fn = _el_setup_raw.__func__ if isinstance(_el_setup_raw, staticmethod) else _el_setup_raw
+_el_setup_ref = getattr(ge.EventListener, "_setup", None)
+if _el_setup_ref is None:
+    raise RuntimeError("gradio_event_compat: EventListener._setup missing — Gradio API changed")
+_orig_el_setup_fn = _el_setup_ref.__func__ if isinstance(_el_setup_ref, staticmethod) else _el_setup_ref
 
 
-@staticmethod
 def _event_listener_setup_strip_js(*args, **kwargs):
     raw_trigger = _orig_el_setup_fn(*args, **kwargs)
 
@@ -31,4 +32,8 @@ def _event_listener_setup_strip_js(*args, **kwargs):
     return event_trigger
 
 
-ge.EventListener._setup = _event_listener_setup_strip_js
+ge.EventListener._setup = (
+    staticmethod(_event_listener_setup_strip_js)
+    if isinstance(_el_setup_ref, staticmethod)
+    else _event_listener_setup_strip_js
+)
