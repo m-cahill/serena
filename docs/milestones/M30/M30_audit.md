@@ -23,6 +23,8 @@
 
 M30 meets its definition of done: a **coherent, auditable evidence surface** without changing executables. The **M28** correction improves **truthfulness** of the record (no fabricated run ID).
 
+**Merge closeout:** **PR #82** squash-merged to **`main`** (**`b663f735`**). **`docs/serena.md`** records **M30** with merge commit and **documentation-only** posture. Post-merge **Linter** / **Quality** runs on **`main`** are **optional provenance** only — not claimed as a M30 binding proof surface (`M30_run1.md` §7).
+
 ---
 
 ## References

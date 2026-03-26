@@ -120,7 +120,7 @@ Core principles:
 | M29 | Health/perf verification |
 | M30 | QA/evidence publishing |
 
-**Progress (Phase VI):** **M26–M30 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **M30** closeout: **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`docs/milestones/M30/M30_run1.md`** (incl. **M28** / **`main`** / **PR #64** evidence note). **Next:** **Phase VII — M31** (architecture lock).
+**Progress (Phase VI):** **M26–M30 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **M30** closeout: **PR #82** → merge **`b663f735`**; evidence bundle **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (incl. **M28** / **`main`** / **PR #64** note); tag **`v0.0.30-m30`**. **M30** is **documentation / evidence only** — no runtime gate. **Next:** **Phase VII — M31** (architecture lock).
 
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
@@ -165,7 +165,7 @@ Core principles:
 | M27 | Coverage and complexity gates | Completed | m27-coverage-complexity-gates; m27-coverage-measurement-fix | #54–#63 | e3c0d554 | Linter 23512022787 (PR, fail); Smoke 23512022741 (PR, pass); Quality **23513449859** (pass, 198 pass, **47%** cov pytest-only) | 5.0 / 5 | 2026-03-24 ~21:43 UTC |
 | M28 | Security / supply-chain hardening | Completed | m28-security-supply-chain | **#64** (M28+M29 squash to `main` **f18b73f2**; topic finalize **f88e1e9c**) | f88e1e9c | No isolated green Quality on **`main`** for M28 alone; first post-**#64** run **23566817312** failed; stack + **`pip-audit`** proof **23618918747**; **2** deferrals — see **`M30_run1.md`** §3, `M28_run1.md` | 5.0 / 5 | 2026-03-26 |
 | M29 | Health / performance verification | Completed | `main`; m29.2-quality-recovery; m29.2-flags-argparse-types | #64–#71; **#79**; **#80**; **#81** | `1b2e2f69` | Quality **23618918747** (pass, **199** pass, **~48%** cov); **`performance_snapshot.txt`** | **5.0 / 5** — binding CI + artifact | 2026-03-26 |
-| M30 | QA / evidence publishing | Completed | m30-qa-evidence-publishing | — | — | N/A (doc-only milestone) | 5.0 / 5 | 2026-03-26 |
+| M30 | QA / evidence publishing (documentation / evidence) | Completed | m30-qa-evidence-publishing | **#82** | **b663f735** | **Doc-only:** no binding runtime gate; post-merge **optional** provenance on **`b663f735`**: Linter **23620987714** pass; Quality **23620987702** pass; PR **#82** hygiene checks in `M30_run1.md` §6 | 5.0 / 5 | 2026-03-26 ~22:24 UTC |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -217,7 +217,7 @@ Core principles:
 
 **M29:** **`ProcessingRunner`** sets **`p.runtime_metrics`** with **`execute_time`** and **`total_time`** (`perf_counter`). **API** **`text2imgapi` / `img2imgapi`**: wall time logged at **DEBUG** only (no JSON change). **`scripts/ci/write_performance_snapshot.py`** + Quality artifact step; **`docs/architecture/performance_baseline.md`**; **`test/quality/test_performance_baseline.py`**. Merged via **#64**; CI follow-ups **#65–#71**; **M29.1** **PR #79** (Gradio / Pydantic dual-stack); **M29.2** **PR #80** / **#81** (`get_cmd_flags`, runner test, **`FlagsModel`** argparse types). Binding **Quality `23618918747`**: **199** pass, **`performance_snapshot.txt`** (**`sample_runner_execute_time_s`** / **`sample_runner_total_time_s`**). Annotated tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. See **`M29_run1.md`**, **`M29_audit.md`**.
 
-**M30:** **QA / evidence publishing** — **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`docs/milestones/M30/M30_run1.md`**, **`M30_summary.md`**, **`M30_audit.md`**. **Doc-only**; no workflow or module edits. Cross-check **M26–M29**; **M28** / **`main`** / **PR #64** **Quality** history documented (no fabricated run ID).
+**M30:** **QA / evidence publishing** — **PR #82** squash-merge **`b663f735074e63055125c390aee8fc907c49e915`**; **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`docs/milestones/M30/M30_run1.md`**, **`M30_summary.md`**, **`M30_audit.md`**. **Documentation / evidence milestone only** — no workflow or module edits; **no** binding M30 runtime gate. Cross-check **M26–M29**; **M28** / **`main`** / **PR #64** **Quality** history documented (no fabricated run ID). Annotated tag **`v0.0.30-m30`**.
 
 ---
 
@@ -237,7 +237,7 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 **M29 ? Health & performance verification** **complete** — runner **`runtime_metrics`**, DEBUG API timing, **`performance_snapshot.txt`** on binding **Quality `23618918747`** (**M29.1**/**M29.2** recovery: **PR #79**, **#80**, **#81**).
 
-**M30 ? QA / evidence publishing** **complete** — **`serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (**M28**/`main`/`PR #64` note). **Next:** **Phase VII — M31** (architecture lock).
+**M30 ? QA / evidence publishing** **complete** — **PR #82** merge **`b663f735`**; **`serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (**M28**/`main`/`PR #64` note); tag **`v0.0.30-m30`**. **Doc-only** milestone. **Next:** **Phase VII — M31** (architecture lock).
 
 ---
 

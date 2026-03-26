@@ -60,7 +60,7 @@
 | Milestone | M30 |
 | **PR** | **[#82](https://github.com/m-cahill/serena/pull/82)** — `M30: QA / evidence publishing` |
 | Branch pushed | `m30-qa-evidence-publishing` → `origin` |
-| Merge commit (`main`) | *Fill after merge* |
+| Merge commit (`main`) | **`b663f735074e63055125c390aee8fc907c49e915`** (squash merge of **PR #82**, 2026-03-26 **22:23:40 UTC** / 15:23:40 -0700) |
 | **Binding CI for M30** | **N/A** — documentation-only milestone; no code-path or Quality gate required for M30 closeout |
 | Audit target | 5.0 / 5 (`M30_audit.md`) |
 | Key artifact(s) | `serena_evidence_bundle.md`, `serena_case_study_summary.md`, `serena_evidence_matrix.md`, this file, `M30_summary.md`, `M30_audit.md`, updated `docs/serena.md` |
@@ -83,10 +83,23 @@ These results are **PR hygiene** (eslint / ruff / smoke). They are **not** claim
 
 ---
 
-## 7. Post-merge (fill after merge to `main`)
+## 7. Post-merge closeout
 
 | Item | Value |
 |------|--------|
-| Merge commit | *TBD* |
-| Post-merge workflows on `main` | *Optional provenance only — e.g. if Quality runs on push; not required for M30* |
-| Annotated tag | `v0.0.30-m30` — *create/push after merge* |
+| **PR** | **[#82](https://github.com/m-cahill/serena/pull/82)** — merged to **`main`** (squash) |
+| **Merge commit** | **`b663f735074e63055125c390aee8fc907c49e915`** |
+| **Merge timestamp** | **2026-03-26T22:23:40Z** (GitHub merge commit; author TZ −07:00) |
+
+### Post-merge workflows on `main` (optional provenance only)
+
+Push to **`main`** triggered **Linter** and **Quality Tests** on merge commit **`b663f735`**. These runs are **routine CI after a docs-only merge** — **not** described as a binding M30 proof surface; M30 remains **documentation / evidence** work with **no** required runtime gate.
+
+| Workflow | Run ID | Result | URL |
+|----------|--------|--------|-----|
+| **Linter** | **23620987714** | **success** | [view run](https://github.com/m-cahill/serena/actions/runs/23620987714) |
+| **Quality Tests** | **23620987702** | **success** | [view run](https://github.com/m-cahill/serena/actions/runs/23620987702) |
+
+### Annotated tag
+
+**`v0.0.30-m30`** — message `M30: QA / evidence publishing`. Created on the **M30 merge closeout** commit on **`main`** (ledger + §7 finalized); see `git show v0.0.30-m30`.

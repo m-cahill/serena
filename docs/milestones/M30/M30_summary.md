@@ -1,13 +1,15 @@
 # M30 — Summary: QA / evidence publishing
 
-**Status:** Completed (documentation)  
-**Audit score:** 5.0 / 5 (see `M30_audit.md`)
+**Status:** Completed (documentation / evidence publishing — **not** a runtime-change milestone)  
+**Audit score:** 5.0 / 5 (see `M30_audit.md`)  
+**Merge:** **[PR #82](https://github.com/m-cahill/serena/pull/82)** squash-merged to **`main`** → **`b663f735074e63055125c390aee8fc907c49e915`** (2026-03-26 UTC).  
+**Tag:** **`v0.0.30-m30`** (annotated; message: `M30: QA / evidence publishing`).
 
 ---
 
 ## What shipped
 
-1. **`docs/milestones/M30/M30_run1.md`** — Evidence inventory; selective deep verification of **M26–M29**; **M28** / **`main`** / PR **#64** relationship documented; ledger corrections listed.
+1. **`docs/milestones/M30/M30_run1.md`** — Evidence inventory; selective deep verification of **M26–M29**; **M28** / **`main`** / PR **#64** relationship documented; ledger corrections listed; **PR #82** + post-merge CI provenance (**optional**, not a binding M30 gate).
 2. **`docs/architecture/serena_evidence_bundle.md`** — Internal case-study–quality bundle (identity, phases, gains, invariants, CI evidence, recovery narrative).
 3. **`docs/architecture/serena_case_study_summary.md`** — Shorter, general-technical / reviewer-facing summary.
 4. **`docs/architecture/serena_evidence_matrix.md`** — Phase tables: milestone range → gain → binding proof.
@@ -24,9 +26,16 @@
 
 ---
 
+## Ledger consistency
+
+- **`docs/serena.md`** milestone table: **M30** row filled with **PR #82**, merge commit **`b663f735`**, completed timestamp, and explicit **documentation-only** wording.
+
+---
+
 ## Evidence
 
 - Cross-check sources: `docs/milestones/M26`–`M29` milestone docs; `docs/serena.md`; GitHub Actions listing for `m-cahill/serena` Quality workflow (see `M30_run1.md`).
+- **PR #82** hygiene checks (eslint / ruff / smoke) and **post-merge** Linter / Quality on **`b663f735`** — **provenance only**; see `M30_run1.md` §6–§7.
 
 ---
 
