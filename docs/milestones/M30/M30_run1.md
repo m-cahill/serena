@@ -79,6 +79,8 @@ These results are **PR hygiene** (eslint / ruff / smoke). They are **not** claim
 
 *GitHub may show duplicate check rows for the same PR (multiple workflow runs); all completed **pass**.*
 
+**Re-verified** after doc-only push **`c7c24b87`** (this §6 + toolcalls + M31 stub normalize): eslint / ruff / smoke **pass** — e.g. [23620292269](https://github.com/m-cahill/serena/actions/runs/23620292269), [23620292833](https://github.com/m-cahill/serena/actions/runs/23620292833); smoke [23620292264](https://github.com/m-cahill/serena/actions/runs/23620292264), [23620292813](https://github.com/m-cahill/serena/actions/runs/23620292813).
+
 ---
 
 ## 7. Post-merge (fill after merge to `main`)
