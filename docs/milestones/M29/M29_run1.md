@@ -156,3 +156,13 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 | **smoke** | **fail** | Await re-run after **`4611740b`** (Ruff + CI hygiene); capture logs if still red |
 
 **Follow-up on branch** (commit **`4611740b`**): Ruff clean — `test_txt2img_runner_contract` import fix; `write_performance_snapshot.py` import order; remove unused `pytest` in `test_m27_util_errors_coverage.py`; `pyproject.toml` per-file **`F811`** ignore for `modules/processing.py` (dataclass/property pattern); Ruff **exclude** `modules/ui_components.pyi` (local stub layout). **Re-verify** PR **ruff** + **smoke** on latest push.
+
+**Second PR checks snapshot** (after push **`4611740b`** / docs **`af78464b`**; Actions e.g. **`23576902822`** lint, **`23576902847`** smoke):
+
+| Check | Result | Notes |
+|--------|--------|--------|
+| **eslint** | **pass** | — |
+| **ruff** | **pass** | Confirms hygiene commit |
+| **smoke** | **fail** | **`wait-for-it`** timed out on **`127.0.0.1:7860`** (20s) — test server did not accept connections in time. See workflow **`output.txt`** artifact on run **`23576902847`** for launch traceback / logs (not an HTTP 422/500 from pytest in this failure mode). |
+
+**Next:** Inspect **`output.txt`** from the failing smoke run; if startup is flaky, re-run workflow; if reproducible, fix **launch / server bind** path (outside HTTP handler fixes above).
