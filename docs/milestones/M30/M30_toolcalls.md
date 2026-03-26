@@ -15,5 +15,5 @@
 | 2026-03-26 | gh | Capture PR checks (eslint, ruff, smoke) | `gh pr checks 82` — all **pass** (runs e.g. **23620057974**, **23620061075**, smoke **23620057948**, **23620061105**) |
 | 2026-03-26T22:23Z | gh | Squash-merge **PR #82** to `main` | `gh pr merge 82 --squash` → merge commit **`b663f735074e63055125c390aee8fc907c49e915`** |
 | 2026-03-26T22:23Z | gh | Post-merge workflow provenance on `main` | Linter **23620987714** success; Quality **23620987702** success (optional; not M30 binding) |
-| 2026-03-26T22:31Z | git | Annotated tag + push (retargeted to final closeout) | `v0.0.30-m30` → **`32fb66bd4229639dd489aeaaa433c2b49ae2252e`** |
+| 2026-03-26T22:31Z | git | Annotated tag + push | `v0.0.30-m30` — verify with `git show v0.0.30-m30` (tip of M30 closeout on `main`) |
 | 2026-03-26 | git / gh | Merge closeout commits on `main` | **`9f3a6f26`** ledger fill; **`7e12fb94`** tag SHA note; **`32fb66bd`** tag narrative |
