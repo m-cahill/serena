@@ -204,7 +204,7 @@ def create_output_panel(tabname, outdir, toprow=None):
 
             open_folder_button.click(
                 fn=lambda images, index: open_folder(shared.opts.outdir_samples or outdir, images, index),
-                _js="(y, w) => [y, selected_gallery_index()]",
+                js="(y, w) => [y, selected_gallery_index()]",
                 inputs=[
                     res.gallery,
                     open_folder_button,  # placeholder for index
@@ -224,7 +224,7 @@ def create_output_panel(tabname, outdir, toprow=None):
                         generation_info_button = gr.Button(visible=False, elem_id=f"{tabname}_generation_info_button")
                         generation_info_button.click(
                             fn=update_generation_info,
-                            _js="function(x, y, z){ return [x, y, selected_gallery_index()] }",
+                            js="function(x, y, z){ return [x, y, selected_gallery_index()] }",
                             inputs=[res.generation_info, res.infotext, res.infotext],
                             outputs=[res.infotext, res.infotext],
                             show_progress=False,
@@ -232,7 +232,7 @@ def create_output_panel(tabname, outdir, toprow=None):
 
                     save.click(
                         fn=call_queue.wrap_gradio_call_no_job(save_files),
-                        _js="(x, y, z, w) => [x, y, false, selected_gallery_index()]",
+                        js="(x, y, z, w) => [x, y, false, selected_gallery_index()]",
                         inputs=[
                             res.generation_info,
                             res.gallery,
@@ -248,7 +248,7 @@ def create_output_panel(tabname, outdir, toprow=None):
 
                     save_zip.click(
                         fn=call_queue.wrap_gradio_call_no_job(save_files),
-                        _js="(x, y, z, w) => [x, y, true, selected_gallery_index()]",
+                        js="(x, y, z, w) => [x, y, true, selected_gallery_index()]",
                         inputs=[
                             res.generation_info,
                             res.gallery,
@@ -318,8 +318,8 @@ def setup_dialog(button_show, dialog, *, button_close=None):
         fn=lambda: gr.update(visible=True),
         inputs=[],
         outputs=[dialog],
-    ).then(fn=None, _js="function(){ popupId('" + dialog.elem_id + "'); }")
+    ).then(fn=None, js="function(){ popupId('" + dialog.elem_id + "'); }")
 
     if button_close:
-        button_close.click(fn=None, _js="closePopup")
+        button_close.click(fn=None, js="closePopup")
 

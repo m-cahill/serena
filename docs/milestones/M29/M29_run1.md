@@ -62,3 +62,22 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 **Result:** **BLOCKED** — M29 instrumentation and docs merged; **Quality CI not green** on `main` at closeout time. **Root cause:** **Gradio 6** interaction with existing UI (`_js` on `.click()`, and related 5→6 API differences) **combined with** **Pillow ≥12** (cannot pin Gradio 5 without relaxing Pillow).
 
 **Follow-up (recommended):** dedicated milestone for **Gradio 6 UI event / JS hook migration** (or approved architectural alternative), then re-run binding Quality and attach `performance_snapshot.txt`.
+
+---
+
+## M29.1 — Gradio 6 event kwargs (`_js` → `js`)
+
+**Milestone docs:** `docs/milestones/M29.1/` (plan + toolcalls log).
+
+**Code fix:** Gradio 6 event triggers accept **`js=`** instead of **`_js=`**. Affected `modules/` call sites were updated mechanically (same callback and JS strings; keyword rename only). This addresses the failure in run `23569206049` (`unexpected keyword argument '_js'`).
+
+**Binding Quality run (post-fix):** Fill after merge to `main` when CI completes.
+
+| Field | Value |
+|--------|--------|
+| **Branch / PR** | `m29.1-gradio6-compat` → `main` |
+| **Workflow** | Quality Tests |
+| **Run ID** | *TBD* |
+| **Outcome** | *TBD* |
+| **Coverage** | *TBD* (target ≥42%) |
+| **`performance_snapshot.txt`** | *TBD* |

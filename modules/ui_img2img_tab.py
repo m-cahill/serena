@@ -137,7 +137,7 @@ def create_img2img_tab():
                             )
                             button.click(
                                 fn=lambda: None,
-                                _js=f"switch_to_{name.replace(' ', '_')}",
+                                js=f"switch_to_{name.replace(' ', '_')}",
                                 inputs=[],
                                 outputs=[],
                             )
@@ -170,7 +170,7 @@ def create_img2img_tab():
 
                                     on_change_args = dict(
                                         fn=ui.resize_from_to_html,
-                                        _js="currentImg2imgSourceResolution",
+                                        js="currentImg2imgSourceResolution",
                                         inputs=[dummy_component, dummy_component, scale_by],
                                         outputs=scale_by_html,
                                         show_progress=False,
@@ -243,7 +243,7 @@ def create_img2img_tab():
             # as it is now the event keeps firing continuously for inpaint edits, which ruins the page with constant requests.
             # I assume this must be a gradio bug and for now we'll just do it for non-inpaint inputs.
             for component in [init_img, sketch]:
-                component.change(fn=lambda: None, _js="updateImg2imgResizeToTextAfterChangingImage", inputs=[], outputs=[], show_progress=False)
+                component.change(fn=lambda: None, js="updateImg2imgResizeToTextAfterChangingImage", inputs=[], outputs=[], show_progress=False)
 
             def select_img2img_tab(tab):
                 return gr.update(visible=tab in [2, 3, 4]), gr.update(visible=tab == 3),
@@ -259,7 +259,7 @@ def create_img2img_tab():
 
             img2img_args = dict(
                 fn=wrap_gradio_gpu_call(modules.img2img.img2img, extra_outputs=[None, '', '']),
-                _js="submit_img2img",
+                js="submit_img2img",
                 inputs=[
                     dummy_component,
                     dummy_component,
@@ -309,7 +309,7 @@ def create_img2img_tab():
             )
 
             interrogate_args = dict(
-                _js="get_img2img_tab_index",
+                js="get_img2img_tab_index",
                 inputs=[
                     dummy_component,
                     img2img_batch_input_dir,
@@ -326,11 +326,11 @@ def create_img2img_tab():
             toprow.prompt.submit(**img2img_args)
             toprow.submit.click(**img2img_args)
 
-            res_switch_btn.click(fn=None, _js="function(){switchWidthHeight('img2img')}", inputs=None, outputs=None, show_progress=False)
+            res_switch_btn.click(fn=None, js="function(){switchWidthHeight('img2img')}", inputs=None, outputs=None, show_progress=False)
 
             detect_image_size_btn.click(
                 fn=lambda w, h, _: (w or gr.update(), h or gr.update()),
-                _js="currentImg2imgSourceResolution",
+                js="currentImg2imgSourceResolution",
                 inputs=[dummy_component, dummy_component, dummy_component],
                 outputs=[width, height],
                 show_progress=False,
@@ -338,7 +338,7 @@ def create_img2img_tab():
 
             toprow.restore_progress_button.click(
                 fn=progress.restore_progress,
-                _js="restoreProgressImg2img",
+                js="restoreProgressImg2img",
                 inputs=[dummy_component],
                 outputs=[
                     output_panel.gallery,
