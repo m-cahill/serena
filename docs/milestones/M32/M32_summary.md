@@ -2,7 +2,7 @@
 
 **Status:** Completed (documentation / evidence synthesis — **not** a runtime-change milestone)  
 **Audit score:** 5.0 / 5 (see `M32_audit.md`)  
-**PR:** **[#86](https://github.com/m-cahill/serena/pull/86)** — branch **`m32-evidence-audit-closure`**, head **`105bf4b7`** (record squash merge SHA on `main` in `M32_run1.md` §8 when merged)
+**PR:** **[#86](https://github.com/m-cahill/serena/pull/86)** — branch **`m32-evidence-audit-closure`**, head **`f3175493`** (record squash merge SHA on `main` in `M32_run1.md` §8 when merged)
 
 ---
 
