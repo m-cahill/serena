@@ -38,8 +38,9 @@ def Component_init(self, *args, **kwargs):
     return res
 
 
-def Block_get_config(self):
-    config = original_Block_get_config(self)
+def Block_get_config(self, *args, **kwargs):
+    # Gradio 6+: `get_config` may pass a second arg (e.g. `cls`) — forward verbatim.
+    config = original_Block_get_config(self, *args, **kwargs)
 
     webui_tooltip = getattr(self, 'webui_tooltip', None)
     if webui_tooltip:
@@ -128,3 +129,30 @@ def _gradio_slider_init(self, *args, **kwargs):
 
 
 gr.Slider.__init__ = _gradio_slider_init
+
+# Scripts / extras: Checkbox, Number (e.g. xyz_grid, postprocessing_upscale) also reject `tooltip=` before Component.
+_gradio_checkbox_orig = gr.Checkbox.__init__
+
+
+def _gradio_checkbox_init(self, *args, **kwargs):
+    wt = kwargs.pop("tooltip", None)
+    res = _gradio_checkbox_orig(self, *args, **kwargs)
+    if wt is not None:
+        self.webui_tooltip = wt
+    return res
+
+
+gr.Checkbox.__init__ = _gradio_checkbox_init
+
+_gradio_number_orig = gr.Number.__init__
+
+
+def _gradio_number_init(self, *args, **kwargs):
+    wt = kwargs.pop("tooltip", None)
+    res = _gradio_number_orig(self, *args, **kwargs)
+    if wt is not None:
+        self.webui_tooltip = wt
+    return res
+
+
+gr.Number.__init__ = _gradio_number_init
