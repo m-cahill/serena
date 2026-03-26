@@ -37,6 +37,9 @@ if _el is not None:
 
     def _init_strip_js(self, *args, **kwargs):
         _orig_init(self, *args, **kwargs)
-        self.listener = _wrap_listener(self.listener)
+        # Gradio 6+: Component.__init__ may call EventListener.__init__(self) cooperatively;
+        # only real EventListener (str subclass) instances define `listener`.
+        if isinstance(self, _el) and hasattr(self, "listener"):
+            self.listener = _wrap_listener(self.listener)
 
     _el.__init__ = _init_strip_js  # type: ignore[method-assign]
