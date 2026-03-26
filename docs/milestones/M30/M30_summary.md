@@ -3,7 +3,7 @@
 **Status:** Completed (documentation / evidence publishing — **not** a runtime-change milestone)  
 **Audit score:** 5.0 / 5 (see `M30_audit.md`)  
 **Merge:** **[PR #82](https://github.com/m-cahill/serena/pull/82)** squash-merged to **`main`** → **`b663f735074e63055125c390aee8fc907c49e915`** (2026-03-26 UTC).  
-**Tag:** **`v0.0.30-m30`** (annotated; message: `M30: QA / evidence publishing`) @ **`9f3a6f26`** — closeout commit after merge **`b663f735`**.
+**Tag:** **`v0.0.30-m30`** (annotated; message: `M30: QA / evidence publishing`) — tip of M30 closeout on `main` after merge **`b663f735`** (`git show v0.0.30-m30`).
 
 ---
 
