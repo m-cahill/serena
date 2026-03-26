@@ -102,3 +102,19 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 | **`GET /sdapi/v1/progress` → 500** (when job active path) | **`ProgressResponse`** missing **`current_task`**, but handler passes **`current_task=...`** → response validation failure | Add optional **`current_task`** to **`ProgressResponse`** |
 | Smoke **`POST /sdapi/v1/img2img` → 422** with **`mask: null`** | Img2img API model declares **`mask`** as plain **`str`** while smoke sends JSON **`null`** | **`Optional[str]`** (or **`str \| None`**) for **`mask`** |
 | **`test_txt2img_path_uses_runner`** touches real **`cond_stage_model`** / device | **`process_images`** still runs **`apply_token_merging`** etc. with minimal **`p`** | Mirror API contract test: mock **`apply_token_merging`** (and keep **`reload_model_weights`** mocked) |
+
+### Round 2 — remaining failure cluster (2026-03-26)
+
+**Ledger anchor (still the best documented failing Quality run):** `23573723272` — **190 passed / 9 failed**, **47%** coverage, **no** `performance_snapshot.txt` (pytest exit ≠ 0).
+
+**Branch state:** `m29.1-binding-ci-recovery` already includes Round 1 fixes (no `sampler_index=None`, `p.runtime_metrics` ownership, `mask` optional, `ProgressResponse.current_task`, `get_cmd_flags` key filter, contract-test mocks).
+
+**Hypothesis for CI still seeing 500s on `samplers` / `progress` / `cmd-flags` after Round 1:**
+
+| Endpoint / area | Additional likely cause | Round 2 fix direction |
+|-------------------|-------------------------|------------------------|
+| **`GET /sdapi/v1/samplers`** | **`SamplerItem.options`** is **`dict[str, str]`** but runtime sampler metadata includes **booleans** (e.g. `second_order`, `uses_ensd`) → response validation **500** | Widen **`options`** to a JSON object type (**`dict[str, Any]`**) so the payload matches real data |
+| **`GET /sdapi/v1/progress`** | **`textinfo`** / **`current_image`** declared as **`str`** with **`default=None`** → **`None`** at runtime fails Pydantic v2 | Use **`Optional[str]`** for nullable fields |
+| **`GET /sdapi/v1/cmd-flags`** | Filtered values may still include **Path** / nested structures that do not match **`FlagsModel`** until JSON-coerced | **`jsonable_encoder`** before **`model_validate`** |
+
+**Validation:** next green **Quality** run on `main` (or PR branch) is the binding proof; **M29 audit remains 4.0 / 5** until then.
