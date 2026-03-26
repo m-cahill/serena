@@ -71,13 +71,19 @@ TypeError: EventListener._setup.<locals>.event_trigger() got an unexpected keywo
 
 **Code fix:** Gradio 6 event triggers accept **`js=`** instead of **`_js=`**. Affected `modules/` call sites were updated mechanically (same callback and JS strings; keyword rename only). This addresses the failure in run `23569206049` (`unexpected keyword argument '_js'`).
 
-**Binding Quality run (post-fix):** Fill after merge to `main` when CI completes.
+**Binding Quality run (post–M29.1 code):** merged via **#73** (`m29.1-gradio6-compat`). Subsequent **CI / Gradio** follow-ups: **#74–#78** (torch 2.4+cpu stack, tooltip shims, `Box` alias, `get_config` varargs, `Image` `source`/`tool` compat). Best attempt after **#78**:
 
 | Field | Value |
 |--------|--------|
-| **Branch / PR** | `m29.1-gradio6-compat` → `main` |
 | **Workflow** | Quality Tests |
-| **Run ID** | *TBD* |
-| **Outcome** | *TBD* |
-| **Coverage** | *TBD* (target ≥42%) |
-| **`performance_snapshot.txt`** | *TBD* |
+| **Run ID** | `23573723272` |
+| **URL** | `https://github.com/m-cahill/serena/actions/runs/23573723272` |
+| **Outcome** | **failure** (pytest exit code 1) |
+| **Tests** | **190 passed**, **9 failed** |
+| **Coverage (TOTAL)** | **47%** (meets numeric ≥42% gate; pytest still failed overall) |
+| **Server** | **starts** (7860 reachable) |
+| **`performance_snapshot.txt`** | **Not** produced — workflow skips the write step when pytest fails |
+
+**Example failures:** `test_img2img` → HTTP **422**; `sdapi/v1/cmd-flags`, `samplers`, `progress` → **500**; pydantic **`sampler_index`** validation; **`runtime_metrics`** contract test.
+
+**Binding verdict:** **not PASS** — ledger / audit **stay at 4.0 / 5 pending binding CI** until a **fully green** Quality run **and** confirmed **`performance_snapshot.txt`** artifact.
