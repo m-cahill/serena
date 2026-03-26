@@ -176,13 +176,29 @@ gr.Image.__init__ = _gradio_image_init
 
 # Gradio 6.10 (CI / Py 3.10): client `js=` on .click can raise TypeError on EventListenerMethod before deps
 # are registered. Strip at BlocksConfig.set_event_trigger so UI construction succeeds (smoke / API tests).
-_blocksconfig_set_trigger_orig = gb.BlocksConfig.set_event_trigger
+def _install_set_event_trigger_js_strip():
+    _BlocksConfig = vars(gb).get("BlocksConfig")
+    if _BlocksConfig is None:
+        try:
+            from gradio.blocks import BlocksConfig as _BlocksConfig  # noqa: PLC0415
+        except ImportError:
+            _BlocksConfig = None
+    if _BlocksConfig is None:
+        for _candidate in vars(gb).values():
+            if isinstance(_candidate, type) and _candidate.__name__ == "BlocksConfig":
+                if callable(getattr(_candidate, "set_event_trigger", None)):
+                    _BlocksConfig = _candidate
+                    break
+    if _BlocksConfig is None:
+        return
+    _blocksconfig_set_trigger_orig = _BlocksConfig.set_event_trigger
+
+    def _blocksconfig_set_event_trigger_strip_js(self, *args, **kwargs):
+        kwargs.pop("js", None)
+        kwargs.pop("_js", None)
+        return _blocksconfig_set_trigger_orig(self, *args, **kwargs)
+
+    _BlocksConfig.set_event_trigger = _blocksconfig_set_event_trigger_strip_js  # type: ignore[method-assign]
 
 
-def _blocksconfig_set_event_trigger_strip_js(self, *args, **kwargs):
-    kwargs.pop("js", None)
-    kwargs.pop("_js", None)
-    return _blocksconfig_set_trigger_orig(self, *args, **kwargs)
-
-
-gb.BlocksConfig.set_event_trigger = _blocksconfig_set_event_trigger_strip_js
+_install_set_event_trigger_js_strip()
