@@ -46,9 +46,12 @@ def test_txt2img_path_uses_runner(monkeypatch, initialize):
     import modules.processing as proc_mod
     monkeypatch.setattr(proc_mod, "process_images_inner", fake_inner)
 
-    # Mock model reload to avoid loading weights
+    # Mock reload + token merge so None sd_model does not touch device
     import modules.sd_models as sd_models_mod
     monkeypatch.setattr(sd_models_mod, "reload_model_weights", lambda: None)
+    monkeypatch.setattr(
+        sd_models_mod, "apply_token_merging", lambda m, r: None
+    )
 
     process_images(p)
 

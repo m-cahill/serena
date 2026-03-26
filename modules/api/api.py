@@ -489,8 +489,6 @@ class Api:
             "do_not_save_samples": not txt2imgreq.save_images,
             "do_not_save_grid": not txt2imgreq.save_images,
         })
-        if populate.sampler_name:
-            populate.sampler_index = None  # prevent a warning later on
 
         if not populate.scheduler and scheduler != "Automatic":
             populate.scheduler = scheduler
@@ -568,8 +566,6 @@ class Api:
             "do_not_save_grid": not img2imgreq.save_images,
             "mask": mask,
         })
-        if populate.sampler_name:
-            populate.sampler_index = None  # prevent a warning later on
 
         if not populate.scheduler and scheduler != "Automatic":
             populate.scheduler = scheduler
@@ -741,7 +737,10 @@ class Api:
         return
 
     def get_cmd_flags(self):
-        return vars(shared.cmd_opts)
+        # `cmd_opts` gains post-parse attributes not present on FlagsModel; filter to schema keys only.
+        raw = vars(shared.cmd_opts)
+        keys = models.FlagsModel.model_fields.keys()
+        return {k: raw[k] for k in keys if k in raw}
 
     def get_samplers(self):
         return [{"name": sampler[0], "aliases":sampler[2], "options":sampler[3]} for sampler in sd_samplers.all_samplers]
