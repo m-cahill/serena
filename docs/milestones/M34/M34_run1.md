@@ -11,12 +11,12 @@
 | Field | Value |
 |-------|--------|
 | **PR** | **[#90](https://github.com/m-cahill/serena/pull/90)** — *feat(M34): Runtime context model-identity seam* |
-| **Head SHA (CI green; `gh run view` headSha)** | **`46c3fa748f2182e195e3f1bc3bf0bdef0cfd0cc6`** |
-| **Head commit** | `docs(M34): M34_run1 — align tables to head 88e961f6 + verified workflow runs` |
-| **Linter (workflow run)** | **`23632568373`** — https://github.com/m-cahill/serena/actions/runs/23632568373 — **success** |
-| **Smoke Tests (workflow run)** | **`23632568385`** — https://github.com/m-cahill/serena/actions/runs/23632568385 — **success** |
+| **Head SHA (CI green; `gh run view` headSha)** | **`ab7b003dd7a960de3a42711aeb0adc3d4d1c0b5b`** |
+| **Head commit** | `docs(M34): M34_run1 — authoritative head 46c3fa74 + Linter/Smoke run IDs` |
+| **Linter (workflow run)** | **`23632681848`** — https://github.com/m-cahill/serena/actions/runs/23632681848 — **success** |
+| **Smoke Tests (workflow run)** | **`23632681873`** — https://github.com/m-cahill/serena/actions/runs/23632681873 — **success** |
 
-**Note:** **M34** runtime code is unchanged from **`7becd909`** / **`65aa7219`**; commits after that are **documentation / ledger** on this branch. Duplicate workflow runs for the same head: Linter **`23632567385`**, Smoke **`23632567392`** (both **success**, same **headSha**). **Detailed** tables for earlier tips are below for traceability.
+**Note:** **M34** runtime code is unchanged from **`7becd909`** / **`65aa7219`**; commits after that are **documentation / ledger** on this branch. Duplicate workflow runs for the same head: Linter **`23632680793`**, Smoke **`23632680787`** (both **success**, same **headSha**). **Detailed** tables for earlier tips are below for traceability.
 
 ---
 
@@ -114,4 +114,4 @@ Duplicates (same head, success): Linter `23628993965`, Smoke `23628993960`.
 
 ## Verdict (PR CI)
 
-**Merge review:** **PR #90** tip **`46c3fa748f2182e195e3f1bc3bf0bdef0cfd0cc6`** — **Linter** workflow **`23632568373`** and **Smoke Tests** workflow **`23632568385`** — **success** (verified **`headSha`** on each run). **No failed** Linter or Smoke workflows observed for the documented tip chain. Intermediate tips (**`88e961f6`**, **`bebde38e`**, **`cf092bbd`**, **`5da40bfe`**, **`996b2514`**, **`9321a441`**, **`ffbaf457`**, **`77e565f5`**, **`1269c3f3`**, **`01aa27f9`**, **`6a249f2c`**, **`65aa7219`**) — **success** as tabulated above. **M34** implementation SHA remains **`7becd909`** / ledger **`65aa7219`** for code. **Quality** on **`main`** — **post-merge** only.
+**Merge review:** **PR #90** tip **`ab7b003dd7a960de3a42711aeb0adc3d4d1c0b5b`** — **Linter** workflow **`23632681848`** and **Smoke Tests** workflow **`23632681873`** — **success** (verified **`headSha`** on each run). **No failed** Linter or Smoke workflows observed for the documented tip chain. Intermediate tips (**`46c3fa74`**, **`88e961f6`**, **`bebde38e`**, **`cf092bbd`**, **`5da40bfe`**, **`996b2514`**, **`9321a441`**, **`ffbaf457`**, **`77e565f5`**, **`1269c3f3`**, **`01aa27f9`**, **`6a249f2c`**, **`65aa7219`**) — **success** as tabulated above. **M34** implementation SHA remains **`7becd909`** / ledger **`65aa7219`** for code. **Quality** on **`main`** — **post-merge** only.
