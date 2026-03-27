@@ -557,19 +557,57 @@ Duplicates (same head, success): Linter `23628993965`, Smoke `23628993960`.
 
 | Field | Value |
 |-------|--------|
-| Merge commit | *(pending approval — not merged)* |
+| **PR** | **[#90](https://github.com/m-cahill/serena/pull/90)** — *feat(M34): Runtime context model-identity seam* |
+| **Merge method** | **Merge commit** (`gh pr merge --merge`) — not squash / not rebase |
+| **Merge commit on `main`** | **`b94c93d38e521437a18bb1660d35b31c90220be0`** |
+| **Merged at (UTC)** | `2026-03-27T22:47:02Z` |
+| **Branch merged** | `m34-runtime-context-model-identity` |
+| **Second parent (branch tip at merge)** | **`40ba7361e88b16f04eaa5ff89521b39339ca3c22`** |
+
+**Authoritative PR head (approval / PR CI ledger):** **`8e209ed224481ea582be1bdce9aa115a4ae3f869`** — **Linter** **`23669814419`**, **Smoke** **`23669814433`** (see §CI (PR) above).
 
 ---
 
 ## CI (`main`, post-merge)
 
-| Workflow | Run ID | Result | Notes |
-|----------|--------|--------|-------|
-| Linter | *(post-merge)* | | |
-| Quality | *(post-merge)* | | pytest coverage gate unchanged |
+**Proof surface:** **Quality Tests** on `main` is the **binding** post-merge gate (combined pytest + coverage policy unchanged). **Linter** on `main` is recorded alongside.
+
+### A — Push = merge commit only (`b94c93d3`)
+
+Triggered by merge **push** to `main` (merge commit **`b94c93d3`**).
+
+| Workflow | Run ID | URL | Result | `headSha` |
+|----------|--------|-----|--------|-----------|
+| **Linter** | **`23670713074`** | https://github.com/m-cahill/serena/actions/runs/23670713074 | **success** | `b94c93d38e521437a18bb1660d35b31c90220be0` |
+| **Quality Tests** | **`23670713081`** | https://github.com/m-cahill/serena/actions/runs/23670713081 | **failure** | `b94c93d38e521437a18bb1660d35b31c90220be0` |
+
+**Quality failure:** `test_model_identity_available_before_script_hooks` — test stub did not implement the full `scripts` surface invoked by `process_images_inner` / sampling (`AttributeError` on missing hook). **Runtime / M34 product code unchanged;** test-only correction on `main` (see §B).
+
+**Duplicates:** None observed for this push (single Linter + single Quality for `b94c93d3`).
+
+### B — Binding post-merge green (`main` tip after test fix)
+
+Follow-up commits on **`main`** adjust **`test/quality/test_runtime_mock.py`** only ( **`MagicMock`** for `p.scripts` + assertions on `process` and `before_process_batch` ). **Binding** tip:
+
+| Field | Value |
+|-------|--------|
+| **`main` commit (binding)** | **`1bc04394b3844b4b9c7fda6448567e735d8ec0cc`** |
+
+| Workflow | Run ID | URL | Result | `headSha` |
+|----------|--------|-----|--------|-----------|
+| **Linter** | **`23671154431`** | https://github.com/m-cahill/serena/actions/runs/23671154431 | **success** | `1bc04394b3844b4b9c7fda6448567e735d8ec0cc` |
+| **Quality Tests** | **`23671154433`** | https://github.com/m-cahill/serena/actions/runs/23671154433 | **success** | `1bc04394b3844b4b9c7fda6448567e735d8ec0cc` |
+
+**Quality summary (as reported in workflow log):** **`202 passed`**, **`13 warnings`**, coverage line **`TOTAL ... 48%`** (same combined report shape as prior milestones).
+
+**Intermediate failed pushes (superseded):** `016f234c`, `6e04d331` — Quality failed until stub completed; **no duplicate binding runs** retained — primary authoritative green = **`23671154433`** on **`1bc04394`**.
 
 ---
 
-## Verdict (PR CI)
+## Verdict (PR CI + post-merge)
 
-**Merge review:** **PR #90** tip **`8e209ed224481ea582be1bdce9aa115a4ae3f869`** — **Linter** workflow **`23669814419`** and **Smoke Tests** workflow **`23669814433`** — **success** (verified **`gh run view` `headSha`** matches **`gh pr view --json headRefOid`** on each run). **No failed** Linter or Smoke workflows for this authoritative tip. Earlier tips (**`29ad3c27`**, **`f9bc6dd9`**, **`059671ea`**, **`409737e5`**, **`656449f0`**, **`776166df`**, **`124b22f9`**, **`900d971a`**, **`8fc64fc2`**, **`e9494338`**, **`20d7d479`**, **`ab95de62`**, **`818acc4c`**, **`0913ba0d`**, **`db8bf371`**, **`953f1eb8`**, **`5ee59031`**, **`f155e0ca`**, **`dce6f9bb`**, **`dfc01f35`**, **`ebb46e21`**, **`809de851`**, **`8314abd8`**, **`0089bbd4`**, **`e81caab9`**, **`02052e0d`**, **`c7981b31`**, **`74ab007d`**, **`245819c7`**, **`e7c27ab5`**, **`a9a6038a`**, **`1a576a50`**, **`4784a3cb`**, **`3bf92229`**, **`26e8b6f0`**, **`71caacff`**, **`94cb78eb`**, **`7667bba4`**, **`1a250705`**, **`549904f7`**, **`b1e5cea3`**, **`6b4b377d`**, **`7d92ecae`**, **`5691611d`**, **`dddb3920`**, **`01fbb7df`**, **`0be479fc`**, **`3faec321`**, **`8fea3852`**, **`ab7b003d`**, **`1269c3f3`**, **`01aa27f9`**, **`6a249f2c`**, **`65aa7219`**) — **success** as tabulated above. **M34** implementation SHA remains **`7becd909`** / ledger **`65aa7219`** for code. **Quality** on **`main`** — **post-merge** only.
+**PR CI (pre-merge):** **PR #90** authoritative tip **`8e209ed224481ea582be1bdce9aa115a4ae3f869`** — **Linter** **`23669814419`** and **Smoke Tests** **`23669814433`** — **success**. Earlier tips tabulated above — **success**.
+
+**Merge:** **PR #90** merged to **`main`** as merge commit **`b94c93d38e521437a18bb1660d35b31c90220be0`** (merge commit, **`2026-03-27T22:47:02Z`**).
+
+**Post-merge:** **Quality** **`23670713081`** on merge commit **`b94c93d3`** — **failure** (test stub). **Binding** post-merge **Quality** **`23671154433`** + **Linter** **`23671154431`** on **`1bc04394b3844b4b9c7fda6448567e735d8ec0cc`** — **success**; coverage **48%**, **202** tests passed — **CI policy unchanged**.

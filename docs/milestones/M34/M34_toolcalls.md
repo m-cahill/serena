@@ -10,3 +10,5 @@
 | 2026-03-27 | Write | M34/M35 milestone docs; allowed-legacy note; `docs/serena.md` | `docs/**` |
 | 2026-03-27 | Shell | `ruff check`; `pytest` (where env allows) | CI / local |
 | 2026-03-27 | Shell | Push branch; `gh pr create` **#90** (`m-cahill/serena`) | git, gh |
+| 2026-03-27 | Shell | `gh pr merge` **#90** `--merge`; post-merge CI; `git push` test fixes on `main` | git, gh |
+| 2026-03-27 | Write | M34 closeout: `M34_run1.md`, `M34_summary.md`, `M34_audit.md`, `docs/serena.md`, M35 plan | `docs/**` |
