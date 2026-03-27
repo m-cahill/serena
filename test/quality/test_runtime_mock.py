@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from unittest.mock import MagicMock
+
 import numpy as np
 import pytest
 
@@ -254,21 +256,21 @@ def test_model_identity_available_before_script_hooks(fake_pipeline_env):
 
     seen = []
 
-    class _Scripts:
-        def process(self, p):
-            assert p.runtime_context is not None
-            assert p.runtime_context.model_identity is not None
-            assert p.runtime_context.model_identity.name_for_extra == p.sd_model_name
-            seen.append("process")
+    def process_hook(proc_p):
+        assert proc_p.runtime_context is not None
+        assert proc_p.runtime_context.model_identity is not None
+        assert proc_p.runtime_context.model_identity.name_for_extra == proc_p.sd_model_name
+        seen.append("process")
 
-        def before_process_batch(self, p, **kwargs):
-            assert p.runtime_context.model_identity is not None
-            seen.append("before_process_batch")
+    def before_batch_hook(proc_p, **_kwargs):
+        assert proc_p.runtime_context.model_identity is not None
+        seen.append("before_process_batch")
 
-        def process_batch(self, p, **kwargs):
-            pass
+    scripts = MagicMock()
+    scripts.process.side_effect = process_hook
+    scripts.before_process_batch.side_effect = before_batch_hook
+    p.scripts = scripts
 
-    p.scripts = _Scripts()
     runner = ProcessingRunner(model_provider=provider)
     runner.run(ProcessingRequest(p))
     assert seen == ["process", "before_process_batch"]
