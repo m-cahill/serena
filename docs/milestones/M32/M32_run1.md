@@ -102,10 +102,19 @@ M32 **closes the evidence/audit story** for the Serena refactor **body of work**
 | Item | Value |
 |------|--------|
 | **PR** | **[#86](https://github.com/m-cahill/serena/pull/86)** — `docs(M32): evidence/audit closure and M33 stubs` |
-| **Branch** | `m32-evidence-audit-closure` → `origin/m32-evidence-audit-closure` |
-| **Branch tip (pre-merge)** | Latest commit on **[PR #86](https://github.com/m-cahill/serena/pull/86)** (not the eventual squash merge SHA on `main`) |
-| **Base** | `main` at branch creation (merge-base **`03a2e6ea`**) |
-| **Merge** | *(Pending squash merge to `main` — record merge SHA here when merged.)* |
-| **Binding CI for M32** | **N/A** — documentation-only milestone; PR checks are **provenance/hygiene** only, not a substitute for §4 binding proof |
+| **Merge method** | **Squash merge** to `main` |
+| **Merged at (GitHub)** | **2026-03-27T00:06:13Z** |
+| **Branch** | `m32-evidence-audit-closure` (deleted on merge) |
+| **Squash merge commit on `main`** | **`3f6f6a2eadd5b2aa0e79a635af0c98c7e7ee6fd9`** (short **`3f6f6a2e`**) |
+| **`main` tip after merge** | **`3f6f6a2e`** (same as squash commit) |
+| **Base** | Prior `main` at merge-base **`03a2e6ea`** |
+| **Binding CI for M32** | **N/A** — documentation-only milestone; evidence synthesis is not proven by CI below |
 
-*After merge, replace the merge row with the squash merge commit on `main` and optionally add post-merge Linter/Quality run IDs (optional provenance only).*
+### Post-merge workflows on `main` (optional provenance only)
+
+Push of **`3f6f6a2e`** triggered **Linter** and **Quality Tests** on `main`. These are **routine CI after a docs-only merge** — **not** claimed as binding M32 proof; same posture as M30/M31.
+
+| Workflow | Run ID | Result | URL |
+|----------|--------|--------|-----|
+| **Linter** | **23624248870** | **success** | [view run](https://github.com/m-cahill/serena/actions/runs/23624248870) |
+| **Quality Tests** | **23624248875** | **success** | [view run](https://github.com/m-cahill/serena/actions/runs/23624248875) |
