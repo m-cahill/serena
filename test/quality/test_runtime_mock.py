@@ -247,7 +247,7 @@ def test_full_pipeline_populates_runtime_context_model_identity(fake_pipeline_en
 
 
 def test_model_identity_available_before_script_hooks(fake_pipeline_env):
-    """RuntimeContext.model_identity exists before script hooks (before_process_batch)."""
+    """RuntimeContext.model_identity exists before scripts.process and batch hooks."""
     fake, out = fake_pipeline_env
     provider = FakeModelProvider(fake)
     p = _make_txt2img(out, sampler_name=_pick_sampler_name())
@@ -255,11 +255,15 @@ def test_model_identity_available_before_script_hooks(fake_pipeline_env):
     seen = []
 
     class _Scripts:
-        def before_process_batch(self, p, **kwargs):
+        def process(self, p):
             assert p.runtime_context is not None
             assert p.runtime_context.model_identity is not None
             assert p.runtime_context.model_identity.name_for_extra == p.sd_model_name
-            seen.append(True)
+            seen.append("process")
+
+        def before_process_batch(self, p, **kwargs):
+            assert p.runtime_context.model_identity is not None
+            seen.append("before_process_batch")
 
         def process_batch(self, p, **kwargs):
             pass
@@ -267,4 +271,4 @@ def test_model_identity_available_before_script_hooks(fake_pipeline_env):
     p.scripts = _Scripts()
     runner = ProcessingRunner(model_provider=provider)
     runner.run(ProcessingRequest(p))
-    assert seen == [True]
+    assert seen == ["process", "before_process_batch"]
