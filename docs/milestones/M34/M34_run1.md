@@ -11,55 +11,55 @@
 | Field | Value |
 |-------|--------|
 | **PR** | **[#90](https://github.com/m-cahill/serena/pull/90)** — *feat(M34): Runtime context model-identity seam* |
-| **Head SHA (CI green; `gh run view` headSha)** | **`5ee590315fe2ed625037c747f8838ec762b6e39c`** |
-| **Linter (workflow run)** | **`23666266370`** — https://github.com/m-cahill/serena/actions/runs/23666266370 — **success** |
-| **Smoke Tests (workflow run)** | **`23666266366`** — https://github.com/m-cahill/serena/actions/runs/23666266366 — **success** |
+| **Head SHA (CI green; `gh run view` headSha)** | **`953f1eb80701e80e2e60eac49a2e31d6fcace376`** |
+| **Linter (workflow run)** | **`23666940349`** — https://github.com/m-cahill/serena/actions/runs/23666940349 — **success** |
+| **Smoke Tests (workflow run)** | **`23666940323`** — https://github.com/m-cahill/serena/actions/runs/23666940323 — **success** |
 
-**Note:** **M34** runtime code is unchanged from **`7becd909`** / **`65aa7219`**; later commits are **documentation / ledger** on this branch. **Duplicate** workflow runs for head **`5ee59031`**: Linter **`23666264276`**, Smoke **`23666264244`** (both **success**, same **`headSha`**). **No failed** Linter or Smoke runs for this head — earlier tips (including **`f155e0ca`**, **`dce6f9bb`**, **`dfc01f35`**, **`ebb46e21`**, **`809de851`**, **`8314abd8`**, **`0089bbd4`**, **`e81caab9`**, **`02052e0d`**, **`c7981b31`**, **`74ab007d`**, **`245819c7`**, **`e7c27ab5`**, **`a9a6038a`**, **`1a576a50`**, **`4784a3cb`**, **`3bf92229`**, **`26e8b6f0`**, **`71caacff`**) are tabulated below for traceability.
+**Note:** **M34** runtime code is unchanged from **`7becd909`** / **`65aa7219`**; later commits are **documentation / ledger** on this branch. **Duplicate** workflow runs for head **`953f1eb8`**: Linter **`23666939512`**, Smoke **`23666939491`** (both **success**, same **`headSha`**). **No failed** Linter or Smoke runs for this head — earlier tips (including **`5ee59031`**, **`f155e0ca`**, **`dce6f9bb`**, **`dfc01f35`**, **`ebb46e21`**, **`809de851`**, **`8314abd8`**, **`0089bbd4`**, **`e81caab9`**, **`02052e0d`**, **`c7981b31`**, **`74ab007d`**, **`245819c7`**, **`e7c27ab5`**, **`a9a6038a`**, **`1a576a50`**, **`4784a3cb`**, **`3bf92229`**, **`26e8b6f0`**, **`71caacff`**) are tabulated below for traceability.
 
 ---
 
-## CI (PR) — primary evidence (head `5ee59031`)
+## CI (PR) — primary evidence (head `953f1eb8`)
 
 ### Linter
 
 | Field | Value |
 |-------|--------|
-| **Workflow run** | **`23666266370`** |
-| **URL** | https://github.com/m-cahill/serena/actions/runs/23666266370 |
+| **Workflow run** | **`23666940349`** |
+| **URL** | https://github.com/m-cahill/serena/actions/runs/23666940349 |
 | **Result** | **success** |
-| **headSha** | `5ee590315fe2ed625037c747f8838ec762b6e39c` |
+| **headSha** | `953f1eb80701e80e2e60eac49a2e31d6fcace376` |
 | **Event** | `pull_request` |
 
 | Job | Job ID | Result |
 |-----|--------|--------|
-| eslint | `68948918289` | success |
-| ruff | `68948918308` | success |
+| eslint | `68951152015` | success |
+| ruff | `68951152014` | success |
 
 ### Smoke Tests
 
 | Field | Value |
 |-------|--------|
-| **Workflow run** | **`23666266366`** |
-| **URL** | https://github.com/m-cahill/serena/actions/runs/23666266366 |
+| **Workflow run** | **`23666940323`** |
+| **URL** | https://github.com/m-cahill/serena/actions/runs/23666940323 |
 | **Result** | **success** |
-| **headSha** | `5ee590315fe2ed625037c747f8838ec762b6e39c` |
+| **headSha** | `953f1eb80701e80e2e60eac49a2e31d6fcace376` |
 | **Event** | `pull_request` |
 
 | Job | Job ID | Result |
 |-----|--------|--------|
-| smoke tests | `68948918190` | success |
+| smoke tests | `68951151982` | success |
 
 ---
 
-## Duplicate workflow runs (same head `5ee59031`, no failures)
+## Duplicate workflow runs (same head `953f1eb8`, no failures)
 
 | Workflow | Alternate run ID | URL | Result | headSha |
 |----------|------------------|-----|--------|---------|
-| Linter | `23666264276` | https://github.com/m-cahill/serena/actions/runs/23666264276 | success | `5ee590315fe2ed625037c747f8838ec762b6e39c` |
-| Smoke Tests | `23666264244` | https://github.com/m-cahill/serena/actions/runs/23666264244 | success | `5ee590315fe2ed625037c747f8838ec762b6e39c` |
+| Linter | `23666939512` | https://github.com/m-cahill/serena/actions/runs/23666939512 | success | `953f1eb80701e80e2e60eac49a2e31d6fcace376` |
+| Smoke Tests | `23666939491` | https://github.com/m-cahill/serena/actions/runs/23666939491 | success | `953f1eb80701e80e2e60eac49a2e31d6fcace376` |
 
-**Primary documentation:** **`23666266370`** (Linter) and **`23666266366`** (Smoke).
+**Primary documentation:** **`23666940349`** (Linter) and **`23666940323`** (Smoke).
 
 ---
 
@@ -145,6 +145,15 @@ Duplicates (same head, success): Linter `23665039362`, Smoke `23665039364`.
 | Smoke Tests | `23665190202` | https://github.com/m-cahill/serena/actions/runs/23665190202 | success | `f155e0ca160afbd858e6ce299371b2741bf81c1f` |
 
 Duplicates (same head, success): Linter `23665188860`, Smoke `23665188887`.
+
+### Head `5ee59031`
+
+| Workflow | Run ID | URL | Result | headSha |
+|----------|--------|-----|--------|---------|
+| Linter | `23666266370` | https://github.com/m-cahill/serena/actions/runs/23666266370 | success | `5ee590315fe2ed625037c747f8838ec762b6e39c` |
+| Smoke Tests | `23666266366` | https://github.com/m-cahill/serena/actions/runs/23666266366 | success | `5ee590315fe2ed625037c747f8838ec762b6e39c` |
+
+Duplicates (same head, success): Linter `23666264276`, Smoke `23666264244`.
 
 ### Head `c7981b31`
 
@@ -419,4 +428,4 @@ Duplicates (same head, success): Linter `23628993965`, Smoke `23628993960`.
 
 ## Verdict (PR CI)
 
-**Merge review:** **PR #90** tip **`5ee590315fe2ed625037c747f8838ec762b6e39c`** — **Linter** workflow **`23666266370`** and **Smoke Tests** workflow **`23666266366`** — **success** (verified **`gh run view` `headSha`** matches the PR head on each run). **No failed** Linter or Smoke workflows observed for this tip. Earlier tips (**`f155e0ca`**, **`dce6f9bb`**, **`dfc01f35`**, **`ebb46e21`**, **`809de851`**, **`8314abd8`**, **`0089bbd4`**, **`e81caab9`**, **`02052e0d`**, **`c7981b31`**, **`74ab007d`**, **`245819c7`**, **`e7c27ab5`**, **`a9a6038a`**, **`1a576a50`**, **`4784a3cb`**, **`3bf92229`**, **`26e8b6f0`**, **`71caacff`**, **`94cb78eb`**, **`7667bba4`**, **`1a250705`**, **`549904f7`**, **`b1e5cea3`**, **`6b4b377d`**, **`7d92ecae`**, **`5691611d`**, **`dddb3920`**, **`01fbb7df`**, **`0be479fc`**, **`3faec321`**, **`8fea3852`**, **`ab7b003d`**, **`1269c3f3`**, **`01aa27f9`**, **`6a249f2c`**, **`65aa7219`**) — **success** as tabulated above. **M34** implementation SHA remains **`7becd909`** / ledger **`65aa7219`** for code. **Quality** on **`main`** — **post-merge** only.
+**Merge review:** **PR #90** tip **`953f1eb80701e80e2e60eac49a2e31d6fcace376`** — **Linter** workflow **`23666940349`** and **Smoke Tests** workflow **`23666940323`** — **success** (verified **`gh run view` `headSha`** matches the PR head on each run). **No failed** Linter or Smoke workflows observed for this tip. Earlier tips (**`5ee59031`**, **`f155e0ca`**, **`dce6f9bb`**, **`dfc01f35`**, **`ebb46e21`**, **`809de851`**, **`8314abd8`**, **`0089bbd4`**, **`e81caab9`**, **`02052e0d`**, **`c7981b31`**, **`74ab007d`**, **`245819c7`**, **`e7c27ab5`**, **`a9a6038a`**, **`1a576a50`**, **`4784a3cb`**, **`3bf92229`**, **`26e8b6f0`**, **`71caacff`**, **`94cb78eb`**, **`7667bba4`**, **`1a250705`**, **`549904f7`**, **`b1e5cea3`**, **`6b4b377d`**, **`7d92ecae`**, **`5691611d`**, **`dddb3920`**, **`01fbb7df`**, **`0be479fc`**, **`3faec321`**, **`8fea3852`**, **`ab7b003d`**, **`1269c3f3`**, **`01aa27f9`**, **`6a249f2c`**, **`65aa7219`**) — **success** as tabulated above. **M34** implementation SHA remains **`7becd909`** / ledger **`65aa7219`** for code. **Quality** on **`main`** — **post-merge** only.
