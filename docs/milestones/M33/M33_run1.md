@@ -110,34 +110,47 @@ Further global-state migration (**`shared.opts`**, etc.) remains **milestone-gov
 
 ## 9. PR / merge provenance
 
-**Implementation branch:** `m33-release-ready-close`
+**Implementation branch:** `m33-release-ready-close`  
+**Pre-merge head (topic):** **`2cb6b69057abc19b227974dd5b74d85b9a72422e`** (short **`2cb6b690`**)  
+**Remote / PR target:** fork **`m-cahill/serena`** (`origin`), **`main`** — not upstream.
 
-**Tag rule:** Do **not** create **`v0.0.33-m33`** during branch work. Per Serena closeout: **merge first**, record **post-merge** CI, then create the annotated tag **only** if the milestone closes cleanly.
+**Tag rule:** **`v0.0.33-m33`** was created **after** squash merge to **`main`** and **successful** post-merge **Linter** + **Quality Tests** on the merge commit (same rule as M30–M32 doc-only milestones).
 
-### Merge record (fill when M33 merges to `main`)
+### Merge record
 
 | Item | Value |
 |------|--------|
-| **PR** | *(fill — GitHub PR number and URL)* |
-| **Merge method** | *(e.g. squash merge to `main`)* |
-| **Merged at (GitHub)** | *(ISO 8601 UTC)* |
-| **Squash merge commit on `main`** | *(full SHA)* |
+| **PR** | **[#88](https://github.com/m-cahill/serena/pull/88)** — `docs(M33): release-ready 5/5 program closeout` |
+| **Merge method** | **Squash merge** to `main` |
+| **Merged at (GitHub)** | **2026-03-27T01:21:55Z** (`mergedAt` from GitHub API; squash merge on `main`) |
+| **Squash merge commit on `main`** | **`ebb44177ba02839fc25d0baa548eeabdea888560`** (short **`ebb44177`**) |
+| **`main` tip after merge** | **`ebb44177`** (same as squash commit until a follow-up commit) |
 | **Binding CI for M33** | **N/A** for governance content — documentation-only; evidence remains at cited milestones (§4) |
+
+### PR checks (fork `m-cahill/serena`) — **provenance / hygiene only**
+
+These runs validate repo health on the PR branch; they are **not** claimed as new **binding** runtime proof for M33 (doc-only milestone).
+
+| Workflow | Run ID(s) | Result | Notes |
+|----------|-----------|--------|--------|
+| **Linter** (eslint, ruff) | **23626330336**, **23626332648** | **success** | [23626330336](https://github.com/m-cahill/serena/actions/runs/23626330336), [23626332648](https://github.com/m-cahill/serena/actions/runs/23626332648) |
+| **Smoke Tests** | **23626330338**, **23626332665** | **success** | [23626330338](https://github.com/m-cahill/serena/actions/runs/23626330338), [23626332665](https://github.com/m-cahill/serena/actions/runs/23626332665) |
 
 ### Post-merge workflows on `main` (optional provenance only)
 
-After merge, push of the merge commit may trigger **Linter** and **Quality Tests**. If recorded, treat as **routine hygiene after a docs-only merge** — **not** claimed as binding M33 runtime proof (same posture as M30/M31/M32).
+Push of **`ebb44177`** triggered **Linter** and **Quality Tests** on `main`. **Not** binding M33 runtime proof — routine CI after a docs-only merge (same posture as M30/M31/M32).
 
 | Workflow | Run ID | Result | URL |
 |----------|--------|--------|-----|
-| **Linter** | *(fill)* | *(fill)* | *(fill)* |
-| **Quality Tests** | *(fill)* | *(fill)* | *(fill)* |
+| **Linter** | **23626413453** | **success** | [view run](https://github.com/m-cahill/serena/actions/runs/23626413453) |
+| **Quality Tests** | **23626413493** | **success** | [view run](https://github.com/m-cahill/serena/actions/runs/23626413493) |
 
-### Annotated tag (final closeout only)
+### Annotated tag (final closeout)
 
 | Item | Value |
 |------|--------|
-| **Tag** | `v0.0.33-m33` *(if and when created after merge + post-merge CI)* |
-| **Points to** | *(merge commit SHA)* |
+| **Tag** | **`v0.0.33-m33`** |
+| **Points to** | **`ebb44177ba02839fc25d0baa548eeabdea888560`** |
+| **Annotation** | `M33: release-ready 5/5 close` |
 
-**Ledger update:** Replace *Pending merge* placeholders in `docs/serena.md` M33 row with **PR #**, **squash commit**, **Completed At** timestamp, and optional post-merge run IDs once known.
+**Ledger:** `docs/serena.md` M33 row updated with PR **#88**, merge **`ebb44177`**, post-merge run IDs, **Completed At**, and tag reference.

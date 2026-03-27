@@ -1,8 +1,8 @@
 # M33 — Summary: Release-ready 5/5 close
 
-**Status:** Documentation complete on branch `m33-release-ready-close` (governance program closeout — **not** a runtime-change milestone); **PR merge** and **ledger / §9 provenance** per normal Serena workflow after review.  
+**Status:** Completed (documentation / governance program closeout — **not** a runtime-change milestone)  
 **Audit score:** 5.0 / 5 (see `M33_audit.md`)  
-**Merge:** *(record PR and squash commit in `docs/serena.md` and `M33_run1.md` §9 when merged)*
+**Merge:** **[PR #88](https://github.com/m-cahill/serena/pull/88)** squash-merge to **`main`** → **`ebb44177ba02839fc25d0baa548eeabdea888560`** (**2026-03-27T01:21:55Z**). Post-merge provenance (optional): **`M33_run1.md`** §9. **Tag:** **`v0.0.33-m33`** @ **`ebb44177`**.
 
 ---
 
