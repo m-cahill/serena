@@ -110,6 +110,19 @@ Duplicates (same head, success): Linter `23628993965`, Smoke `23628993960`.
 
 ---
 
+## Latest PR tip (includes this file)
+
+After the evidence commits above, **PR #90** **`headRef`** was **`ffbaf457e186d8f363aadc819a883f992089754f`**. **Linter** and **Smoke** were **success** for that SHA (docs-only delta; no `modules/` or `test/` change vs **`1269c3f3`**).
+
+| Workflow | Run ID | URL | Result | headSha (verified) |
+|----------|--------|-----|--------|--------------------|
+| Linter | **`23631449100`** | https://github.com/m-cahill/serena/actions/runs/23631449100 | success | `ffbaf457e186d8f363aadc819a883f992089754f` |
+| Smoke Tests | **`23631449121`** | https://github.com/m-cahill/serena/actions/runs/23631449121 | success | `ffbaf457e186d8f363aadc819a883f992089754f` |
+
+Duplicate runs (same head `ffbaf457`, success): Linter **`23631448471`**, Smoke **`23631448466`**.
+
+---
+
 ## Verdict (PR CI)
 
-**PR #90 head `1269c3f395fe51931a7faeb8bc9d9291d9499153`:** **Linter** (`23631342096`) and **Smoke Tests** (`23631342094`) **success** (verified **headSha** on workflow runs). Earlier tips in the chain (**`01aa27f9`**, **`6a249f2c`**, **`65aa7219`**) also **green** as recorded — **no failed** workflows for those heads. **Quality** on `main` **after merge** only.
+**Primary evidence (detailed tables):** head **`1269c3f395fe51931a7faeb8bc9d9291d9499153`** — **Linter** (`23631342096`) and **Smoke Tests** (`23631342094`) **success** (verified **headSha** on workflow runs). **Latest push** **`ffbaf457`** — **Linter** (`23631449100`) and **Smoke** (`23631449121`) **success**. Earlier tips (**`01aa27f9`**, **`6a249f2c`**, **`65aa7219`**) also **green** — **no failed** workflows for those heads. **Quality** on `main` **after merge** only.
