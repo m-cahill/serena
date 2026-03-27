@@ -121,6 +121,16 @@ After the evidence commits above, **PR #90** **`headRef`** was **`ffbaf457e186d8
 
 Duplicate runs (same head `ffbaf457`, success): Linter **`23631448471`**, Smoke **`23631448466`**.
 
+### Subsequent tip (this doc file updated)
+
+| Field | Value |
+|-------|--------|
+| **headRef** | **`77e565f56da0f5e560c8227c40e1593429eb2ff8`** |
+| Linter | **`23631542758`** — https://github.com/m-cahill/serena/actions/runs/23631542758 — **success** |
+| Smoke Tests | **`23631542742`** — https://github.com/m-cahill/serena/actions/runs/23631542742 — **success** |
+
+Duplicate runs (same head `77e565f5`, success): Linter **`23631541576`**, Smoke **`23631541583`**.
+
 ---
 
 ## Verdict (PR CI)
