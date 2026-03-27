@@ -7,6 +7,7 @@ import pytest
 
 from modules.runtime.model_provider import ModelProvider
 from modules.runtime.runner import ProcessingRequest, ProcessingRunner
+from modules.runtime_context import ModelIdentity, model_identity_from_model
 from test.fixtures.fake_model import FakeModel, FakeModelProvider
 
 
@@ -219,3 +220,48 @@ def test_fake_model_provider_get_model_called(fake_pipeline_env):
     runner = ProcessingRunner(model_provider=provider)
     runner.run(ProcessingRequest(p))
     assert len(provider.get_model_calls) >= 1
+
+
+def test_model_identity_from_model_matches_checkpoint_fields():
+    fake = FakeModel()
+    mi = model_identity_from_model(fake)
+    assert isinstance(mi, ModelIdentity)
+    assert mi.name_for_extra == fake.sd_checkpoint_info.name_for_extra
+    assert mi.model_hash == fake.sd_model_hash
+
+
+def test_full_pipeline_populates_runtime_context_model_identity(fake_pipeline_env):
+    fake, out = fake_pipeline_env
+    provider = FakeModelProvider(fake)
+    p = _make_txt2img(out, sampler_name=_pick_sampler_name())
+    runner = ProcessingRunner(model_provider=provider)
+    runner.run(ProcessingRequest(p))
+
+    rc = p.runtime_context
+    assert rc.model_identity is not None
+    assert rc.model_identity.name_for_extra == fake.sd_checkpoint_info.name_for_extra
+    assert rc.model_identity.model_hash == fake.sd_model_hash
+    assert p.sd_model_name == rc.model_identity.name_for_extra
+    assert p.sd_model_hash == rc.model_identity.model_hash
+    assert rc.model is fake
+
+
+def test_model_identity_available_before_script_hooks(fake_pipeline_env):
+    """RuntimeContext.model_identity exists before scripts.process (M34 ordering)."""
+    fake, out = fake_pipeline_env
+    provider = FakeModelProvider(fake)
+    p = _make_txt2img(out, sampler_name=_pick_sampler_name())
+
+    seen = []
+
+    class _Scripts:
+        def process(self, p):
+            assert p.runtime_context is not None
+            assert p.runtime_context.model_identity is not None
+            assert p.runtime_context.model_identity.name_for_extra == p.sd_model_name
+            seen.append(True)
+
+    p.scripts = _Scripts()
+    runner = ProcessingRunner(model_provider=provider)
+    runner.run(ProcessingRequest(p))
+    assert seen == [True]

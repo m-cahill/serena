@@ -25,7 +25,7 @@ import modules.shared as shared
 import modules.images as images
 import modules.styles
 from modules.opts_snapshot import create_opts_snapshot
-from modules.runtime_context import RuntimeContext
+from modules.runtime_context import RuntimeContext, model_identity_from_model
 import modules.prompt_seed_prep as prompt_seed_prep
 import modules.runtime_utils as runtime_utils
 from modules.runtime import processing_runtime, sampler_runtime, decode_runtime
@@ -826,11 +826,14 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
         if p.refiner_checkpoint_info is None:
             raise Exception(f'Could not find checkpoint with name {p.refiner_checkpoint}')
 
-    if hasattr(shared.sd_model, 'fix_dimensions'):
-        p.width, p.height = shared.sd_model.fix_dimensions(p.width, p.height)
+    m = shared.sd_model
+    if hasattr(m, 'fix_dimensions'):
+        p.width, p.height = m.fix_dimensions(p.width, p.height)
 
-    p.sd_model_name = shared.sd_model.sd_checkpoint_info.name_for_extra
-    p.sd_model_hash = shared.sd_model.sd_model_hash
+    # M34: explicit model identity for runtime-owned seam (same source as pre-M34 lines below)
+    model_identity = model_identity_from_model(m)
+    p.sd_model_name = model_identity.name_for_extra
+    p.sd_model_hash = model_identity.model_hash
     p.sd_vae_name = sd_vae.get_loaded_vae_name()
     p.sd_vae_hash = sd_vae.get_loaded_vae_hash()
 
@@ -843,7 +846,8 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
     prompt_seed_prep.prepare_prompt_seed_state(p)
     p.opts_snapshot = create_opts_snapshot(shared.opts)
     p.runtime_context = RuntimeContext(
-        model=shared.sd_model,
+        model=m,
+        model_identity=model_identity,
         opts_snapshot=p.opts_snapshot,
         device=shared.device,
         state=shared.state,

@@ -25,6 +25,8 @@
 
 **Why it is not a release blocker:** Behavior is **preserved**, **contract-tested** paths go through the runner, and **M20** documents honest test glue: **`shared.sd_model`** is aligned with the provider return for **`process_images_inner`** metadata (`M20_audit.md` §3).
 
+**M34 (Phase VIII) progress:** **`RuntimeContext`** now carries an explicit **`ModelIdentity`** (checkpoint name/hash) populated in **`process_images_inner`** from the same authoritative model object as before. Remaining **`shared.sd_model`** reads in **`processing.py`** (conditioning, caches, **`StableDiffusionProcessing.sd_model`** property, etc.) are **unchanged** and remain **in scope for M35**.
+
 **What would justify addressing later:** A dedicated milestone to **thread model identity** through **`StableDiffusionProcessing`** / **`RuntimeContext`** for all metadata reads, with regression and extension checks—only if the program explicitly schedules it.
 
 **What not to rewrite casually:** Do not “simplify” metadata by reading **`shared.sd_model`** in **`decode_runtime`** / **`sampler_runtime`** / **`processing_runtime`** to avoid **`processing.py`**—that would **violate** the locked **M19** boundary. Prefer changes that keep **one** orchestration owner for globals.
