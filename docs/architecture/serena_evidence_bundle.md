@@ -81,11 +81,11 @@ This demonstrates **fix-forward** under blocking gates rather than disabling aud
 
 ---
 
-## 7. What remains (post–M32)
+## 7. Program closeout (Phase VII / M33)
 
 - **M31 (Phase VII):** **Complete** — `docs/architecture/serena_architecture_lock.md`, `serena_allowed_legacy_surfaces.md` (documentation only; see ledger, `M31_run1.md`).
 - **M32 (Phase VII):** **Complete** — Evidence/audit closure synthesis (`docs/milestones/M32/M32_run1.md`, `M32_summary.md`, `M32_audit.md`); documentation only; **no** new binding runtime gate (same posture as M30/M31).
-- **M33 (Phase VII):** **Pending** — Release-ready 5/5 close (ledger); minimal stub only until planned.
+- **M33 (Phase VII):** **Complete** — Release-ready 5/5 program closeout (`docs/milestones/M33/M33_run1.md`, `M33_summary.md`, `M33_audit.md`); documentation only; **no** new binding runtime gate. **M33** is the **final milestone** in the **current** Serena program map; merge PR and post-merge provenance: `M33_run1.md` §9.
 
 ---
 
@@ -99,5 +99,6 @@ This demonstrates **fix-forward** under blocking gates rather than disabling aud
 | `docs/milestones/M30/M30_run1.md` | Cross-check log and M28/M29 CI clarification |
 | `docs/milestones/M31/M31_run1.md` | M31 PR provenance; doc-only hygiene posture |
 | `docs/milestones/M32/M32_run1.md` | M32 evidence/audit closure; binding evidence map pointers |
+| `docs/milestones/M33/M33_run1.md` | M33 program closeout; release-ready interpretation (governance); PR/merge §9 |
 | `docs/architecture/serena_case_study_summary.md` | Shorter external-facing summary |
 | `docs/architecture/serena_evidence_matrix.md` | Phase → gain → proof |

@@ -61,4 +61,4 @@ Compact mapping: **phase** → **milestone range** → **primary gain** → **bi
 |-----------------|--------------|---------------|
 | **M31** | Architecture lock (`serena_architecture_lock.md`, `serena_allowed_legacy_surfaces.md`); documentation only | Ledger + lock docs; no runtime gate (same posture as M30 for doc-only) |
 | **M32** | Evidence/audit closure (synthesis of ledger + lock + bundle + matrix + milestone runs); documentation only | Ledger + `M32_run1.md`; no new runtime gate; binding technical proof remains at cited milestones (e.g. M29 Quality **23618918747**) |
-| **M33** | Release-ready 5/5 close | *Pending* |
+| **M33** | Release-ready 5/5 close (program closeout; documentation only) | Ledger + `M33_run1.md`; no new runtime gate; binding technical proof remains at cited milestones (e.g. M29 Quality **23618918747**); merge provenance `M33_run1.md` §9 |
