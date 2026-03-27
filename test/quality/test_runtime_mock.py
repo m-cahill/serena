@@ -248,6 +248,26 @@ def test_full_pipeline_populates_runtime_context_model_identity(fake_pipeline_en
     assert rc.model is fake
 
 
+def test_orchestration_identity_ignores_mismatched_shared_sd_model(fake_pipeline_env):
+    """M35: process_images_inner uses ModelProvider for the active model, not shared.sd_model."""
+    fake, out = fake_pipeline_env
+    import modules.shared as shared
+
+    wrong = FakeModel()
+    wrong.sd_checkpoint_info.name_for_extra = "wrong-ckpt"
+    wrong.sd_model_hash = "wronghash"
+    shared.sd_model = wrong
+
+    provider = FakeModelProvider(fake)
+    p = _make_txt2img(out, sampler_name=_pick_sampler_name())
+    runner = ProcessingRunner(model_provider=provider)
+    runner.run(ProcessingRequest(p))
+
+    assert p.runtime_context.model is fake
+    assert p.runtime_context.model_identity.name_for_extra == fake.sd_checkpoint_info.name_for_extra
+    assert p.sd_model_name == fake.sd_checkpoint_info.name_for_extra
+
+
 def test_model_identity_available_before_script_hooks(fake_pipeline_env):
     """RuntimeContext.model_identity exists before scripts.process and batch hooks."""
     fake, out = fake_pipeline_env

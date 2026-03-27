@@ -1,8 +1,8 @@
 """M20: Minimal fake model + provider for runner / process_images_inner tests.
 
-`StableDiffusionProcessing.sd_model` reads `shared.sd_model`; tests should set
-`modules.shared.sd_model` to the same object `FakeModelProvider.get_model`
-returns.
+M35: Supported-path orchestration uses ``ModelProvider.get_model``; keep
+``modules.shared.sd_model`` aligned with the provider return when tests exercise
+code that still reads the compatibility ``p.sd_model`` property.
 """
 
 from __future__ import annotations

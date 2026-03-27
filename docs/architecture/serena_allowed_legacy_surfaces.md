@@ -17,17 +17,16 @@
 
 ## 2. Remaining global-state touchpoints (documented)
 
-### 2.1 `shared.sd_model` in `process_images` / `process_images_inner` orchestration (primary)
+### 2.1 `shared.sd_model` in `process_images` / `process_images_inner` orchestration (narrowed, M35)
 
-**What:** **`modules/processing.py`** still reads **`shared.sd_model`** (and related fields) for **orchestration** outside the inner-loop runtime modules—for example checkpoint naming/hash, dimension fixes, conditioning, and **metadata/infotext** alignment. The **extracted runtime modules** (`processing_runtime`, `sampler_runtime`, `decode_runtime`) take the model via **`p.model_provider.get_model(p)`** and do **not** use direct `shared.sd_model` / `p.sd_model` reads (M19 audit).
+**What (current):** **`modules/processing.py`** supported-path orchestration uses **`_orchestration_model(p)`**, which returns **`p.model_provider.get_model(p)`** when the runner has prepared the request (default **`SharedModelProvider`** still delegates to **`shared.sd_model`**). **Direct** reads of **`shared.sd_model`** in **`processing.py`** are limited to:
 
-**Why it remains:** Phase IV explicitly scoped **model provider injection** to the **runtime extraction modules**; full removal of global model reads from **`processing.py`** was not required for the milestone chain through M20.
+- the **`StableDiffusionProcessing.sd_model`** **compatibility property** (extensions / legacy callers; **not** the internal orchestration authority), and
+- the **`_orchestration_model`** fallback when **`model_provider`** is absent (call sites outside the **`ProcessingRunner`** path).
 
-**Why it is not a release blocker:** Behavior is **preserved**, **contract-tested** paths go through the runner, and **M20** documents honest test glue: **`shared.sd_model`** is aligned with the provider return for **`process_images_inner`** metadata (`M20_audit.md` §3).
+**Extracted runtime modules** (`processing_runtime`, `sampler_runtime`, `decode_runtime`) take the model via **`p.model_provider.get_model(p)`** and do **not** use direct `shared.sd_model` / `p.sd_model` reads (M19 audit).
 
-**M34 (Phase VIII) progress:** **`RuntimeContext`** now carries an explicit **`ModelIdentity`** (checkpoint name/hash) populated in **`process_images_inner`** from the same authoritative model object as before. Remaining **`shared.sd_model`** reads in **`processing.py`** (conditioning, caches, **`StableDiffusionProcessing.sd_model`** property, etc.) are **unchanged** and remain **in scope for M35**.
-
-**What would justify addressing later:** A dedicated milestone to **thread model identity** through **`StableDiffusionProcessing`** / **`RuntimeContext`** for all metadata reads, with regression and extension checks—only if the program explicitly schedules it.
+**Why any global touch remains:** **`SharedModelProvider`** is the default implementation and matches upstream “globally loaded model” behavior; **`p.sd_model`** remains a thin compatibility alias to **`shared.sd_model`**.
 
 **What not to rewrite casually:** Do not “simplify” metadata by reading **`shared.sd_model`** in **`decode_runtime`** / **`sampler_runtime`** / **`processing_runtime`** to avoid **`processing.py`**—that would **violate** the locked **M19** boundary. Prefer changes that keep **one** orchestration owner for globals.
 

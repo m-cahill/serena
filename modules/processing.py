@@ -100,6 +100,19 @@ def create_binary_mask(image, round=True):
         image = image.convert('L')
     return image
 
+
+def _orchestration_model(p):
+    """Live model for supported-path orchestration in this module (M35).
+
+    Uses ``p.model_provider`` when set (``ProcessingRunner.prepare``); otherwise
+    ``shared.sd_model``. Runtime modules continue to use ``ModelProvider`` only.
+    """
+    mp = getattr(p, "model_provider", None)
+    if mp is not None:
+        return mp.get_model(p)
+    return shared.sd_model
+
+
 def txt2img_image_conditioning(sd_model, x, width, height):
     if sd_model.model.conditioning_key in {'hybrid', 'concat'}: # Inpainting models
 
@@ -263,6 +276,8 @@ class StableDiffusionProcessing:
 
     @property
     def sd_model(self):
+        # M35: compatibility alias for extensions / legacy callers — not the
+        # supported-path orchestration source (use _orchestration_model(p) here).
         return shared.sd_model
 
     @sd_model.setter
@@ -324,7 +339,7 @@ class StableDiffusionProcessing:
         return conditioning
 
     def edit_image_conditioning(self, source_image):
-        conditioning_image = shared.sd_model.encode_first_stage(source_image).mode()
+        conditioning_image = _orchestration_model(self).encode_first_stage(source_image).mode()
 
         return conditioning_image
 
@@ -449,7 +464,7 @@ class StableDiffusionProcessing:
             hires_steps,
             use_old_scheduling,
             opts.CLIP_stop_at_last_layers,
-            shared.sd_model.sd_checkpoint_info,
+            _orchestration_model(self).sd_checkpoint_info,
             extra_network_data,
             opts.sdxl_crop_left,
             opts.sdxl_crop_top,
@@ -462,7 +477,7 @@ class StableDiffusionProcessing:
 
     def get_conds_with_caching(self, function, required_prompts, steps, caches, extra_network_data, hires_steps=None):
         """
-        Returns the result of calling function(shared.sd_model, required_prompts, steps)
+        Returns the result of calling function(model, required_prompts, steps)
         using a cache to store the result if the same arguments have been used before.
 
         cache is an array containing two elements. The first element is a tuple
@@ -488,7 +503,7 @@ class StableDiffusionProcessing:
         cache = caches[0]
 
         with devices.autocast():
-            cache[1] = function(shared.sd_model, required_prompts, steps, hires_steps, shared.opts.use_old_scheduling)
+            cache[1] = function(_orchestration_model(self), required_prompts, steps, hires_steps, shared.opts.use_old_scheduling)
 
         cache[0] = cached_params
         return cache[1]
@@ -826,7 +841,7 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
         if p.refiner_checkpoint_info is None:
             raise Exception(f'Could not find checkpoint with name {p.refiner_checkpoint}')
 
-    m = shared.sd_model
+    m = _orchestration_model(p)
     if hasattr(m, 'fix_dimensions'):
         p.width, p.height = m.fix_dimensions(p.width, p.height)
 
@@ -1343,7 +1358,7 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
             if shared.opts.hires_fix_use_firstpass_conds:
                 self.calculate_hr_conds()
 
-            elif lowvram.is_enabled(shared.sd_model) and shared.sd_model.sd_checkpoint_info == sd_models.select_checkpoint():  # if in lowvram mode, we need to calculate conds right away, before the cond NN is unloaded
+            elif lowvram.is_enabled(_orchestration_model(self)) and _orchestration_model(self).sd_checkpoint_info == sd_models.select_checkpoint():  # if in lowvram mode, we need to calculate conds right away, before the cond NN is unloaded
                 with devices.autocast():
                     extra_networks.activate(self, self.hr_extra_network_data)
 
@@ -1419,7 +1434,7 @@ class StableDiffusionProcessingImg2Img(StableDiffusionProcessing):
     def init(self, all_prompts, all_seeds, all_subseeds):
         self.extra_generation_params["Denoising strength"] = self.denoising_strength
 
-        self.image_cfg_scale: float = self.image_cfg_scale if shared.sd_model.cond_stage_key == "edit" else None
+        self.image_cfg_scale: float = self.image_cfg_scale if _orchestration_model(self).cond_stage_key == "edit" else None
 
         self.sampler = sd_samplers.create_sampler(self.sampler_name, self.sd_model)
         crop_region = None
