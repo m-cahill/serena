@@ -44,3 +44,7 @@ trace.json
 /sysinfo-????-??-??-??-??.json
 # M29: CI-generated performance artifact (do not commit)
 /performance_snapshot.txt
+# Local CI scratch / agent artifacts (ephemeral; do not commit)
+/_ci_artifacts/
+/_ci_log/
+/_ci_tmp/

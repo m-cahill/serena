@@ -38,6 +38,7 @@ Core principles:
 2. `docs/architecture/serena_architecture_lock.md` — Approved steady-state architecture and locked boundaries (structural questions)
 3. `docs/architecture/serena_evidence_bundle.md` — Phase I–VI proof narrative (see also `serena_case_study_summary.md`, `serena_evidence_matrix.md`)
 4. Milestone docs under `docs/milestones/MNN/`, run records, milestone audits/summaries
+5. `docs/serenav1audit.md` — Post-v1 audit (authoritative input for Phase VIII scope and targets)
 
 **Historical baseline (pre-refactor audits):** `docs/sdwebuirefactoraudit.md`, `docs/sdwebuiaudit.md` — baseline scores and strategy; subordinate to the ledger and architecture lock for *current* approved shape.
 
@@ -125,7 +126,7 @@ Core principles:
 
 **Progress (Phase VI):** **M26–M30 complete.** **M29** closeout: binding **Quality** **`23618918747`** on **`main`** (**199** pass, **~48%** cov, **`performance_snapshot.txt`** artifact); recovery **PR #79** (M29.1), **PR #80** / **#81** (M29.2); tag **`v0.0.29-m29`** @ **`1b2e2f692d35365de584b7468e8bd9122617358a`**. **M30** closeout: **PR #82** → merge **`b663f735`**; evidence bundle **`docs/architecture/serena_evidence_bundle.md`**, **`serena_case_study_summary.md`**, **`serena_evidence_matrix.md`**; **`M30_run1.md`** (incl. **M28** / **`main`** / **PR #64** note); tag **`v0.0.30-m30`**. **M30** is **documentation / evidence only** — no runtime gate.
 
-**Progress (Phase VII):** **Complete.** **M31** (architecture lock) — **`docs/architecture/serena_architecture_lock.md`**, **`serena_allowed_legacy_surfaces.md`**; documentation only. **M32** (evidence/audit closure) — **`docs/milestones/M32/`** (`M32_run1.md`); documentation only. **M33** (release-ready 5/5 close) — **`docs/milestones/M33/`** (`M33_run1.md`); program/governance closeout; documentation only. **M33** is the **final milestone** in the **current** Serena program map.
+**Progress (Phase VII):** **Complete.** **M31** (architecture lock) — **`docs/architecture/serena_architecture_lock.md`**, **`serena_allowed_legacy_surfaces.md`**; documentation only. **M32** (evidence/audit closure) — **`docs/milestones/M32/`** (`M32_run1.md`); documentation only. **M33** (release-ready 5/5 close) — **`docs/milestones/M33/`** (`M33_run1.md`); program/governance closeout for **Phase VII**; documentation only. **M33** is the **final milestone** of **Phase VII**; **Phase VIII** (M34–M37) is **planned** (post-v1 5/5 recovery — see **`docs/serenav1audit.md`**).
 
 ### Phase VII ? Release Lock / 5.0 Closure (M31?M33)
 | Milestone | Title |
@@ -133,6 +134,16 @@ Core principles:
 | M31 | Architecture lock |
 | M32 | Evidence/audit closure |
 | M33 | Release-ready 5/5 close |
+
+### Phase VIII ? Final 5/5 Closure (M34–M37)
+| Milestone | Title | Status |
+|-----------|-------|--------|
+| M34 | Runtime context model-identity seam | Planned |
+| M35 | Remove tolerated `shared.sd_model` orchestration coupling | Planned |
+| M36 | Coverage lift and gate recalibration | Planned |
+| M37 | Security deferral closure and final 5/5 re-audit | Planned |
+
+**Progress (Phase VIII):** **Planned.** Tightly scoped post-v1 hardening to close the remaining audit gap toward **5.0/5** (architecture seam, orchestration decoupling, coverage proof, security deferrals / re-audit). Authoritative scope: **`docs/serenav1audit.md`**.
 
 ---
 
@@ -174,6 +185,10 @@ Core principles:
 | M31 | Architecture lock (documentation) | Completed | m31-architecture-lock | **#83** (+ closeout **#84**) | **09f1d785** | **Doc-only:** lock merge **#83**; PR checks + post-merge Linter **23621856813** / Quality **23621856875** — **provenance only** (`M31_run1.md` §6–§7); closeout **#84** adds **`M31_run1.md`**, **`M31_summary.md`**, **`M31_audit.md`**, ledger fill (**merge `3b2af43f`**) | 5.0 / 5 | 2026-03-26 ~23:55 UTC |
 | M32 | Evidence/audit closure (documentation) | Completed | m32-evidence-audit-closure | **[#86](https://github.com/m-cahill/serena/pull/86)** | **`3f6f6a2e`** | **Doc-only:** no binding runtime gate; ledger + lock + bundle + matrix synthesis (`M32_run1.md`); post-merge on **`3f6f6a2e`**: Linter **23624248870** / Quality **23624248875** — **provenance only** (`M32_run1.md` §8) | 5.0 / 5 | 2026-03-27 ~00:06 UTC |
 | M33 | Release-ready 5/5 close (documentation) | Completed | m33-release-ready-close | **[#88](https://github.com/m-cahill/serena/pull/88)** | **`ebb44177`** | **Doc-only:** no binding runtime gate; program closeout (`M33_run1.md`); PR **#88** checks: Linter **23626330336** / **23626332648**, Smoke **23626330338** / **23626332665** — **provenance only**; post-merge on **`ebb44177`**: Linter **23626413453** / Quality **23626413493** — **provenance only** (`M33_run1.md` §9); tag **`v0.0.33-m33`** @ **`ebb44177`** | 5.0 / 5 | 2026-03-27 ~01:22 UTC |
+| M34 | Runtime context model-identity seam | Planned | — | — | — | — | Post-v1 Phase VIII; see **`docs/serenav1audit.md`** | — |
+| M35 | Remove tolerated `shared.sd_model` orchestration coupling | Planned | — | — | — | — | Post-v1 Phase VIII | — |
+| M36 | Coverage lift and gate recalibration | Planned | — | — | — | — | Post-v1 Phase VIII | — |
+| M37 | Security deferral closure and final 5/5 re-audit | Planned | — | — | — | — | Post-v1 Phase VIII | — |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
@@ -231,7 +246,7 @@ Core principles:
 
 **M32:** **Evidence/audit closure** — **PR [#86](https://github.com/m-cahill/serena/pull/86)** squash-merge to **`main`** **`3f6f6a2eadd5b2aa0e79a635af0c98c7e7ee6fd9`** (**2026-03-27T00:06:13Z**); **`docs/milestones/M32/M32_plan.md`**, **`M32_run1.md`**, **`M32_summary.md`**, **`M32_audit.md`**; alignment updates to **`serena_evidence_bundle.md`**, **`serena_evidence_matrix.md`**; **`docs/milestones/M33/*`** stubs (expanded in M33). **Documentation only** — no application code, workflow YAML, lockfiles, or dependency changes; **no** new binding runtime gate (same posture as M30/M31). Post-merge CI on **`3f6f6a2e`**: **`M32_run1.md`** §8.
 
-**M33:** **Release-ready 5/5 close** — **PR [#88](https://github.com/m-cahill/serena/pull/88)** squash-merge to **`main`** **`ebb44177ba02839fc25d0baa548eeabdea888560`** (**2026-03-27T01:21:55Z**); branch was **`m33-release-ready-close`**; **`docs/milestones/M33/M33_plan.md`**, **`M33_run1.md`**, **`M33_summary.md`**, **`M33_audit.md`**, **`M33_toolcalls.md`**; ledger **Phase VII** complete; **M33** = **final** milestone in the **current** program map. **Documentation only** — no application code, workflow YAML, lockfiles, or dependency changes; **no** new binding runtime gate. **Release-ready** = **program/governance** closeout — **not** blanket production certification of the upstream web UI. **Deferrals:** M28 **`pip-audit`** only — **CVE-2025-69872** (**diskcache**), **CVE-2026-4539** (**pygments**). **Annotated tag `v0.0.33-m33`** @ **`ebb44177`**. PR/post-merge CI: **`M33_run1.md`** §9 (**provenance only**).
+**M33:** **Release-ready 5/5 close** — **PR [#88](https://github.com/m-cahill/serena/pull/88)** squash-merge to **`main`** **`ebb44177ba02839fc25d0baa548eeabdea888560`** (**2026-03-27T01:21:55Z**); branch was **`m33-release-ready-close`**; **`docs/milestones/M33/M33_plan.md`**, **`M33_run1.md`**, **`M33_summary.md`**, **`M33_audit.md`**, **`M33_toolcalls.md`**; ledger **Phase VII** complete; **M33** = **final** milestone of **Phase VII**. **Documentation only** — no application code, workflow YAML, lockfiles, or dependency changes; **no** new binding runtime gate. **Release-ready** = **program/governance** closeout — **not** blanket production certification of the upstream web UI. **Deferrals:** M28 **`pip-audit`** only — **CVE-2025-69872** (**diskcache**), **CVE-2026-4539** (**pygments**). **Annotated tag `v0.0.33-m33`** @ **`ebb44177`**. PR/post-merge CI: **`M33_run1.md`** §9 (**provenance only**). **Phase VIII** (M34–M37) **planned** — see **`docs/serenav1audit.md`**.
 
 ---
 
@@ -257,7 +272,7 @@ Phase V ? UI & Extension Stabilization **complete**. Top-level UI modularized, e
 
 **M32 ? Evidence/audit closure** **complete** — **PR #86** → merge **`3f6f6a2e`** (2026-03-27 ~00:06 UTC); **`M32_run1.md`**, **`M32_summary.md`**, **`M32_audit.md`**; bundle/matrix index updates; **doc-only**.
 
-**M33 ? Release-ready 5/5 close** **complete** — **PR #88** → merge **`ebb44177`**; **`docs/milestones/M33/`**; **Phase VII** and the **current** program map **closed** at **M33**; **doc-only**; tag **`v0.0.33-m33`** @ **`ebb44177`**; provenance **`M33_run1.md`** §9.
+**M33 ? Release-ready 5/5 close** **complete** — **PR #88** → merge **`ebb44177`**; **`docs/milestones/M33/`**; **Phase VII** **closed** at **M33**; **doc-only**; tag **`v0.0.33-m33`** @ **`ebb44177`**; provenance **`M33_run1.md`** §9. **Phase VIII** (M34–M37) **planned** — **`docs/serenav1audit.md`**.
 
 ---
 
