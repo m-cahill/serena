@@ -81,10 +81,11 @@ This demonstrates **fix-forward** under blocking gates rather than disabling aud
 
 ---
 
-## 7. What remains (post–M30)
+## 7. What remains (post–M32)
 
-- **M31 (Phase VII):** **Architecture lock** — `docs/architecture/serena_architecture_lock.md`, `serena_allowed_legacy_surfaces.md` (documentation only; see ledger).
-- **M32–M33:** Evidence/audit closure, release-ready 5/5 close — **out of scope for M30** and **M31**.
+- **M31 (Phase VII):** **Complete** — `docs/architecture/serena_architecture_lock.md`, `serena_allowed_legacy_surfaces.md` (documentation only; see ledger, `M31_run1.md`).
+- **M32 (Phase VII):** **Complete** — Evidence/audit closure synthesis (`docs/milestones/M32/M32_run1.md`, `M32_summary.md`, `M32_audit.md`); documentation only; **no** new binding runtime gate (same posture as M30/M31).
+- **M33 (Phase VII):** **Pending** — Release-ready 5/5 close (ledger); minimal stub only until planned.
 
 ---
 
@@ -96,5 +97,7 @@ This demonstrates **fix-forward** under blocking gates rather than disabling aud
 | `docs/architecture/serena_architecture_lock.md` | **M31:** Locked steady-state architecture (structural authority) |
 | `docs/architecture/serena_allowed_legacy_surfaces.md` | **M31:** Tolerated legacy glue vs locked architecture |
 | `docs/milestones/M30/M30_run1.md` | Cross-check log and M28/M29 CI clarification |
+| `docs/milestones/M31/M31_run1.md` | M31 PR provenance; doc-only hygiene posture |
+| `docs/milestones/M32/M32_run1.md` | M32 evidence/audit closure; binding evidence map pointers |
 | `docs/architecture/serena_case_study_summary.md` | Shorter external-facing summary |
 | `docs/architecture/serena_evidence_matrix.md` | Phase → gain → proof |
