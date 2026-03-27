@@ -9,3 +9,4 @@
 | 2026-03-27 | Write | Regression tests in `test_runtime_mock.py` | `test/quality/test_runtime_mock.py` |
 | 2026-03-27 | Write | M34/M35 milestone docs; allowed-legacy note; `docs/serena.md` | `docs/**` |
 | 2026-03-27 | Shell | `ruff check`; `pytest` (where env allows) | CI / local |
+| 2026-03-27 | Shell | Push branch; `gh pr create` **#90** (`m-cahill/serena`) | git, gh |

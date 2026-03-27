@@ -10,7 +10,7 @@
 
 | Field | Value |
 |-------|--------|
-| PR | *(fill after `gh pr create`)* |
+| PR | **[#90](https://github.com/m-cahill/serena/pull/90)** |
 | Merge commit | *(post-merge)* |
 
 ---

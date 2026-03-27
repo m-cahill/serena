@@ -2,7 +2,7 @@
 
 **Phase VIII** (per `docs/serena.md`). First milestone of post-v1 **5/5 recovery** (see `docs/serenav1audit.md`).
 
-**Status:** Implementation complete on branch **`m34-runtime-context-model-identity`** (pending PR / CI).
+**Status:** Implementation complete on branch **`m34-runtime-context-model-identity`**; PR **[#90](https://github.com/m-cahill/serena/pull/90)** (pending CI / merge).
 
 ---
 
