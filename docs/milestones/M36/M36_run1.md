@@ -22,16 +22,29 @@ From M35 post-merge Quality (ledger binding):
 
 ## PR CI (Linter + Smoke) — authoritative `pull_request` gates
 
-**PR head at approval snapshot:** **`75356919e7e7dc3dd0b6ed5df5f17b7ae82440a1`** (M36 implementation commit; validated via `gh run view <id> --json headSha`).
+### Implementation commit (tests-only)
+
+**Head SHA:** **`75356919e7e7dc3dd0b6ed5df5f17b7ae82440a1`** (`test(M36): provider/orchestration seams…`). Validated via `gh run view <id> --json headSha`.
 
 | Role | Workflow | Run ID | Result | `headSha` | Event |
 |------|----------|--------|--------|-----------|--------|
 | **PR gate** | **Linter** | **`23676605494`** | **success** | **`75356919e7e7dc3dd0b6ed5df5f17b7ae82440a1`** | `pull_request` |
 | **PR gate** | **Smoke Tests** | **`23676605498`** | **success** | **`75356919e7e7dc3dd0b6ed5df5f17b7ae82440a1`** | `pull_request` |
 
-**Duplicate / non-gating runs (same branch tip):** `push` on `m36-coverage-lift-gate-recalibration` also triggered Linter **`23676596052`** and Smoke Tests **`23676596056`** (both **success**, same **`75356919…`**). Per Serena convention, **`pull_request`** runs are the merge-readiness checks; `push` duplicates are noted for provenance only.
+**Duplicate `push` (same tip, non-gating):** Linter **`23676596052`**, Smoke **`23676596056`** — both **success**.
 
-**Failed / superseded:** none observed for the authoritative PR head above.
+### Current PR tip (includes `M36_run1` CI evidence)
+
+**Head SHA:** **`151f42e3c9cf6f48f50794724bea34f157454e55`** (`docs(M36): M36_run1 — PR #92…`).
+
+| Role | Workflow | Run ID | Result | `headSha` | Event |
+|------|----------|--------|--------|-----------|--------|
+| **PR gate** | **Linter** | **`23676686946`** | **success** | **`151f42e3c9cf6f48f50794724bea34f157454e55`** | `pull_request` |
+| **PR gate** | **Smoke Tests** | **`23676686942`** | **success** | **`151f42e3c9cf6f48f50794724bea34f157454e55`** | `pull_request` |
+
+**Duplicate `push` (doc commit tip):** Linter **`23676685985`**, Smoke **`23676685991`** — both **success**.
+
+**Failed / superseded:** none observed for either tip above.
 
 ---
 
