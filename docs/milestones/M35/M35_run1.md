@@ -7,47 +7,26 @@
 
 ---
 
-## Authoritative PR head (current tip)
+## Authoritative PR CI (`pull_request` workflows)
 
-**SHA:** `a7d8b288a90425b743158311da7a6d9ea1cd8447`  
+**Current PR head:** use `gh pr view 91 -R m-cahill/serena --json headRefOid` (must match merge tip before approval).
 
-Includes M35 implementation (`68f2718714ba67e147c7fd8bd072d381c581166a`) plus `M35_run1.md` (doc-only amend of the first `M35_run1` commit; no code changes).
+**Snapshot (2026-03-28 UTC)** — validated with `gh run view <id> -R m-cahill/serena --json headSha,conclusion`:
 
-Validated via `gh run view <id> -R m-cahill/serena --json headSha` on the **`pull_request`** workflows below (`headSha` matches PR tip).
+| Role | Check | Run ID | Result | `headSha` |
+|------|-------|--------|--------|-----------|
+| **Merge tip (doc + M35 code)** | Linter | `23673084875` | success | `459072a0e12f6125cbc5471b83f0c15b1d314c19` |
+| **Merge tip (doc + M35 code)** | Smoke Tests | `23673084848` | success | `459072a0e12f6125cbc5471b83f0c15b1d314c19` |
+
+M35 **implementation** first landed in **`68f2718714ba67e147c7fd8bd072d381c581166a`** — **`pull_request`** Linter **`23672862647`**, Smoke **`23672862609`** (both success; same `headSha`).
 
 ---
 
 ## Duplicate / superseded runs
 
-Workflows fire on both **`push`** and **`pull_request`** for the same branch tip; both use the same `headSha` for that tip. **Authoritative PR gate evidence** uses the **`pull_request`** runs.
+Workflows fire on both **`push`** and **`pull_request`** for the same branch tip; **`push`** duplicates are **not** used as the PR gate. **Failed / superseded:** none observed on the recorded SHAs (all **success**).
 
-**Failed / superseded:** none observed for the SHAs below (all listed runs **success**).
-
----
-
-## PR CI — implementation commit only (`68f27187`)
-
-First open / push; **`pull_request`**:
-
-| Check | Run ID | Result | `headSha` |
-|-------|--------|--------|-----------|
-| Linter | `23672862647` | success | `68f2718714ba67e147c7fd8bd072d381c581166a` |
-| Smoke Tests | `23672862609` | success | `68f2718714ba67e147c7fd8bd072d381c581166a` |
-
-Same SHA also had **`push`**: Linter `23672856969`, Smoke `23672856984` — success (duplicate trigger).
-
----
-
-## PR CI — current tip (`a7d8b288`) — **authoritative for merge**
-
-| Check | Run ID | Result | `headSha` |
-|-------|--------|--------|-----------|
-| Linter | `23673004531` | success | `a7d8b288a90425b743158311da7a6d9ea1cd8447` |
-| Smoke Tests | `23673004512` | success | `a7d8b288a90425b743158311da7a6d9ea1cd8447` |
-
-Same SHA also had **`push`**: see run list for branch (duplicate trigger; success).
-
-**Note:** An intermediate branch tip (`5748201a`) was validated by **`pull_request`** Linter `23672933376` / Smoke `23672933380` before a doc-only **amend** rewrote history to `a7d8b288` (same tree + updated `M35_run1` narrative); **authoritative** gate for the open PR is the **`pull_request`** runs on **`a7d8b288`** above.
+Doc-only iteration on the branch produced additional green runs on intermediate tips (`5748201a`, `a7d8b288`, etc.); the **snapshot** table above is the authoritative pair for tip **`459072a0`** at the time of recording.
 
 ---
 
