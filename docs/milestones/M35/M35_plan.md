@@ -1,7 +1,7 @@
 # M35 — Remove tolerated `processing.py` ↔ `shared.sd_model` orchestration coupling
 
-**Phase VIII** · **Status:** In progress  
-**Branch:** `m35-remove-shared-sd-model-orchestration`  
+**Phase VIII** · **Status:** **Complete** (2026-03-28 UTC)  
+**Branch:** `m35-remove-shared-sd-model-orchestration` (merged **PR #91**)  
 **Depends on:** M34 (`RuntimeContext.model_identity`, binding Quality on `main`)
 
 ---

@@ -12,3 +12,4 @@
 | 2026-03-28T00:30:01Z | StrReplace | M35 regression test: identity from provider when `shared.sd_model` mismatched | `test/quality/test_runtime_mock.py`, `test/fixtures/fake_model.py` |
 | 2026-03-28T00:30:02Z | Write | Allowed-legacy + M35 plan + run1 stub | `docs/architecture/serena_allowed_legacy_surfaces.md`, `docs/milestones/M35/M35_plan.md`, `M35_run1.md` |
 | 2026-03-28T00:30:03Z | StrReplace | Cross-reference M35 on `ModelProvider` | `modules/runtime/model_provider.py` |
+| 2026-03-28T01:10:00Z | gh / Write | M35 closeout: merge PR #91, post-merge CI, ledger, M35 summary/audit/run1, M36 stubs | `docs/`, `gh pr merge`, `gh run view` |
