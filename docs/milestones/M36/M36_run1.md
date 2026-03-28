@@ -44,7 +44,18 @@ From M35 post-merge Quality (ledger binding):
 
 **Duplicate `push` (doc commit tip):** Linter **`23676685985`**, Smoke **`23676685991`** — both **success**.
 
-**Failed / superseded:** none observed for either tip above.
+### Latest branch tip (current PR `head`; doc commit `e70d282a`)
+
+**Head SHA:** **`e70d282ae0eb25811a30104f8c4b702e13351982`**
+
+| Role | Workflow | Run ID | Result | `headSha` | Event |
+|------|----------|--------|--------|-----------|--------|
+| **PR gate** | **Linter** | **`23676841052`** | **success** | **`e70d282ae0eb25811a30104f8c4b702e13351982`** | `pull_request` |
+| **PR gate** | **Smoke Tests** | **`23676841058`** | **success** | **`e70d282ae0eb25811a30104f8c4b702e13351982`** | `pull_request` |
+
+**Duplicate `push`:** Linter **`23676840473`**, Smoke **`23676840475`** — both **success**.
+
+**Failed / superseded:** none observed for the tips recorded above.
 
 ---
 
