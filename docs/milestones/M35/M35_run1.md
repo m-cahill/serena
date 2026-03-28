@@ -9,9 +9,9 @@
 
 ## Authoritative PR head (current tip)
 
-**SHA:** `5748201a7a7eb7595b5f3e2135d7c0e544dfaec3`  
+**SHA:** `a7d8b288a90425b743158311da7a6d9ea1cd8447`  
 
-Includes M35 implementation (`68f2718714ba67e147c7fd8bd072d381c581166a`) plus this `M35_run1.md` evidence file.
+Includes M35 implementation (`68f2718714ba67e147c7fd8bd072d381c581166a`) plus `M35_run1.md` (doc-only amend of the first `M35_run1` commit; no code changes).
 
 Validated via `gh run view <id> -R m-cahill/serena --json headSha` on the **`pull_request`** workflows below (`headSha` matches PR tip).
 
@@ -38,14 +38,16 @@ Same SHA also had **`push`**: Linter `23672856969`, Smoke `23672856984` — succ
 
 ---
 
-## PR CI — current tip (`5748201a`) — **authoritative for merge**
+## PR CI — current tip (`a7d8b288`) — **authoritative for merge**
 
 | Check | Run ID | Result | `headSha` |
 |-------|--------|--------|-----------|
-| Linter | `23672933376` | success | `5748201a7a7eb7595b5f3e2135d7c0e544dfaec3` |
-| Smoke Tests | `23672933380` | success | `5748201a7a7eb7595b5f3e2135d7c0e544dfaec3` |
+| Linter | `23673004531` | success | `a7d8b288a90425b743158311da7a6d9ea1cd8447` |
+| Smoke Tests | `23673004512` | success | `a7d8b288a90425b743158311da7a6d9ea1cd8447` |
 
-Same SHA also had **`push`**: Linter `23672932157`, Smoke `23672932166` — success (duplicate trigger).
+Same SHA also had **`push`**: see run list for branch (duplicate trigger; success).
+
+**Note:** An intermediate branch tip (`5748201a`) was validated by **`pull_request`** Linter `23672933376` / Smoke `23672933380` before a doc-only **amend** rewrote history to `a7d8b288` (same tree + updated `M35_run1` narrative); **authoritative** gate for the open PR is the **`pull_request`** runs on **`a7d8b288`** above.
 
 ---
 
