@@ -1,6 +1,7 @@
 # M37 — Run 1 (CI & inspection)
 
 **Milestone:** M37 — Security deferral closure and final 5/5 re-audit  
+**PR:** https://github.com/m-cahill/serena/pull/93  
 **Depends on:** M36 binding Quality **`23677054515`** @ merge **`ab4c4679`**
 
 ---
@@ -38,23 +39,29 @@
 
 ---
 
-## 4. PR CI (doc-only PR) — *(fill on PR)*
+## 4. PR CI (doc-only PR)
+
+**PR head:** **`b9166a0dd62056421d0c4617f8f091080dfce5a3`**
 
 | Role | Workflow | Run ID | Result | `headSha` |
 |------|----------|--------|--------|-----------|
-| **PR gate** | **Linter** | *(TBD)* | *(TBD)* | *(TBD)* |
-| **PR gate** | **Smoke Tests** | *(TBD)* | *(TBD)* | *(TBD)* |
+| **PR gate** | **Linter** | **`23677809650`** | **success** | **`b9166a0dd62056421d0c4617f8f091080dfce5a3`** |
+| **PR gate** | **Smoke Tests** | **`23677809662`** | **success** | **`b9166a0dd62056421d0c4617f8f091080dfce5a3`** |
 
 ---
 
-## 5. Post-merge `main` — *(fill after merge)*
+## 5. Post-merge `main`
 
-| Check | Run ID | Result |
-|-------|--------|--------|
-| **Linter** | *(TBD)* | *(TBD)* |
-| **Quality Tests** | *(TBD)* | *(TBD)* |
+**Merge commit:** **`18c13a59b73de16f85c7dacd57162ac55713b1aa`** (**2026-03-28T04:54:15Z** UTC). Merge method: **merge commit** (`gh pr merge 93 --merge`).
 
-**pip-audit (expected):** success with **2 ignored** (same governed CVEs), **`set -o pipefail`** — no new undocumented suppressions.
+| Check | Run ID | Result | `headSha` |
+|-------|--------|--------|-----------|
+| **Linter** | **`23677884602`** | **success** | **`18c13a59b73de16f85c7dacd57162ac55713b1aa`** |
+| **Quality Tests** | **`23677884594`** | **success** | **`18c13a59b73de16f85c7dacd57162ac55713b1aa`** |
+
+**Quality (log):** **213** passed; **TOTAL** coverage **48%**; **`--fail-under=42`** unchanged.
+
+**pip-audit (log):** **`No known vulnerabilities found, 2 ignored`** — same **two** governed CVEs (**CVE-2025-69872**, **CVE-2026-4539**); **no** new **`--ignore-vuln`** lines.
 
 ---
 

@@ -24,9 +24,9 @@
 
 ## CI
 
-*(Binding PR and post-merge run IDs recorded in **`M37_run1.md`**.)*
+**Binding evidence:** **`M37_run1.md`** §4–§5 — PR **#93** head **`b9166a0d`** (Linter **`23677809650`**, Smoke **`23677809662`**); post-merge **`main`** merge commit **`18c13a59`** (Linter **`23677884602`**, Quality **`23677884594`**).
 
-**pip-audit:** Remains **blocking**; expected green run = **0 unresolved** + **2 documented ignores**.
+**pip-audit:** **Blocking**; observed **`No known vulnerabilities found, 2 ignored`** — **2 documented** CVEs only.
 
 ---
 

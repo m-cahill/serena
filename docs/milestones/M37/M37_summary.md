@@ -2,7 +2,8 @@
 
 **Milestone:** Security deferral closure and final 5/5 re-audit  
 **Status:** **Complete** (2026-03-28 UTC)  
-**PR:** *(see `M37_run1.md`)*  
+**PR:** [#93](https://github.com/m-cahill/serena/pull/93)  
+**Merge commit:** `18c13a59b73de16f85c7dacd57162ac55713b1aa`  
 
 ---
 
