@@ -58,3 +58,14 @@ Triggered by **`push`** to **`main`** after merge commit **`45e6f4fbfb8f6ed2dfc3
 | **Quality Tests** | `23673838908` | success | `45e6f4fbfb8f6ed2dfc336423d1f414f66c77549` |
 
 **Quality summary (run `23673838908`, log):** **203** tests passed; **TOTAL** coverage **48%** (pytest coverage report as printed in CI). No CI policy or threshold changes in M35.
+
+### Closeout documentation commit on `main`
+
+Follow-up push documenting M35 closeout ( **`docs(M35): closeout — merge evidence, Quality, ledger, M36 stubs`** ) — commit **`c9f72a819b6c84a34232ddcbc8a4a95491db801b`**.
+
+| Check | Run ID | Result | `headSha` |
+|-------|--------|--------|-----------|
+| **Linter** | `23673985412` | success | `c9f72a819b6c84a34232ddcbc8a4a95491db801b` |
+| **Quality Tests** | `23673985424` | success | `c9f72a819b6c84a34232ddcbc8a4a95491db801b` |
+
+**Binding M35 runtime proof** remains merge commit **`45e6f4fb`** + Quality **`23673838908`** (**M35 code**); **closeout** docs commit **green** on **`main`** tip **`c9f72a81`**.
