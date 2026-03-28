@@ -68,7 +68,7 @@ Docs:            ██████████  5.0/5
 
 1. **Tolerated legacy glue** — `modules/processing.py` (~1600 LOC) still coordinates `shared.sd_model` for orchestration; documented but not eliminated. **Evidence:** `docs/architecture/serena_allowed_legacy_surfaces.md`
 
-2. **Two pip-audit deferrals** — `CVE-2025-69872` (diskcache) and `CVE-2026-4539` (pygments) have no PyPI fix yet. **Evidence:** `run_quality_tests.yaml:69-70`
+2. **Two pip-audit deferrals** — `CVE-2025-69872` (diskcache) and `CVE-2026-4539` (pygments): **M37** (2026-03-28) re-checked PyPI — **`pygments 2.19.3`** not published; **`diskcache`** still **5.6.3** latest with no remediated wheel identified. Governed **`--ignore-vuln`** unchanged. **Evidence:** `run_quality_tests.yaml:69-70`, `docs/milestones/M37/M37_run1.md`
 
 3. **Coverage at ~48%** — pytest-only gate is truthful but leaves room for improvement. **Evidence:** M29 Quality run `23618918747`
 
