@@ -9,6 +9,12 @@ def _dummy_processing():
     return SimpleNamespace()
 
 
+def test_processing_request_wraps_processing():
+    proc = object()
+    req = ProcessingRequest(proc)
+    assert req.processing is proc
+
+
 def test_runner_hooks_called(monkeypatch):
     """ProcessingRunner invokes on_prepare, on_execute, on_finalize in order."""
     calls = []
@@ -72,3 +78,20 @@ def test_processing_runner_delegates(monkeypatch):
 
     assert called["ok"]
     assert result == "result"
+
+
+def test_runner_replaces_non_dict_runtime_metrics():
+    """M29: non-dict runtime_metrics is normalized before execute_time / total_time."""
+
+    class TestRunner(ProcessingRunner):
+        def execute(self, state):
+            state.processing.runtime_metrics = "not-a-dict"
+            return "ok"
+
+    runner = TestRunner()
+    proc = _dummy_processing()
+    proc.runtime_metrics = ["wrong-type"]
+    runner.run(ProcessingRequest(proc))
+    assert isinstance(proc.runtime_metrics, dict)
+    assert "execute_time" in proc.runtime_metrics
+    assert "total_time" in proc.runtime_metrics

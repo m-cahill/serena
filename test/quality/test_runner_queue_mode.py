@@ -83,3 +83,15 @@ def test_default_mode_unchanged(monkeypatch):
 
     assert called["ok"]
     assert result == "result"
+
+
+def test_execution_queue_submit_pass_through():
+    """M15: ExecutionQueue.submit invokes fn(state) synchronously."""
+    queue = ExecutionQueue()
+    state = object()
+
+    def fn(s):
+        assert s is state
+        return 99
+
+    assert queue.submit(state, fn) == 99
