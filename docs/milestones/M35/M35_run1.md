@@ -15,8 +15,8 @@
 
 | Role | Check | Run ID | Result | `headSha` |
 |------|-------|--------|--------|-----------|
-| **Merge tip (doc + M35 code)** | Linter | `23673084875` | success | `459072a0e12f6125cbc5471b83f0c15b1d314c19` |
-| **Merge tip (doc + M35 code)** | Smoke Tests | `23673084848` | success | `459072a0e12f6125cbc5471b83f0c15b1d314c19` |
+| **PR head at snapshot (doc + M35 code)** | Linter | `23673160005` | success | `db94c546d2fc4a8b5747d28e610202d99a2186d2` |
+| **PR head at snapshot (doc + M35 code)** | Smoke Tests | `23673159991` | success | `db94c546d2fc4a8b5747d28e610202d99a2186d2` |
 
 M35 **implementation** first landed in **`68f2718714ba67e147c7fd8bd072d381c581166a`** — **`pull_request`** Linter **`23672862647`**, Smoke **`23672862609`** (both success; same `headSha`).
 
