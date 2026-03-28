@@ -1,8 +1,8 @@
 # M37 — Security deferral closure and final 5/5 re-audit
 
-**Phase VIII** · **Status:** Planned (stub — kickoff after M36 closeout)
+**Phase VIII** · **Status:** Planned (stub — kickoff when M37 scope is locked)
 
-**Depends on:** M36 complete; binding Quality on `main` as program proof surface.
+**Depends on:** M36 complete; binding post-merge **Quality** on **`main`** (M36: **`23677054515`** @ **`ab4c4679`**).
 
 ---
 

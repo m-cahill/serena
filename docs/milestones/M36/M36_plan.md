@@ -1,6 +1,6 @@
 # M36 — Coverage lift and gate recalibration
 
-**Phase VIII** · **Status:** In progress
+**Phase VIII** · **Status:** **Complete** (2026-03-28 UTC)
 
 **Depends on:** M35 complete; binding Quality on `main` run **`23673838908`** (post-merge **`45e6f4fb`**).
 
@@ -59,10 +59,10 @@ Local reproduction of the 48% figure is **not** required for planning; M35 post-
 
 ## Deliverables
 
-- [ ] Branch **`m36-coverage-lift-gate-recalibration`** merged via PR after Linter + Smoke green.
-- [ ] Post-merge Quality on **`main`** green; **`M36_run1.md`** records run ID(s), before/after coverage, final threshold.
-- [ ] **`M36_summary.md`**, **`M36_audit.md`** at closeout; **`docs/serena.md`** milestone row updated with timestamp.
-- [ ] **`docs/milestones/M37/`** plan + toolcalls stubs (M37 not implemented in M36).
+- [x] Branch **`m36-coverage-lift-gate-recalibration`** merged via **PR #92** (Linter + Smoke green on merge tip **`c410771f`**).
+- [x] Post-merge Quality on **`main`** green (**`23677054515`**); **`M36_run1.md`** records before/after; **gate unchanged** at **42%**.
+- [x] **`M36_summary.md`**, **`M36_audit.md`**; **`docs/serena.md`** updated.
+- [x] **`docs/milestones/M37/`** plan + toolcalls (M37 not implemented in M36).
 
 ---
 
