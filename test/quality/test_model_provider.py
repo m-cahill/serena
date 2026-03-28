@@ -1,21 +1,106 @@
-"""M19: Model provider injection and runtime model access."""
+"""M19: Model provider injection and runtime model access.
+
+M36: Behavior tests for ModelProvider / SharedModelProvider and
+``processing._orchestration_model`` (M35 seam).
+"""
+
+from types import SimpleNamespace
+
+import pytest
 
 from modules.runtime.runner import ProcessingRequest, ProcessingRunner
 from modules.runtime import sampler_runtime
+from modules.runtime.model_provider import ModelProvider, SharedModelProvider
+from modules.runtime_context import ModelIdentity, RuntimeContext, model_identity_from_model
+from test.fixtures.fake_model import FakeModel
 
 
 def test_shared_model_provider_get_model_returns_shared_sd_model():
     import inspect
 
-    from modules.runtime.model_provider import SharedModelProvider
-
     src = inspect.getsource(SharedModelProvider.get_model)
     assert "shared.sd_model" in src
 
 
-def test_runner_prepare_attaches_model_provider():
-    from modules.runtime.model_provider import SharedModelProvider
+def test_model_provider_get_model_not_implemented():
+    with pytest.raises(NotImplementedError):
+        ModelProvider().get_model(SimpleNamespace())
 
+
+def test_shared_model_provider_returns_current_shared_sd_model(initialize):
+    import modules.shared as shared
+
+    prev = shared.sd_model
+    sentinel = object()
+    try:
+        shared.sd_model = sentinel
+        out = SharedModelProvider().get_model(SimpleNamespace())
+        assert out is sentinel
+    finally:
+        shared.sd_model = prev
+
+
+def test_orchestration_model_falls_back_to_shared_when_no_provider(initialize):
+    from modules import processing as proc_mod
+
+    import modules.shared as shared
+
+    prev = shared.sd_model
+    sentinel = object()
+    try:
+        shared.sd_model = sentinel
+        p = SimpleNamespace()
+        assert proc_mod._orchestration_model(p) is sentinel
+    finally:
+        shared.sd_model = prev
+
+
+def test_orchestration_model_uses_provider_when_set(initialize):
+    from modules import processing as proc_mod
+
+    fake = FakeModel()
+
+    class MP:
+        def get_model(self, p):
+            return fake
+
+    p = SimpleNamespace(model_provider=MP())
+    assert proc_mod._orchestration_model(p) is fake
+
+
+def test_model_identity_equality_and_hash():
+    a = ModelIdentity(name_for_extra="a", model_hash="h1")
+    b = ModelIdentity(name_for_extra="a", model_hash="h1")
+    c = ModelIdentity(name_for_extra="b", model_hash="h1")
+    assert a == b
+    assert hash(a) == hash(b)
+    assert a != c
+
+
+def test_runtime_context_holds_model_identity():
+    fake = FakeModel()
+    mi = model_identity_from_model(fake)
+    snap = object()
+    dev = object()
+    st = object()
+    co = object()
+    rc = RuntimeContext(
+        model=fake,
+        model_identity=mi,
+        opts_snapshot=snap,
+        device=dev,
+        state=st,
+        cmd_opts=co,
+    )
+    assert rc.model is fake
+    assert rc.model_identity is mi
+    assert rc.opts_snapshot is snap
+    assert rc.device is dev
+    assert rc.state is st
+    assert rc.cmd_opts is co
+
+
+def test_runner_prepare_attaches_model_provider():
     proc = type("Proc", (), {})()
     runner = ProcessingRunner()
     state = runner.prepare(ProcessingRequest(proc))

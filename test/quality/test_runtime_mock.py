@@ -294,3 +294,13 @@ def test_model_identity_available_before_script_hooks(fake_pipeline_env):
     runner = ProcessingRunner(model_provider=provider)
     runner.run(ProcessingRequest(p))
     assert seen == ["process", "before_process_batch"]
+
+
+def test_sd_model_compatibility_property_matches_global(fake_pipeline_env):
+    """M35: ``p.sd_model`` remains a compatibility alias to ``shared.sd_model``."""
+    fake, out = fake_pipeline_env
+    import modules.shared as shared
+
+    p = _make_txt2img(out, sampler_name=_pick_sampler_name())
+    assert p.sd_model is shared.sd_model
+    assert p.sd_model is fake
