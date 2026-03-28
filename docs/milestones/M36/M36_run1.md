@@ -2,7 +2,7 @@
 
 **Milestone:** M36 — Coverage lift and gate recalibration  
 **Branch:** `m36-coverage-lift-gate-recalibration`  
-**PR:** *(add when opened)*
+**PR:** https://github.com/m-cahill/serena/pull/92  
 
 ---
 
@@ -20,9 +20,18 @@ From M35 post-merge Quality (ledger binding):
 
 ---
 
-## PR CI (Linter + Smoke)
+## PR CI (Linter + Smoke) — authoritative `pull_request` gates
 
-*(Fill on PR: run IDs, `headSha`, conclusion.)*
+**PR head at approval snapshot:** **`75356919e7e7dc3dd0b6ed5df5f17b7ae82440a1`** (M36 implementation commit; validated via `gh run view <id> --json headSha`).
+
+| Role | Workflow | Run ID | Result | `headSha` | Event |
+|------|----------|--------|--------|-----------|--------|
+| **PR gate** | **Linter** | **`23676605494`** | **success** | **`75356919e7e7dc3dd0b6ed5df5f17b7ae82440a1`** | `pull_request` |
+| **PR gate** | **Smoke Tests** | **`23676605498`** | **success** | **`75356919e7e7dc3dd0b6ed5df5f17b7ae82440a1`** | `pull_request` |
+
+**Duplicate / non-gating runs (same branch tip):** `push` on `m36-coverage-lift-gate-recalibration` also triggered Linter **`23676596052`** and Smoke Tests **`23676596056`** (both **success**, same **`75356919…`**). Per Serena convention, **`pull_request`** runs are the merge-readiness checks; `push` duplicates are noted for provenance only.
+
+**Failed / superseded:** none observed for the authoritative PR head above.
 
 ---
 
@@ -34,4 +43,4 @@ From M35 post-merge Quality (ledger binding):
 
 ## Gate decision
 
-*(Record: unchanged at 42% **or** new threshold with margin justification — after measured CI outcome.)*
+**Undecided in this PR phase.** `--fail-under` remains **42%** until post-merge **Quality Tests** on **`main`** reports measured TOTAL coverage and a safe margin for any threshold bump (see `M36_plan.md`).
