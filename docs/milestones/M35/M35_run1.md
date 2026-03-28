@@ -26,7 +26,7 @@ M35 **implementation** first landed in **`68f2718714ba67e147c7fd8bd072d381c58116
 
 Workflows fire on both **`push`** and **`pull_request`** for the same branch tip; **`push`** duplicates are **not** used as the PR gate. **Failed / superseded:** none observed on the recorded SHAs (all **success**).
 
-Doc-only iteration on the branch produced additional green runs on intermediate tips (`5748201a`, `a7d8b288`, etc.); the **snapshot** table above is the authoritative pair for tip **`459072a0`** at the time of recording.
+Doc-only iteration on the branch produced additional green runs on intermediate tips (`5748201a`, `a7d8b288`, etc.); the **snapshot** table above is the authoritative pair for tip **`db94c546`** at the time of recording.
 
 ---
 
