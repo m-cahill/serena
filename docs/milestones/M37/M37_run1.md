@@ -1,0 +1,63 @@
+# M37 — Run 1 (CI & inspection)
+
+**Milestone:** M37 — Security deferral closure and final 5/5 re-audit  
+**Depends on:** M36 binding Quality **`23677054515`** @ merge **`ab4c4679`**
+
+---
+
+## 1. Configuration verified (pre-change)
+
+| Item | Location / value |
+|------|------------------|
+| **`pip-audit` ignores** | `.github/workflows/run_quality_tests.yaml` — **`--ignore-vuln CVE-2025-69872`**, **`--ignore-vuln CVE-2026-4539`** |
+| **Contract** | `docs/architecture/ci_environment_contract.md` — pip-audit deferrals (M28) |
+| **Historical evidence** | `docs/milestones/M28/M28_run1.md` |
+| **Lock pins** | `requirements-ci.txt` — **`diskcache==5.6.3`**, **`pygments==2.19.2`** |
+
+---
+
+## 2. Upstream fix availability (2026-03-28)
+
+### CVE-2026-4539 — **pygments**
+
+- Advisory text and community sources cite a fix in **pygments ≥ 2.19.3**.
+- **PyPI check (binding for this milestone):** `pip index versions pygments` reports **LATEST 2.19.2**; `pip download pygments==2.19.3 --no-deps` **fails** — **no matching distribution** (versions enumerate through **2.19.2** only).
+- **Conclusion:** **No installable fixed wheel** on PyPI at inspection time — **cannot** remove **`--ignore-vuln CVE-2026-4539`** without a speculative pin or vendoring.
+
+### CVE-2025-69872 — **diskcache**
+
+- **PyPI:** **`diskcache`** latest remains **5.6.3** (same as lock).
+- Ecosystem databases continue to list **no fixed release** that clears the pickle-deserialization class of issue for the default code path.
+- **Conclusion:** **Deferral remains** — **cannot** remove **`--ignore-vuln CVE-2025-69872`**.
+
+---
+
+## 3. Dependency / workflow changes
+
+**None.** No lockfile bump, no **`--ignore-vuln`** removal — **blocking `pip-audit`** unchanged; **no CI weakening**.
+
+---
+
+## 4. PR CI (doc-only PR) — *(fill on PR)*
+
+| Role | Workflow | Run ID | Result | `headSha` |
+|------|----------|--------|--------|-----------|
+| **PR gate** | **Linter** | *(TBD)* | *(TBD)* | *(TBD)* |
+| **PR gate** | **Smoke Tests** | *(TBD)* | *(TBD)* | *(TBD)* |
+
+---
+
+## 5. Post-merge `main` — *(fill after merge)*
+
+| Check | Run ID | Result |
+|-------|--------|--------|
+| **Linter** | *(TBD)* | *(TBD)* |
+| **Quality Tests** | *(TBD)* | *(TBD)* |
+
+**pip-audit (expected):** success with **2 ignored** (same governed CVEs), **`set -o pipefail`** — no new undocumented suppressions.
+
+---
+
+## 6. Outcome
+
+**Fallback path:** Internal Serena Phase VIII goals are complete; **two governed deferrals** remain because **PyPI** does not offer **installable** fixed versions for both packages at closeout inspection. Final program posture: **release-ready and internally complete**; **unconditional** “zero ignored advisories” **blocked by upstream**.

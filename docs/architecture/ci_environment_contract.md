@@ -61,6 +61,8 @@ The following CVEs are temporarily ignored due to lack of upstream fixes on PyPI
 
 These **must** be removed from **`--ignore-vuln`** once fixed versions are published and **`requirements-ci.txt`** is updated.
 
+**M37 recheck (2026-03-28):** **`pip index versions`** / **`pip download`** on the maintainer toolchain showed **`pygments`** latest **2.19.2** (no **2.19.3** on PyPI); **`diskcache`** latest **5.6.3** (unchanged; advisory class still unaddressed by a newer wheel). Governed **`--ignore-vuln`** lines remain required for blocking Quality until upstream publishes installable fixes — see **`docs/milestones/M37/M37_run1.md`**.
+
 Rationale: clearing all current advisories requires **upgrading major runtime pins** (e.g. gradio, pillow, transformers), which is **behavior and compatibility work**, not environment determinism. **M26** establishes reproducible installs; **M28** splits **enforcement** (M28a) from **remediation** (M28b).
 
 ## Complexity policy (Phase VI)
