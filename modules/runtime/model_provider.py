@@ -2,6 +2,9 @@
 
 Runtime must not read shared.sd_model or p.sd_model directly; use
 model_provider.get_model(p) instead. Default implementation delegates to shared.
+
+M35: ``modules.processing`` orchestration uses ``_orchestration_model(p)``,
+which calls ``get_model(p)`` when ``p.model_provider`` is set (same provider).
 """
 
 from __future__ import annotations
