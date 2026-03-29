@@ -1,16 +1,10 @@
-"""M40: targeted tests for StableDiffusionProcessing helpers in processing_types."""
+"""M40: targeted tests for StableDiffusionProcessing helpers in processing_types.
+
+Imports are deferred until test body (after ``initialize``) so collection does not
+load ``processing_types`` while ``shared.opts`` is still None.
+"""
 
 from __future__ import annotations
-
-import pytest
-
-try:
-    import modules.processing_types as _m40_pt_import_check  # noqa: F401
-except ImportError:
-    pytest.skip(
-        "Quality CI dependency tree required for modules.processing_types",
-        allow_module_level=True,
-    )
 
 
 def _pick_sampler_name() -> str:

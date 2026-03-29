@@ -1,16 +1,10 @@
-"""M40: contract tests for modules/processing_infotext."""
+"""M40: contract tests for modules/processing_infotext.
+
+Imports are deferred until test body (after ``initialize``) so collection does not
+load ``processing_infotext`` while ``shared.opts`` is still None.
+"""
 
 from __future__ import annotations
-
-import pytest
-
-try:
-    import modules.processing_infotext as _m40_pi_import_check  # noqa: F401
-except ImportError:
-    pytest.skip(
-        "Quality CI dependency tree required for modules.processing_infotext",
-        allow_module_level=True,
-    )
 
 
 def _pick_sampler_name() -> str:
@@ -22,7 +16,7 @@ def _pick_sampler_name() -> str:
     return sd_samplers.all_samplers[0].name
 
 
-def test_program_version_none_when_git_tag_is_none(monkeypatch):
+def test_program_version_none_when_git_tag_is_none(monkeypatch, initialize):
     import launch
 
     monkeypatch.setattr(launch, "git_tag", lambda: "<none>")
@@ -31,7 +25,7 @@ def test_program_version_none_when_git_tag_is_none(monkeypatch):
     assert program_version() is None
 
 
-def test_program_version_returns_resolved_tag(monkeypatch):
+def test_program_version_returns_resolved_tag(monkeypatch, initialize):
     import launch
 
     monkeypatch.setattr(launch, "git_tag", lambda: "v0-test")
