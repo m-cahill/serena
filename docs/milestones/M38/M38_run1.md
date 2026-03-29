@@ -26,20 +26,20 @@ Mirror `push` on same SHA: Linter **23697806689**, Smoke **23697806695** — bot
 
 ## B. Current PR tip (authoritative for merge)
 
-**PR head SHA (binding):** `9f2dda8eb9f9b704775733f399423adeedacd2c2` — confirm with `gh pr view 94 --repo m-cahill/serena --json headRefOid` before merge.  
-**Message:** `docs(M38): M38_run1 — PR tip eb0ee54759399675bd0b7e207150f0f6c5f50cb6 CI`  
-Doc commits after **576b3935** add/update milestone docs; M38 code paths unchanged.
+Before merging, confirm the PR head with `gh pr view 94 --repo m-cahill/serena --json headRefOid` and ensure the latest `pull_request` **Linter** + **Smoke Tests** on that OID are **success** (GitHub also runs duplicate `push` workflows on the branch; prefer `pull_request` for PR evidence).
+
+**Latest recorded `pull_request` CI** (SHA `46018d9712a4363cb8dc85215200aa01eeb2be24` — matches `gh run view` for the runs below):
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23698184743** | `pull_request` | `9f2dda8eb9f9b704775733f399423adeedacd2c2` | **success** |
-| **Smoke Tests** | **23698184745** | `pull_request` | `9f2dda8eb9f9b704775733f399423adeedacd2c2` | **success** |
+| **Linter** | **23698561600** | `pull_request` | `46018d9712a4363cb8dc85215200aa01eeb2be24` | **success** |
+| **Smoke Tests** | **23698561608** | `pull_request` | `46018d9712a4363cb8dc85215200aa01eeb2be24` | **success** |
 
-Mirror `push` on same SHA: Linter **23698183779**, Smoke **23698183774** — both **success**.
+Mirror `push` on same SHA: Linter **23698561062**, Smoke **23698561056** — both **success**.
 
-Prior tip `eb0ee547…`: PR Linter **23698120117**, Smoke **23698120120** — both **success** (`pull_request`). Prior `89e4ffd7…`: PR Linter **23698066410**, Smoke **23698066388** — both **success** (`pull_request`). Prior `7c4f5e0c…`: PR Linter **23698010765**, Smoke **23698010777** — both **success** (`pull_request`).
+Prior tip `2aa1cf5b…`: PR Linter **23698509169**, Smoke **23698509175** — both **success** (`pull_request`). Prior `c4354ac2…`: PR Linter **23698454870**, Smoke **23698454876** — both **success** (`pull_request`). Prior `6231f451…`: PR Linter **23698406739**, Smoke **23698406734** — both **success** (`pull_request`). Prior `4f92a13a…`: PR Linter **23698353286**, Smoke **23698353269** — both **success** (`pull_request`). Prior `fad8feb2…`: PR Linter **23698299956**, Smoke **23698299955** — both **success** (`pull_request`). Prior `1febb8b9…`: PR Linter **23698245812**, Smoke **23698245823** — both **success** (`pull_request`). Prior `9f2dda8e…`: PR Linter **23698184743**, Smoke **23698184745** — both **success** (`pull_request`). Prior `eb0ee547…`: PR Linter **23698120117**, Smoke **23698120120** — both **success** (`pull_request`). Prior `89e4ffd7…`: PR Linter **23698066410**, Smoke **23698066388** — both **success** (`pull_request`). Prior `7c4f5e0c…`: PR Linter **23698010765**, Smoke **23698010777** — both **success** (`pull_request`).
 
-If this file is updated again on the branch, re-check `gh pr view` / `gh run list` for the latest `pull_request` Linter + Smoke on the PR head (duplicate `push` vs `pull_request` runs may both appear; prefer `pull_request` for PR evidence).
+If this file is updated again on the branch, re-check `gh pr view` / `gh run list` for the latest `pull_request` Linter + Smoke on the PR head.
 
 Validated via:
 
