@@ -28,7 +28,7 @@ New Quality tests:
 - `test/quality/test_m40_processing_runtime.py` — empty prompt batch exit; preview / Approx NN branch calls `sd_vae_approx.model`
 - `test/quality/test_m40_processing_types.py` — `get_token_merging_ratio` (hr / non-hr)
 
-**Note:** `test_m40_processing_helpers.py` keeps a module-level `try: import … except ImportError: pytest.skip(…)` for minimal local venvs (`processing_helpers` does not require `shared.opts` at import). **`processing_infotext`**, **`processing_types`**, and **`processing_runtime`** must not be imported at collection time (they pull `sd_samplers` / `processing` before `shared.opts` exists). Imports are deferred to each test body after the **`initialize`** fixture (recovery PRs on `main` after merge).
+**Note:** Do **not** import `processing_helpers`, `processing_infotext`, `processing_types`, or `processing_runtime` at module scope in tests: collection runs before `initialize`, and early imports can leave `modules.sd_models` without `model_path` (partial init). All M40 tests use the **`initialize`** fixture and import inside the test body (recovery PRs on `main` after merge).
 
 ## D. Post-merge slot (fill after binding Quality on `main`)
 
