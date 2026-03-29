@@ -92,6 +92,20 @@ def _orchestration_model(p):
     return shared.sd_model
 
 
+def _eff_opts(p):
+    """Prefer per-run opts snapshot over global ``shared.opts`` when set (M39).
+
+    ``process_images_inner`` assigns ``p.opts_snapshot`` after ``prepare_prompt_seed_state``;
+    supported-path reads that occur after that point should use the snapshot so generation
+    matches the same captured ``opts.data`` as save-path migration (M08), without broad
+    globals cleanup elsewhere.
+    """
+    snap = getattr(p, "opts_snapshot", None)
+    if snap is not None:
+        return snap
+    return shared.opts
+
+
 def txt2img_image_conditioning(sd_model, x, width, height):
     if sd_model.model.conditioning_key in {'hybrid', 'concat'}: # Inpainting models
 

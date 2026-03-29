@@ -2,8 +2,9 @@
 from __future__ import annotations
 
 from modules import devices, errors, infotext_utils, sd_samplers_common
-import modules.shared as shared
 from modules.shared import opts
+
+from modules.processing_helpers import _eff_opts
 
 def program_version():
     import launch
@@ -99,7 +100,7 @@ def create_infotext(p, all_prompts, all_seeds, all_subseeds, comments=None, iter
         "Variation seed strength": (None if p.subseed_strength == 0 else p.subseed_strength),
         "Seed resize from": (None if p.seed_resize_from_w <= 0 or p.seed_resize_from_h <= 0 else f"{p.seed_resize_from_w}x{p.seed_resize_from_h}"),
         "Denoising strength": p.extra_generation_params.get("Denoising strength"),
-        "Conditional mask weight": getattr(p, "inpainting_mask_weight", shared.opts.inpainting_mask_weight) if p.is_using_inpainting_conditioning else None,
+        "Conditional mask weight": getattr(p, "inpainting_mask_weight", _eff_opts(p).inpainting_mask_weight) if p.is_using_inpainting_conditioning else None,
         "Clip skip": None if clip_skip <= 1 else clip_skip,
         "ENSD": opts.eta_noise_seed_delta if uses_ensd else None,
         "Token merging ratio": None if token_merging_ratio == 0 else token_merging_ratio,

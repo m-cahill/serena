@@ -34,6 +34,7 @@ from modules.processing_helpers import (
     setup_color_correction,
     txt2img_image_conditioning,
     _orchestration_model,
+    _eff_opts,
 )
 from modules.processing_infotext import create_infotext, program_version
 
@@ -265,7 +266,7 @@ class StableDiffusionProcessing:
         conditioning_image = torch.lerp(
             source_image,
             source_image * (1.0 - conditioning_mask),
-            getattr(self, "inpainting_mask_weight", shared.opts.inpainting_mask_weight)
+            getattr(self, "inpainting_mask_weight", _eff_opts(self).inpainting_mask_weight)
         )
 
         # Encode the new masked image using first stage of network.
@@ -377,13 +378,13 @@ class StableDiffusionProcessing:
         caches is a list with items described above.
         """
 
-        if shared.opts.use_old_scheduling:
+        if _eff_opts(self).use_old_scheduling:
             old_schedules = prompt_parser.get_learned_conditioning_prompt_schedules(required_prompts, steps, hires_steps, False)
             new_schedules = prompt_parser.get_learned_conditioning_prompt_schedules(required_prompts, steps, hires_steps, True)
             if old_schedules != new_schedules:
                 self.extra_generation_params["Old prompt editing timelines"] = True
 
-        cached_params = self.cached_params(required_prompts, steps, extra_network_data, hires_steps, shared.opts.use_old_scheduling)
+        cached_params = self.cached_params(required_prompts, steps, extra_network_data, hires_steps, _eff_opts(self).use_old_scheduling)
 
         for cache in caches:
             if cache[0] is not None and cached_params == cache[0]:
@@ -392,7 +393,7 @@ class StableDiffusionProcessing:
         cache = caches[0]
 
         with devices.autocast():
-            cache[1] = function(_orchestration_model(self), required_prompts, steps, hires_steps, shared.opts.use_old_scheduling)
+            cache[1] = function(_orchestration_model(self), required_prompts, steps, hires_steps, _eff_opts(self).use_old_scheduling)
 
         cache[0] = cached_params
         return cache[1]
@@ -749,7 +750,7 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
 
             # Avoid making the inpainting conditioning unless necessary as
             # this does need some extra compute to decode / encode the image again.
-            if getattr(self, "inpainting_mask_weight", shared.opts.inpainting_mask_weight) < 1.0:
+            if getattr(self, "inpainting_mask_weight", _eff_opts(self).inpainting_mask_weight) < 1.0:
                 image_conditioning = self.img2img_image_conditioning(decode_first_stage(self.sd_model, samples), samples)
             else:
                 image_conditioning = self.txt2img_image_conditioning(samples)
@@ -884,7 +885,7 @@ class StableDiffusionProcessingTxt2Img(StableDiffusionProcessing):
         self.hr_c = None
 
         if self.enable_hr and self.hr_checkpoint_info is None:
-            if shared.opts.hires_fix_use_firstpass_conds:
+            if _eff_opts(self).hires_fix_use_firstpass_conds:
                 self.calculate_hr_conds()
 
             elif lowvram.is_enabled(_orchestration_model(self)) and _orchestration_model(self).sd_checkpoint_info == sd_models.select_checkpoint():  # if in lowvram mode, we need to calculate conds right away, before the cond NN is unloaded
