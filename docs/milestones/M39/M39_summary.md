@@ -1,7 +1,7 @@
 # M39 — Summary
 
 **Milestone:** Remaining legacy surface narrowing  
-**Status:** PR **#95** — Linter + Smoke green on head **`eee9af2a`** (post-merge Quality: record in **`M39_run1.md`** after merge)  
+**Status:** PR **#95** — Linter + Smoke green on merge-ready head **`c83e14cd`** (post-merge Quality: record in **`M39_run1.md`** after merge)  
 **PR:** https://github.com/m-cahill/serena/pull/95  
 **Branch:** `m39-remaining-legacy-surface-narrowing`
 

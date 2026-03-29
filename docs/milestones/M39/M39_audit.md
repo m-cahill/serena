@@ -13,7 +13,7 @@
 - **Runtime modules** still take the model only via **`ModelProvider`** inside **`processing_runtime`** / **`sampler_runtime`** / **`decode_runtime`** (M19); M39 only adjusted **opts** reads at the **`processing_runtime`** preview gate to use **`_eff_opts(p)`**, not model globals.
 - **CI policy** unchanged (no gate relaxation).
 
-**Binding PR CI:** head **`eee9af2a927208b78173252fdcfd6fd56313e13e`** — **`pull_request`** Linter **`23719147857`**, Smoke **`23719147871`** — **success**.
+**Binding PR CI:** head **`c83e14cda42d4f33fe0603bedb9fbbc0dec4d9d2`** — **`pull_request`** Linter **`23719231700`**, Smoke **`23719231692`** — **success** (supersedes code-only tip **`eee9af2a`** / Linter **`23719147857`**, Smoke **`23719147871`**).
 
 **Post-merge `main` Quality:** fill in **`M39_run1.md`** §B after merge (expected: **≥217** tests, **≥42%** gate, **~48%** TOTAL band).
 
