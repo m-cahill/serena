@@ -26,18 +26,18 @@ Mirror `push` on same SHA: Linter **23697806689**, Smoke **23697806695** — bot
 
 ## B. Current PR tip (authoritative for merge)
 
-**PR head SHA:** `89e4ffd72780973f80747b99062cd9bac54f9767`  
-**Message:** `docs(M38): M38_run1 — PR tip 7c4f5e0c Linter/Smoke (authoritative)`  
+**PR head SHA (binding):** `eb0ee54759399675bd0b7e207150f0f6c5f50cb6` — confirm with `gh pr view 94 --repo m-cahill/serena --json headRefOid` before merge.  
+**Message:** `docs(M38): M38_run1 — authoritative PR head 89e4ffd7 + CI run IDs`  
 Doc commits after **576b3935** add/update milestone docs; M38 code paths unchanged.
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23698066410** | `pull_request` | `89e4ffd72780973f80747b99062cd9bac54f9767` | **success** |
-| **Smoke Tests** | **23698066388** | `pull_request` | `89e4ffd72780973f80747b99062cd9bac54f9767` | **success** |
+| **Linter** | **23698120117** | `pull_request` | `eb0ee54759399675bd0b7e207150f0f6c5f50cb6` | **success** |
+| **Smoke Tests** | **23698120120** | `pull_request` | `eb0ee54759399675bd0b7e207150f0f6c5f50cb6` | **success** |
 
-Mirror `push` on same SHA: Linter **23698065962**, Smoke **23698065964** — both **success**.
+Mirror `push` on same SHA: Linter **23698119419**, Smoke **23698119423** — both **success**.
 
-Prior tip `7c4f5e0c…` (doc update before §B alignment): PR Linter **23698010765**, Smoke **23698010777** — both **success** (`pull_request`).
+Prior tip `89e4ffd7…`: PR Linter **23698066410**, Smoke **23698066388** — both **success** (`pull_request`). Prior `7c4f5e0c…`: PR Linter **23698010765**, Smoke **23698010777** — both **success** (`pull_request`).
 
 Validated via:
 
