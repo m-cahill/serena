@@ -28,18 +28,18 @@ Mirror `push` on same SHA: Linter **23697806689**, Smoke **23697806695** — bot
 
 Before merging, confirm the PR head with `gh api repos/m-cahill/serena/pulls/94 --jq .head.sha` (often fresher than `gh pr view` JSON right after a push) and ensure the latest `pull_request` **Linter** + **Smoke Tests** on that OID are **success** (GitHub also runs duplicate `push` workflows on the branch; prefer `pull_request` for PR evidence).
 
-**Latest recorded `pull_request` CI** (SHA `8d53aa83c073832550389087be248bf46b5bde26` — matches `gh api repos/m-cahill/serena/pulls/94 --jq .head.sha` at last update and `gh run view` for the runs below; doc-only commits advance the tip — if `head.sha` is newer, use `pull_request` Linter + Smoke on the **current** head):
+**Latest recorded `pull_request` CI** (SHA `bee324e73a37e36a30616b67ca5e2f1a5c1aa2ee` — matches `gh api repos/m-cahill/serena/pulls/94 --jq .head.sha` at last update and `gh run view` for the runs below; doc-only commits advance the tip — if `head.sha` is newer, use `pull_request` Linter + Smoke on the **current** head):
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23700017296** | `pull_request` | `8d53aa83c073832550389087be248bf46b5bde26` | **success** |
-| **Smoke Tests** | **23700017288** | `pull_request` | `8d53aa83c073832550389087be248bf46b5bde26` | **success** |
+| **Linter** | **23700088809** | `pull_request` | `bee324e73a37e36a30616b67ca5e2f1a5c1aa2ee` | **success** |
+| **Smoke Tests** | **23700088819** | `pull_request` | `bee324e73a37e36a30616b67ca5e2f1a5c1aa2ee` | **success** |
 
-Mirror `push` on same SHA: Linter **23700016546**, Smoke **23700016543** — both **success**.
+Mirror `push` on same SHA: Linter **23700088026**, Smoke **23700088032** — both **success**.
 
-Prior tip `a1f09c898fa4528277e24a2ef0b07593cff68879`: PR Linter **23699940461**, Smoke **23699940451** — both **success** (`pull_request`); mirror `push` Linter **23699939865**, Smoke **23699939863** — both **success**.
+Prior tip `8d53aa83c073832550389087be248bf46b5bde26`: PR Linter **23700017296**, Smoke **23700017288** — both **success** (`pull_request`); mirror `push` Linter **23700016546**, Smoke **23700016543** — both **success**.
 
-Earlier doc-only / branch tips (`8a6f76e3`, `2e5086f3`, `90ee0de8`, …) and **576b3935** (refactor baseline, §A) also had green `pull_request` + mirror `push` runs recorded in git history of this file.
+Earlier doc-only / branch tips (`a1f09c89`, `8a6f76e3`, …) and **576b3935** (refactor baseline, §A) also had green `pull_request` + mirror `push` runs recorded in git history of this file.
 
 If this file is updated again on the branch, re-check `gh pr view` / `gh run list` for the latest `pull_request` Linter + Smoke on the PR head.
 
