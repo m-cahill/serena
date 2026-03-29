@@ -28,7 +28,7 @@ New Quality tests:
 - `test/quality/test_m40_processing_runtime.py` — empty prompt batch exit; preview / Approx NN branch calls `sd_vae_approx.model`
 - `test/quality/test_m40_processing_types.py` — `get_token_merging_ratio` (hr / non-hr)
 
-**Note:** Each `test_m40_*.py` file uses `try: import modules.<target> … except ImportError: pytest.skip(…, allow_module_level=True)` so minimal local venvs without the full `requirements-ci.txt` tree skip the whole file without failing collection. **Quality CI** installs the full tree and executes all M40 tests.
+**Note:** `test_m40_processing_helpers.py` and `test_m40_processing_runtime.py` use a module-level `try: import … except ImportError: pytest.skip(…)` for minimal local venvs. **`test_m40_processing_infotext.py` and `test_m40_processing_types.py` must not import those modules at collection time** — `shared.opts` is unset until the `initialize` fixture runs; imports are deferred to each test body after `initialize` (recovery commit on `main` after first merge attempt).
 
 ## D. Post-merge slot (fill after binding Quality on `main`)
 
