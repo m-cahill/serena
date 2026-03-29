@@ -6,8 +6,6 @@ load ``processing_types`` while ``shared.opts`` is still None.
 
 from __future__ import annotations
 
-import pytest
-
 
 def _pick_sampler_name() -> str:
     from modules import sd_samplers
