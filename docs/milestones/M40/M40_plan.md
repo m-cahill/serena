@@ -1,6 +1,6 @@
 # M40 — Coverage wave on legacy/high-value modules
 
-**Status:** Stub (seeded at M39 closeout)  
+**Status:** Planned (stub — M39 closeout 2026-03-29 UTC)  
 **Branch:** TBD
 
 ## Intent

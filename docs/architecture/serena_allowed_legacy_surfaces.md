@@ -34,7 +34,7 @@
 
 **Eliminated vs remaining:**
 
-- **Removed** direct **`shared.opts`** reads on supported paths that run after **`p.opts_snapshot`** is set in **`process_images_inner`**, by routing through **`modules.processing_helpers._eff_opts(p)`**, which prefers **`p.opts_snapshot`** (shallow copy of **`opts.data`** at snapshot time, M07) and falls back to **`shared.opts`** when no snapshot is present (e.g. unusual callers).
+- **Removed** direct **`shared.opts`** reads on supported paths that run after **`p.opts_snapshot`** is set in **`process_images_inner`**, by routing through **`modules.processing_helpers._eff_opts(p)`**, which wraps **`p.opts_snapshot`** in **`_EffOptsView`**: attributes present on the snapshot object are used; **missing** keys fall back to **`shared.opts`** (full **`opts.data`** snapshots unchanged; sparse test doubles remain safe). When **`opts_snapshot`** is absent, **`_eff_opts`** returns **`shared.opts`**.
 - **Touched modules:** **`processing_types.py`** (conditioning / HR / cache scheduling / hires-firstpass gate), **`processing_infotext.py`** (conditional mask weight for infotext), **`processing.py`** (overlay inpaint branch in the decode/save loop), **`modules/runtime/processing_runtime.py`** (live preview + progress type gate at batch entry). **`processing.py`** still **captures** the snapshot via **`create_opts_snapshot(shared.opts)`** — that single global read is intentional.
 - **Not removed in M39:** **`StableDiffusionProcessing.sd_model`** compatibility property (extension surface; unchanged). **`modules.shared.opts`** accessed as **`opts`** in **`processing_types`** and elsewhere for fields not migrated in this milestone — further migration is **milestone-governed**, not drive-by.
 

@@ -1,45 +1,59 @@
-# M39 — CI run record 1 (PR)
+# M39 — CI run record 1 (PR + `main`)
 
 **Milestone:** M39 — Remaining legacy surface narrowing  
 **PR:** https://github.com/m-cahill/serena/pull/95  
 **Branch:** `m39-remaining-legacy-surface-narrowing`
 
-## Local vs CI
+## Merge
 
-Local `pytest` on `test/quality/test_m39_eff_opts_snapshot.py` was used for fast contract checks. **GitHub Actions** on the PR is the authoritative verification surface for Linter + Smoke.
+| Item | Value |
+|------|--------|
+| **Merge method** | GitHub **merge commit** (not squash) |
+| **Merge commit (`main`)** | `d4551e6d55c31c5f6b1efd0a5d04956a19d0ea53` |
+| **Merged at** | **2026-03-29T21:45:43Z** |
 
 ---
 
-## A. PR head (authoritative merge approval tip)
+## A. PR merge approval (authoritative green tip)
 
-**Commit:** `d0bb6afa841272f9e7ec5c7e342c61a95a1a465f`  
-**Message:** `docs(M39): authoritative PR tip fe2494fb (Linter 23719300652, Smoke 23719300655)` — follows **`eee9af2a`** (refactor) and doc closeout commits.
+**Pre-merge §A lag:** `M39_run1.md` on the PR branch recorded an earlier table row (**`d0bb6afa…`**). **Merge approval** used the **later** green **`pull_request`** tip documented by the user:
+
+| Item | Value |
+|------|--------|
+| **PR head SHA** | `0aa0d93d4df894aaef841c0c0f425c75ab3ba8d6` |
+| **Linter** | **`23719443302`** — **success** |
+| **Smoke Tests** | **`23719443311`** — **success** |
+
+---
+
+## B. Post-merge `main` — merge commit `d4551e6d` (first `push`)
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23719373729** | `pull_request` | `d0bb6afa841272f9e7ec5c7e342c61a95a1a465f` | **success** |
-| **Smoke Tests** | **23719373734** | `pull_request` | `d0bb6afa841272f9e7ec5c7e342c61a95a1a465f` | **success** |
+| **Linter** | **23719815686** | `push` | `d4551e6d55c31c5f6b1efd0a5d04956a19d0ea53` | **success** |
+| **Quality Tests** | **23719815660** | `push` | `d4551e6d55c31c5f6b1efd0a5d04956a19d0ea53` | **failure** |
 
-**Superseded tips (historical):** `fe2494fb` — Linter **`23719300652`**, Smoke **`23719300655`**; `c83e14cd` — Linter **`23719231700`**, Smoke **`23719231692`**; `eee9af2a` — Linter **`23719147857`**, Smoke **`23719147871`**.
-
-Validated via `gh run view <run_id> --repo m-cahill/serena --json headSha,conclusion,event`.
+**Failure:** Quality **`test_runtime_mock`** — `AttributeError: 'types.SimpleNamespace' object has no attribute 'live_previews_enable'` at **`processing_runtime.py`** via **`_eff_opts(p)`** when **`opts_snapshot`** is a **sparse** test double (missing keys present in full **`opts.data`**).
 
 ---
 
-## B. Post-merge `main` (Linter + Quality)
+## C. Post-merge `main` — follow-up fix (binding `main` tip)
 
-**Pending merge.** After PR **#95** merges to **`main`**, record here:
+| Item | Value |
+|------|--------|
+| **Commit** | `1b9f304efef050b107435d526bade735bf762bcc` |
+| **Message** | `fix(M39): _eff_opts view falls back to shared.opts for missing snapshot keys` |
 
-| Workflow | Run ID | Event | Conclusion |
-|----------|--------|-------|------------|
-| **Linter** | *(fill after merge)* | `push` | |
-| **Quality Tests** | *(fill after merge)* | `push` | |
+| Workflow | Run ID | Event | `headSha` | Conclusion |
+|----------|--------|-------|-----------|------------|
+| **Linter** | **23719932253** | `push` | `1b9f304efef050b107435d526bade735bf762bcc` | **success** |
+| **Quality Tests** | **23719932254** | `push` | `1b9f304efef050b107435d526bade735bf762bcc` | **success** |
 
-**Quality (expected):** test count and **TOTAL** coverage should remain at or above M38 (**217** pass, **48%** cov band); gate **42%** unchanged.
+**Quality run (reported):** **222** passed; **TOTAL** coverage **48%** (pytest-only report line).
 
 ---
 
-## C. Implementation note
+## D. Implementation note
 
-- **`_eff_opts(p)`** in **`modules/processing_helpers.py`** prefers **`p.opts_snapshot`** when set (after **`process_images_inner`** snapshot line); otherwise **`shared.opts`**.
+- **`_eff_opts(p)`** returns **`_EffOptsView(snapshot, shared.opts)`** when **`p.opts_snapshot`** is set: attributes present on the snapshot object are used; **missing** keys fall back to **`shared.opts`** so full **`create_opts_snapshot(shared.opts)`** behavior is unchanged and **sparse** Quality fixtures match pre-M39 semantics.
 - **Eliminated** direct **`shared.opts`** reads in **`processing_types.py`**, **`processing_infotext.py`**, **`processing.py`** (overlay branch), **`processing_runtime.py`** (preview gate). **`processing.py`** still calls **`create_opts_snapshot(shared.opts)`** — intentional capture point (M07).
