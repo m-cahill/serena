@@ -1,6 +1,6 @@
 # M39 — Remaining legacy surface narrowing
 
-**Status:** Implementation on branch; PR + CI proof in `M39_run1.md`  
+**Status:** PR **#95** — Linter + Smoke green on **`eee9af2a`**; post-merge **`main`** Quality in **`M39_run1.md`** §B  
 **Branch:** `m39-remaining-legacy-surface-narrowing`
 
 ## Objective
