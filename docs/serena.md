@@ -33,12 +33,13 @@ Core principles:
 5. **Evidence-based closeout**
    Each milestone must end with verifiable CI evidence.
 
-**Source-of-truth hierarchy (post–M31):**
+**Source-of-truth hierarchy (post–M37):**
 1. `docs/serena.md` — Program ledger (phases, milestones, invariants)
 2. `docs/architecture/serena_architecture_lock.md` — Approved steady-state architecture and locked boundaries (structural questions)
 3. `docs/architecture/serena_evidence_bundle.md` — Phase I–VI proof narrative (see also `serena_case_study_summary.md`, `serena_evidence_matrix.md`)
 4. Milestone docs under `docs/milestones/MNN/`, run records, milestone audits/summaries
 5. `docs/serenav1audit.md` — Post-v1 audit (authoritative input for Phase VIII scope and targets)
+6. `docs/serenam37audit.md` — Post-Phase VIII audit (authoritative input for Phase IX scope and targets)
 
 **Historical baseline (pre-refactor audits):** `docs/sdwebuirefactoraudit.md`, `docs/sdwebuiaudit.md` — baseline scores and strategy; subordinate to the ledger and architecture lock for *current* approved shape.
 
@@ -145,6 +146,21 @@ Core principles:
 
 **Progress (Phase VIII):** **Complete** (M34–M37). **M34** — **`ModelIdentity`** / **`RuntimeContext.model_identity`**; merge **PR #90**; binding **Quality** **`23671154433`**. **M35** — **`_orchestration_model(p)`**; **PR #91**; **Quality** **`23673838908`**. **M36** — coverage lift tests; **PR #92**; **Quality** **`23677054515`** (**213** pass, **48%** cov); gate **42%** unchanged. **M37** — deferral re-audit; **no** PyPI-installable fixes for **diskcache** / **pygments** at closeout; governed **`pip-audit`** ignores **unchanged**; final docs — **`docs/milestones/M37/`**. Authoritative scope: **`docs/serenav1audit.md`**.
 
+### Phase IX — Internal Score-Lift (M38–M41)
+| Milestone | Title | Status |
+|-----------|-------|--------|
+| M38 | `processing.py` class and helper decomposition | **In progress** |
+| M39 | Remaining legacy surface narrowing | **Planned** |
+| M40 | Coverage wave on legacy/high-value modules | **Planned** |
+| M41 | Performance SLOs and regression guardrails | **Planned** |
+
+**Program intent:** Tightly scoped post-Phase VIII internal score-lift. Goal is to improve the M37 audit score (4.6/5) by addressing remaining internal structural drag — `processing.py` concentration, residual allowed-legacy surfaces, coverage plateau at ~48%, and lack of enforced performance SLO thresholds — **without** weakening CI, changing behavior silently, destabilizing extension compatibility, or reopening broad speculative architecture work. Authoritative input: **`docs/serenam37audit.md`**.
+
+**Conditional future milestone:**
+| Milestone | Title | Status |
+|-----------|-------|--------|
+| M42 | Conditional upstream deferral removal | **Conditional** — open only if PyPI ships installable fixes for **CVE-2025-69872** (diskcache) and/or **CVE-2026-4539** (pygments) |
+
 ---
 
 ## 4. Milestone Ledger
@@ -189,6 +205,10 @@ Core principles:
 | M35 | Remove tolerated `shared.sd_model` orchestration coupling | **Completed** | `m35-remove-shared-sd-model-orchestration` | **[#91](https://github.com/m-cahill/serena/pull/91)** | merge **`45e6f4fbfb8f6ed2dfc336423d1f414f66c77549`**; binding CI tip **`45e6f4fb`** | PR approval: Linter **`23673315409`**, Smoke **`23673315420`** (head **`564ebd27`**); **main:** Linter **`23673838902`**, **Quality** **`23673838908`** (**203** pass, **48%** cov) | **`_orchestration_model`**, allowed-legacy update; **`M35_run1.md`**, **`M35_summary.md`**, **`M35_audit.md`** | **2026-03-28 ~01:00 UTC** |
 | M36 | Coverage lift and gate recalibration | **Completed** | `m36-coverage-lift-gate-recalibration` | **[#92](https://github.com/m-cahill/serena/pull/92)** | merge **`ab4c4679397091ef8de2d46db3afadf3113a6979`** | PR tip **`c410771f`**: Linter **`23676919831`**, Smoke **`23676919933`**; **main:** Linter **`23677054517`**, **Quality** **`23677054515`** (**213** pass, **48%** cov); gate **42%** unchanged | **`M36_run1.md`**, **`M36_summary.md`**, **`M36_audit.md`** | **2026-03-28 ~04:15 UTC** |
 | M37 | Security deferral closure and final 5/5 re-audit | **Completed** | `m37-security-deferral-final-audit` | **[#93](https://github.com/m-cahill/serena/pull/93)** | merge **`18c13a59b73de16f85c7dacd57162ac55713b1aa`** | PR head **`b9166a0d`**: Linter **`23677809650`**, Smoke **`23677809662`**; **main:** Linter **`23677884602`**, **Quality** **`23677884594`** (**213** pass, **48%** cov); **pip-audit** **2 ignored** (unchanged CVEs) | **M37** run1/summary/audit; **Phase VIII** closed; deferrals **retained** (no PyPI fixes) | **2026-03-28 UTC** |
+| M38 | `processing.py` class and helper decomposition | **In progress** | `m38-processing-class-helper-decomposition` | — | — | — | Split: `processing_types.py`, `processing_helpers.py`, `processing_infotext.py`; `processing.py` ~201 LOC | — |
+| M39 | Remaining legacy surface narrowing | **Planned** | — | — | — | — | — | — |
+| M40 | Coverage wave on legacy/high-value modules | **Planned** | — | — | — | — | — | — |
+| M41 | Performance SLOs and regression guardrails | **Planned** | — | — | — | — | — | — |
 
 **M05:** Introduced `temporary_opts()` context manager ? first Phase II runtime seam. Isolates override_settings mutation from global `shared.opts`; preserves behavior (opts.set, setattr restore, k in opts.data). Model/VAE reload and token merging remain in process_images. Enables future opts snapshot injection (M07).
 
