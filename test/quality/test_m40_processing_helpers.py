@@ -1,22 +1,17 @@
-"""M40: regression/contract tests for modules/processing_helpers (pure + _eff_opts)."""
+"""M40: regression/contract tests for modules/processing_helpers (pure + _eff_opts).
+
+Imports are deferred to each test body after the ``initialize`` fixture so
+collection does not load ``processing_helpers`` (and transitively ``sd_models``)
+before ``shared.opts`` / full stack init.
+"""
 
 from __future__ import annotations
 
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
-import pytest
 
-try:
-    import modules.processing_helpers as _m40_ph_import_check  # noqa: F401
-except ImportError:
-    pytest.skip(
-        "Quality CI dependency tree required for modules.processing_helpers",
-        allow_module_level=True,
-    )
-
-
-def test_old_hires_fix_first_pass_dimensions_scales_to_512_area():
+def test_old_hires_fix_first_pass_dimensions_scales_to_512_area(initialize):
     from modules.processing_helpers import old_hires_fix_first_pass_dimensions
 
     w, h = old_hires_fix_first_pass_dimensions(256, 256)
@@ -24,7 +19,7 @@ def test_old_hires_fix_first_pass_dimensions_scales_to_512_area():
     assert w * h >= 512 * 512 * 0.9
 
 
-def test_create_binary_mask_rgb_to_l():
+def test_create_binary_mask_rgb_to_l(initialize):
     from PIL import Image
 
     from modules.processing_helpers import create_binary_mask
@@ -34,7 +29,7 @@ def test_create_binary_mask_rgb_to_l():
     assert m.mode == "L"
 
 
-def test_create_binary_mask_rgba_alpha_round():
+def test_create_binary_mask_rgba_alpha_round(initialize):
     from PIL import Image
 
     from modules.processing_helpers import create_binary_mask
@@ -44,7 +39,7 @@ def test_create_binary_mask_rgba_alpha_round():
     assert m.mode == "L"
 
 
-def test_create_binary_mask_rgba_alpha_no_round():
+def test_create_binary_mask_rgba_alpha_no_round(initialize):
     from PIL import Image
 
     from modules.processing_helpers import create_binary_mask
@@ -54,7 +49,7 @@ def test_create_binary_mask_rgba_alpha_no_round():
     assert m.mode == "L"
 
 
-def test_create_binary_mask_rgba_opaque_skips_threshold():
+def test_create_binary_mask_rgba_opaque_skips_threshold(initialize):
     from PIL import Image
 
     from modules.processing_helpers import create_binary_mask
@@ -64,7 +59,7 @@ def test_create_binary_mask_rgba_opaque_skips_threshold():
     assert m.mode == "L"
 
 
-def test_apply_overlay_none_returns_tuple():
+def test_apply_overlay_none_returns_tuple(initialize):
     from PIL import Image
 
     from modules.processing_helpers import apply_overlay
@@ -75,7 +70,7 @@ def test_apply_overlay_none_returns_tuple():
     assert orig.size == im.size
 
 
-def test_uncrop_resizes_and_pastes(monkeypatch):
+def test_uncrop_resizes_and_pastes(initialize, monkeypatch):
     from PIL import Image
 
     import modules.processing_helpers as ph
@@ -91,7 +86,7 @@ def test_uncrop_resizes_and_pastes(monkeypatch):
     assert out.mode == "RGBA"
 
 
-def test_eff_opts_view_prefers_snapshot_attrs():
+def test_eff_opts_view_prefers_snapshot_attrs(initialize):
     from modules import shared
     from modules.processing_helpers import _EffOptsView
 
@@ -101,7 +96,7 @@ def test_eff_opts_view_prefers_snapshot_attrs():
     assert v.foo == "snap"
 
 
-def test_eff_opts_view_falls_back_for_missing_keys():
+def test_eff_opts_view_falls_back_for_missing_keys(initialize):
     from modules import shared
     from modules.processing_helpers import _EffOptsView
 
@@ -111,7 +106,7 @@ def test_eff_opts_view_falls_back_for_missing_keys():
     assert v.CLIP_stop_at_last_layers == shared.opts.CLIP_stop_at_last_layers
 
 
-def test_eff_opts_without_snapshot_is_shared_opts():
+def test_eff_opts_without_snapshot_is_shared_opts(initialize):
     from modules import shared
     from modules.processing_helpers import _eff_opts
 
@@ -122,7 +117,7 @@ def test_eff_opts_without_snapshot_is_shared_opts():
     assert _eff_opts(p) is shared.opts
 
 
-def test_eff_opts_with_snapshot_returns_eff_opts_view():
+def test_eff_opts_with_snapshot_returns_eff_opts_view(initialize):
     from modules.processing_helpers import _EffOptsView, _eff_opts
 
     class P:
@@ -134,7 +129,7 @@ def test_eff_opts_with_snapshot_returns_eff_opts_view():
     assert isinstance(r, _EffOptsView)
 
 
-def test_orchestration_model_uses_provider_when_present():
+def test_orchestration_model_uses_provider_when_present(initialize):
     from modules.processing_helpers import _orchestration_model
 
     got = object()
@@ -148,7 +143,7 @@ def test_orchestration_model_uses_provider_when_present():
     assert _orchestration_model(p) is got
 
 
-def test_orchestration_model_falls_back_without_provider(monkeypatch):
+def test_orchestration_model_falls_back_without_provider(initialize, monkeypatch):
     from modules import shared
     from modules.processing_helpers import _orchestration_model
 
@@ -162,7 +157,7 @@ def test_orchestration_model_falls_back_without_provider(monkeypatch):
     assert _orchestration_model(p) is sentinel
 
 
-def test_create_random_tensors_shape_and_determinism():
+def test_create_random_tensors_shape_and_determinism(initialize):
     from modules.processing_helpers import create_random_tensors
 
     shape = (1, 2, 2)
@@ -170,4 +165,3 @@ def test_create_random_tensors_shape_and_determinism():
     t2 = create_random_tensors(shape, [1])
     assert tuple(t1.shape) == shape
     assert (t1 == t2).all()
-

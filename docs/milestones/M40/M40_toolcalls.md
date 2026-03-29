@@ -8,3 +8,4 @@
 | 2026-03-29 | write | M40 Quality tests (helpers, infotext, runtime, types) + milestone run/plan docs | `test/quality/test_m40_*.py`, `M40_run1.md`, `M40_plan.md` |
 | 2026-03-29 | write | M40 recovery: defer infotext/types imports until after `initialize` (fix Quality collection on `main`) | `test_m40_processing_infotext.py`, `test_m40_processing_types.py`, `M40_run1.md` |
 | 2026-03-29 | write | M40 recovery: defer `processing_runtime` import — remove module-level check; add `initialize` to runtime tests | `test_m40_processing_runtime.py`, `M40_run1.md` |
+| 2026-03-29 | write | M40 recovery: remove `processing_helpers` module-level import; add `initialize` to all helper tests (fixes `sd_models.model_path` errors) | `test_m40_processing_helpers.py`, `M40_run1.md` |
