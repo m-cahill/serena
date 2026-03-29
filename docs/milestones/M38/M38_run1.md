@@ -28,16 +28,16 @@ Mirror `push` on same SHA: Linter **23697806689**, Smoke **23697806695** — bot
 
 Before merging, confirm the PR head with `gh pr view 94 --repo m-cahill/serena --json headRefOid` and ensure the latest `pull_request` **Linter** + **Smoke Tests** on that OID are **success** (GitHub also runs duplicate `push` workflows on the branch; prefer `pull_request` for PR evidence).
 
-**Latest recorded `pull_request` CI** (SHA `de0689cd848fc680440e77b45ae6af102fc25e3a` — matches current `gh pr view` `headRefOid` and `gh run view` for the runs below):
+**Latest recorded `pull_request` CI** (SHA `212f93232741420335478ae8994703bc70e06836` — matches current `gh pr view` `headRefOid` and `gh run view` for the runs below):
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23698857181** | `pull_request` | `de0689cd848fc680440e77b45ae6af102fc25e3a` | **success** |
-| **Smoke Tests** | **23698857175** | `pull_request` | `de0689cd848fc680440e77b45ae6af102fc25e3a` | **success** |
+| **Linter** | **23698904998** | `pull_request` | `212f93232741420335478ae8994703bc70e06836` | **success** |
+| **Smoke Tests** | **23698905005** | `pull_request` | `212f93232741420335478ae8994703bc70e06836` | **success** |
 
-Mirror `push` on same SHA: Linter **23698856474**, Smoke **23698856476** — both **success**.
+Mirror `push` on same SHA: Linter **23698904220**, Smoke **23698904268** — both **success**.
 
-Prior tip `8a3adfd8c6e6e3984f6c915135cf64990bbe98b9` (doc-only predecessor): PR Linter **23698785173**, Smoke **23698785178** — both **success** (`pull_request`); mirror `push` Linter **23698784484**, Smoke **23698784481** — both **success**. Earlier branch tips had additional green `pull_request` runs; **576b3935** remains the refactor-only baseline in §A.
+Prior tip `de0689cd848fc680440e77b45ae6af102fc25e3a` (doc-only predecessor): PR Linter **23698857181**, Smoke **23698857175** — both **success** (`pull_request`); mirror `push` Linter **23698856474**, Smoke **23698856476** — both **success**. Earlier branch tips had additional green `pull_request` runs; **576b3935** remains the refactor-only baseline in §A.
 
 If this file is updated again on the branch, re-check `gh pr view` / `gh run list` for the latest `pull_request` Linter + Smoke on the PR head.
 
