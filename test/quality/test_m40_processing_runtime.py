@@ -1,4 +1,8 @@
-"""M40: narrow runtime tests for modules/runtime/processing_runtime.py."""
+"""M40: narrow runtime tests for modules/runtime/processing_runtime.py.
+
+``processing_runtime`` is imported inside each test (after ``initialize``) so
+collection does not load ``sd_models`` / ``processing`` while ``shared.opts`` is None.
+"""
 
 from __future__ import annotations
 
@@ -6,18 +10,8 @@ import contextlib
 from types import SimpleNamespace
 from unittest.mock import MagicMock
 
-import pytest
 
-try:
-    import modules.runtime.processing_runtime as _m40_prt_import_check  # noqa: F401
-except ImportError:
-    pytest.skip(
-        "Quality CI dependency tree required for modules.runtime.processing_runtime",
-        allow_module_level=True,
-    )
-
-
-def test_run_generation_batches_yields_nothing_when_prompt_slice_empty(monkeypatch):
+def test_run_generation_batches_yields_nothing_when_prompt_slice_empty(monkeypatch, initialize):
     """First batch with empty prompt slice exits before yield (regression guard)."""
     import modules.runtime.processing_runtime as pr
     import modules.shared as shared
@@ -70,7 +64,7 @@ def test_run_generation_batches_yields_nothing_when_prompt_slice_empty(monkeypat
     assert list(gen) == []
 
 
-def test_preview_approx_nn_branch_calls_sd_vae_approx(monkeypatch):
+def test_preview_approx_nn_branch_calls_sd_vae_approx(monkeypatch, initialize):
     """When live previews + Approx NN, sd_vae_approx.model() is invoked once."""
     import modules.runtime.processing_runtime as pr
     import modules.shared as shared
