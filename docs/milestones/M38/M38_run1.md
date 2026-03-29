@@ -63,6 +63,22 @@ Validated via `gh run view <run_id> --repo m-cahill/serena --json headSha,conclu
 
 **Quality run (reported):** **217** passed; **TOTAL** coverage **48%** (workflow log summary).
 
+### Follow-up: doc closeout on `main` (binding tip after merge artifacts)
+
+After **`17c21be6`**, a **documentation-only** commit recorded M38 closeout + M39 stubs:
+
+| Item | Value |
+|------|--------|
+| **Commit (`main`)** | `e143a881ff11082cf35a2de701473081ffa6e72f` |
+| **Message** | `docs(M38): closeout run1 summary audit ledger; seed M39 stubs` |
+
+| Workflow | Run ID | Event | `headSha` | Conclusion |
+|----------|--------|-------|-----------|------------|
+| **Linter** | **23700844280** | `push` | `e143a881ff11082cf35a2de701473081ffa6e72f` | **success** |
+| **Quality Tests** | **23700844278** | `push` | `e143a881ff11082cf35a2de701473081ffa6e72f` | **success** |
+
+**Quality run (reported):** **217** passed; **TOTAL** coverage **48%** — same counts as merge commit run (doc-only delta).
+
 ---
 
 **Status:** **Merged** — see **`M38_summary.md`**, **`M38_audit.md`**, **`docs/serena.md`**.

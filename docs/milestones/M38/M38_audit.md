@@ -24,6 +24,8 @@
 
 **Post-merge `main`:** merge commit **`17c21be669942518ab4683ba504c87c1ad58900e`** — **`push`** Linter **`23700723142`**, Quality **`23700723134`** — **success**; **217** tests passed; **TOTAL** coverage **48%** (as reported by Quality workflow).
 
+**Follow-up binding `main` tip (doc closeout only):** **`e143a881ff11082cf35a2de701473081ffa6e72f`** — Linter **`23700844280`**, Quality **`23700844278`** — **success**; same **217** / **48%** as merge run.
+
 ---
 
 ## Risks / follow-ups
