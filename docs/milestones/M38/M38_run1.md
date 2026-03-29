@@ -26,18 +26,20 @@ Mirror `push` on same SHA: Linter **23697806689**, Smoke **23697806695** — bot
 
 ## B. Current PR tip (authoritative for merge)
 
-**PR head SHA (binding):** `eb0ee54759399675bd0b7e207150f0f6c5f50cb6` — confirm with `gh pr view 94 --repo m-cahill/serena --json headRefOid` before merge.  
-**Message:** `docs(M38): M38_run1 — authoritative PR head 89e4ffd7 + CI run IDs`  
+**PR head SHA (binding):** `9f2dda8eb9f9b704775733f399423adeedacd2c2` — confirm with `gh pr view 94 --repo m-cahill/serena --json headRefOid` before merge.  
+**Message:** `docs(M38): M38_run1 — PR tip eb0ee54759399675bd0b7e207150f0f6c5f50cb6 CI`  
 Doc commits after **576b3935** add/update milestone docs; M38 code paths unchanged.
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23698120117** | `pull_request` | `eb0ee54759399675bd0b7e207150f0f6c5f50cb6` | **success** |
-| **Smoke Tests** | **23698120120** | `pull_request` | `eb0ee54759399675bd0b7e207150f0f6c5f50cb6` | **success** |
+| **Linter** | **23698184743** | `pull_request` | `9f2dda8eb9f9b704775733f399423adeedacd2c2` | **success** |
+| **Smoke Tests** | **23698184745** | `pull_request` | `9f2dda8eb9f9b704775733f399423adeedacd2c2` | **success** |
 
-Mirror `push` on same SHA: Linter **23698119419**, Smoke **23698119423** — both **success**.
+Mirror `push` on same SHA: Linter **23698183779**, Smoke **23698183774** — both **success**.
 
-Prior tip `89e4ffd7…`: PR Linter **23698066410**, Smoke **23698066388** — both **success** (`pull_request`). Prior `7c4f5e0c…`: PR Linter **23698010765**, Smoke **23698010777** — both **success** (`pull_request`).
+Prior tip `eb0ee547…`: PR Linter **23698120117**, Smoke **23698120120** — both **success** (`pull_request`). Prior `89e4ffd7…`: PR Linter **23698066410**, Smoke **23698066388** — both **success** (`pull_request`). Prior `7c4f5e0c…`: PR Linter **23698010765**, Smoke **23698010777** — both **success** (`pull_request`).
+
+If this file is updated again on the branch, re-check `gh pr view` / `gh run list` for the latest `pull_request` Linter + Smoke on the PR head (duplicate `push` vs `pull_request` runs may both appear; prefer `pull_request` for PR evidence).
 
 Validated via:
 
