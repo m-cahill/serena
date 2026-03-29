@@ -1,6 +1,6 @@
 # M39 — Remaining legacy surface narrowing
 
-**Status:** PR **#95** — Linter + Smoke green on **`fe2494fb`**; post-merge **`main`** Quality in **`M39_run1.md`** §B  
+**Status:** PR **#95** — Linter + Smoke green on **`d0bb6afa`**; post-merge **`main`** Quality in **`M39_run1.md`** §B  
 **Branch:** `m39-remaining-legacy-surface-narrowing`
 
 ## Objective

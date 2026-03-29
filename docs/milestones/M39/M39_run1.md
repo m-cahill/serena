@@ -12,15 +12,15 @@ Local `pytest` on `test/quality/test_m39_eff_opts_snapshot.py` was used for fast
 
 ## A. PR head (authoritative merge approval tip)
 
-**Commit:** `fe2494fba0563e4f4085b2d6497c132a2a8e8d44`  
-**Message:** `docs(M39): binding PR CI on c83e14cd (Linter 23719231700, Smoke 23719231692)` — follows **`eee9af2a`** (refactor) + **`c83e14cd`** (first doc closeout).
+**Commit:** `d0bb6afa841272f9e7ec5c7e342c61a95a1a465f`  
+**Message:** `docs(M39): authoritative PR tip fe2494fb (Linter 23719300652, Smoke 23719300655)` — follows **`eee9af2a`** (refactor) and doc closeout commits.
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23719300652** | `pull_request` | `fe2494fba0563e4f4085b2d6497c132a2a8e8d44` | **success** |
-| **Smoke Tests** | **23719300655** | `pull_request` | `fe2494fba0563e4f4085b2d6497c132a2a8e8d44` | **success** |
+| **Linter** | **23719373729** | `pull_request` | `d0bb6afa841272f9e7ec5c7e342c61a95a1a465f` | **success** |
+| **Smoke Tests** | **23719373734** | `pull_request` | `d0bb6afa841272f9e7ec5c7e342c61a95a1a465f` | **success** |
 
-**Superseded tips (historical):** `c83e14cd` — Linter **`23719231700`**, Smoke **`23719231692`**; `eee9af2a` — Linter **`23719147857`**, Smoke **`23719147871`**.
+**Superseded tips (historical):** `fe2494fb` — Linter **`23719300652`**, Smoke **`23719300655`**; `c83e14cd` — Linter **`23719231700`**, Smoke **`23719231692`**; `eee9af2a` — Linter **`23719147857`**, Smoke **`23719147871`**.
 
 Validated via `gh run view <run_id> --repo m-cahill/serena --json headSha,conclusion,event`.
 
