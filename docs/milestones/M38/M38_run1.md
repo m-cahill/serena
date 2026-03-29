@@ -2,38 +2,45 @@
 
 **Milestone:** M38 — `processing.py` class and helper decomposition  
 **PR:** https://github.com/m-cahill/serena/pull/94  
-**Branch:** `m38-processing-class-helper-decomposition`  
-**PR head SHA (authoritative, current tip):** `91a51bb0c54bcc8e2040ea5e247c8fd7938c993a`
-
-Includes doc-only commit `docs(M38): M38_run1.md — PR #94 CI evidence` on top of refactor commit `576b39354003aa3bc7a3b41cc38564c654b7b671`. **Binding PR checks** below are for this tip.
+**Branch:** `m38-processing-class-helper-decomposition`
 
 ## Local vs CI
 
 Local `pytest` was **not** used as binding proof for M38 (incomplete local dependency set, e.g. `einops` / `cv2` in some environments). **GitHub Actions** on this PR is the authoritative verification surface for Linter + Smoke.
 
-## PR checks (authoritative — `pull_request`, head `91a51bb0`)
+---
+
+## A. Refactor-only tip (merge-critical code)
+
+**Commit:** `576b39354003aa3bc7a3b41cc38564c654b7b671`  
+**Message:** `refactor(M38): split processing classes into processing_types/helpers/infotext`
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23697887173** | `pull_request` | `91a51bb0c54bcc8e2040ea5e247c8fd7938c993a` | **success** |
-| **Smoke Tests** | **23697887187** | `pull_request` | `91a51bb0c54bcc8e2040ea5e247c8fd7938c993a` | **success** |
+| **Linter** | **23697815570** | `pull_request` | `576b39354003aa3bc7a3b41cc38564c654b7b671` | **success** |
+| **Smoke Tests** | **23697815572** | `pull_request` | `576b39354003aa3bc7a3b41cc38564c654b7b671` | **success** |
+
+Mirror `push` on same SHA: Linter **23697806689**, Smoke **23697806695** — both **success**.
+
+---
+
+## B. Current PR tip (includes milestone docs on branch)
+
+**PR head SHA (latest at record time):** `fabd3aa16802af45f6767737016616968204c1ac`  
+Doc-only commits after **576b3935** add/update `M38_run1.md` under `docs/milestones/M38/`; behavior unchanged.
+
+| Workflow | Run ID | Event | `headSha` | Conclusion |
+|----------|--------|-------|-----------|------------|
+| **Linter** | **23697956447** | `pull_request` | `fabd3aa16802af45f6767737016616968204c1ac` | **success** |
+| **Smoke Tests** | **23697956455** | `pull_request` | `fabd3aa16802af45f6767737016616968204c1ac` | **success** |
 
 Validated via:
 
 `gh run view <run_id> --repo m-cahill/serena --json headSha,conclusion,event`
 
-## Superseded / earlier PR tip (`576b3935`)
+Intermediate tip `91a51bb0` (first `M38_run1.md` add): **23697887173** (Linter), **23697887187** (Smoke) — both **success** (`pull_request`).
 
-The first push of the refactor (without `M38_run1.md`) produced green **`pull_request`** runs **23697815570** (Linter) and **23697815572** (Smoke) at `headSha` `576b39354003aa3bc7a3b41cc38564c654b7b671`. Superseded after doc commit; kept for provenance only.
-
-## Duplicate / mirror runs (same tip `91a51bb0`, `push` event)
-
-| Workflow | Run ID | Event | Conclusion |
-|----------|--------|-------|------------|
-| Linter | 23697886773 | `push` | success |
-| Smoke Tests | 23697886781 | `push` | success |
-
-**Authoritative PR gate:** use the **`pull_request`** runs (**23697887173**, **23697887187**).
+---
 
 ## Post-merge `main` (Quality)
 
