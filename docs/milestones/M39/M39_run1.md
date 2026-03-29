@@ -57,3 +57,14 @@
 
 - **`_eff_opts(p)`** returns **`_EffOptsView(snapshot, shared.opts)`** when **`p.opts_snapshot`** is set: attributes present on the snapshot object are used; **missing** keys fall back to **`shared.opts`** so full **`create_opts_snapshot(shared.opts)`** behavior is unchanged and **sparse** Quality fixtures match pre-M39 semantics.
 - **Eliminated** direct **`shared.opts`** reads in **`processing_types.py`**, **`processing_infotext.py`**, **`processing.py`** (overlay branch), **`processing_runtime.py`** (preview gate). **`processing.py`** still calls **`create_opts_snapshot(shared.opts)`** — intentional capture point (M07).
+
+---
+
+## E. Doc closeout on `main` (optional provenance)
+
+After **`1b9f304e`**, **`docs(M39): closeout…`** @ **`05b0dcbaa6747458a30de37cb42a03a2b6b9f676`**:
+
+| Workflow | Run ID | Event | Conclusion |
+|----------|--------|-------|------------|
+| **Linter** | **23720050208** | `push` | **success** |
+| **Quality Tests** | **23720050207** | `push` | **success** |
