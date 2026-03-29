@@ -30,6 +30,14 @@
 
 **What not to rewrite casually:** Do not “simplify” metadata by reading **`shared.sd_model`** in **`decode_runtime`** / **`sampler_runtime`** / **`processing_runtime`** to avoid **`processing.py`**—that would **violate** the locked **M19** boundary. Prefer changes that keep **one** orchestration owner for globals.
 
+### 2.2 `shared.opts` on supported paths after snapshot (narrowed, M39)
+
+**Eliminated vs remaining:**
+
+- **Removed** direct **`shared.opts`** reads on supported paths that run after **`p.opts_snapshot`** is set in **`process_images_inner`**, by routing through **`modules.processing_helpers._eff_opts(p)`**, which prefers **`p.opts_snapshot`** (shallow copy of **`opts.data`** at snapshot time, M07) and falls back to **`shared.opts`** when no snapshot is present (e.g. unusual callers).
+- **Touched modules:** **`processing_types.py`** (conditioning / HR / cache scheduling / hires-firstpass gate), **`processing_infotext.py`** (conditional mask weight for infotext), **`processing.py`** (overlay inpaint branch in the decode/save loop), **`modules/runtime/processing_runtime.py`** (live preview + progress type gate at batch entry). **`processing.py`** still **captures** the snapshot via **`create_opts_snapshot(shared.opts)`** — that single global read is intentional.
+- **Not removed in M39:** **`StableDiffusionProcessing.sd_model`** compatibility property (extension surface; unchanged). **`modules.shared.opts`** accessed as **`opts`** in **`processing_types`** and elsewhere for fields not migrated in this milestone — further migration is **milestone-governed**, not drive-by.
+
 ---
 
 ## 3. Other surfaces

@@ -14,8 +14,10 @@ import torch
 
 from modules import devices, extra_networks, sd_models, sd_vae_approx, sd_unet, rng
 from modules.sd_hijack import model_hijack
-from modules.shared import opts, cmd_opts
+from modules.shared import cmd_opts
 import modules.shared as shared
+
+from modules.processing_helpers import _eff_opts
 import modules.paths as paths
 # Latent dimensions (matches processing.py opt_C, opt_f)
 _OPT_C = 4
@@ -36,7 +38,8 @@ def run_generation_batches(p):
         with devices.autocast():
             p.init(p.all_prompts, p.all_seeds, p.all_subseeds)
 
-            if shared.opts.live_previews_enable and opts.show_progress_type == "Approx NN":
+            eff = _eff_opts(p)
+            if eff.live_previews_enable and eff.show_progress_type == "Approx NN":
                 sd_vae_approx.model()
 
             sd_unet.apply_unet()

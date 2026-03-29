@@ -28,6 +28,7 @@ from modules.processing_helpers import (
     apply_overlay,
     create_binary_mask,
     _orchestration_model,
+    _eff_opts,
     txt2img_image_conditioning,
     create_random_tensors,
     old_hires_fix_first_pass_dimensions,
@@ -195,7 +196,7 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
 
             mask_for_overlay = getattr(p, "mask_for_overlay", None)
 
-            if not shared.opts.overlay_inpaint:
+            if not _eff_opts(p).overlay_inpaint:
                 overlay_image = None
             elif getattr(p, "overlay_images", None) is not None and i < len(p.overlay_images):
                 overlay_image = p.overlay_images[i]
