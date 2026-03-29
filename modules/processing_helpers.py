@@ -92,17 +92,37 @@ def _orchestration_model(p):
     return shared.sd_model
 
 
+class _EffOptsView:
+    """M39: snapshot-first attribute reads with ``shared.opts`` fallback for missing keys.
+
+    ``create_opts_snapshot`` copies ``opts.data`` (full production runs). Quality tests may
+    attach a sparse ``SimpleNamespace``; missing keys must fall back so behavior matches
+    pre-M39 direct ``shared.opts`` reads in those fixtures.
+    """
+
+    __slots__ = ("_snap", "_fb")
+
+    def __init__(self, snap, fb):
+        self._snap = snap
+        self._fb = fb
+
+    def __getattr__(self, name):
+        if hasattr(self._snap, name):
+            return getattr(self._snap, name)
+        return getattr(self._fb, name)
+
+
 def _eff_opts(p):
     """Prefer per-run opts snapshot over global ``shared.opts`` when set (M39).
 
     ``process_images_inner`` assigns ``p.opts_snapshot`` after ``prepare_prompt_seed_state``;
-    supported-path reads that occur after that point should use the snapshot so generation
-    matches the same captured ``opts.data`` as save-path migration (M08), without broad
-    globals cleanup elsewhere.
+    supported-path reads that occur after that point use the snapshot for keys present in
+    ``opts.data``; any attribute absent on the snapshot object falls back to ``shared.opts``
+    (same as a full snapshot for normal runs; sparse test doubles stay safe).
     """
     snap = getattr(p, "opts_snapshot", None)
     if snap is not None:
-        return snap
+        return _EffOptsView(snap, shared.opts)
     return shared.opts
 
 
