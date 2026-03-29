@@ -1,7 +1,8 @@
 # M38 — `processing.py` class and helper decomposition
 
-**Status:** In progress  
-**Branch:** `m38-processing-class-helper-decomposition`
+**Status:** **Complete** (2026-03-29 UTC)  
+**Branch:** `m38-processing-class-helper-decomposition`  
+**PR:** [#94](https://github.com/m-cahill/serena/pull/94) → merge **`17c21be669942518ab4683ba504c87c1ad58900e`**
 
 ## Intent
 

@@ -24,35 +24,45 @@ Mirror `push` on same SHA: Linter **23697806689**, Smoke **23697806695** — bot
 
 ---
 
-## B. Current PR tip (authoritative for merge)
+## B. PR tip ledger (historical — §B lagged before merge)
 
-Before merging, confirm the PR head with `gh api repos/m-cahill/serena/pulls/94 --jq .head.sha` (often fresher than `gh pr view` JSON right after a push) and ensure the latest `pull_request` **Linter** + **Smoke Tests** on that OID are **success** (GitHub also runs duplicate `push` workflows on the branch; prefer `pull_request` for PR evidence).
+**Closeout note:** This section’s **last pre-merge table row** documented SHA **`85094659…`**, while **doc-only commits** had already advanced the PR head. **Merge approval** did **not** rely on §B alone; it used the **validated green `pull_request` tip** below.
 
-**Latest recorded `pull_request` CI** (SHA `8509465973d5ec3b628cf803433a191398e6ea40` — matches `gh api repos/m-cahill/serena/pulls/94 --jq .head.sha` at last validation and `gh run view` for the runs below; doc-only commits advance the tip — if `head.sha` is newer, use `pull_request` Linter + Smoke on the **current** head):
+**Authoritative approval basis (binding `pull_request` CI on the merge-ready head):**
+
+| Item | Value |
+|------|--------|
+| **PR head SHA** | `3654f8a30433a1ecd7de54811da6a454f23db458` |
+| **Linter** | **23700334490** — `pull_request` — **success** |
+| **Smoke Tests** | **23700334489** — `pull_request` — **success** |
+
+Validated via `gh run view <run_id> --repo m-cahill/serena --json headSha,conclusion,event`.
+
+**Prior §B snapshot (stale vs approval head):** the table that ended with **`85094659…`** / Linter **23700286459** / Smoke **23700286460** was the last full row written before merge; **`3654f8a3…`** superseded it for approval.
+
+---
+
+## C. Merge to `main`
+
+| Item | Value |
+|------|--------|
+| **Merge method** | GitHub **merge commit** (`gh pr merge 94 --merge`) |
+| **Merge commit (`main`)** | `17c21be669942518ab4683ba504c87c1ad58900e` |
+| **Merged at** | **2026-03-29T03:45:35Z** |
+
+---
+
+## Post-merge `main` (Linter + Quality)
+
+**Merge commit:** `17c21be669942518ab4683ba504c87c1ad58900e` — event **`push`** to **`main`**.
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23700286459** | `pull_request` | `8509465973d5ec3b628cf803433a191398e6ea40` | **success** |
-| **Smoke Tests** | **23700286460** | `pull_request` | `8509465973d5ec3b628cf803433a191398e6ea40` | **success** |
+| **Linter** | **23700723142** | `push` | `17c21be669942518ab4683ba504c87c1ad58900e` | **success** |
+| **Quality Tests** | **23700723134** | `push` | `17c21be669942518ab4683ba504c87c1ad58900e` | **success** |
 
-Mirror `push` on same SHA: Linter **23700285813**, Smoke **23700285809** — both **success**.
-
-Prior tip `f02f8d0e91f8ec6c22cd0c14aba80bae601af371`: PR Linter **23700206099**, Smoke **23700206121** — both **success** (`pull_request`); mirror `push` Linter **23700205196** — **success**; Smoke **23700205201** — **failure** (intermittent duplicate `push`; `pull_request` Smoke was green).
-
-Earlier doc-only / branch tips (`bee324e7`, `8d53aa83`, …) and **576b3935** (refactor baseline, §A) also had green `pull_request` + mirror `push` runs recorded in git history of this file.
-
-If this file is updated again on the branch, re-check `gh pr view` / `gh run list` for the latest `pull_request` Linter + Smoke on the PR head.
-
-Validated via:
-
-`gh run view <run_id> --repo m-cahill/serena --json headSha,conclusion,event`
+**Quality run (reported):** **217** passed; **TOTAL** coverage **48%** (workflow log summary).
 
 ---
 
-## Post-merge `main` (Quality)
-
-**Placeholder — not run yet.** After merge to `main`, record the binding **Quality Tests** workflow run ID and conclusion from `push` to `main` (workflow: `run_quality_tests.yaml`).
-
----
-
-**Status:** PR open — **do not merge** until explicit approval (per program gates).
+**Status:** **Merged** — see **`M38_summary.md`**, **`M38_audit.md`**, **`docs/serena.md`**.

@@ -149,10 +149,12 @@ Core principles:
 ### Phase IX — Internal Score-Lift (M38–M41)
 | Milestone | Title | Status |
 |-----------|-------|--------|
-| M38 | `processing.py` class and helper decomposition | **In progress** |
+| M38 | `processing.py` class and helper decomposition | **Complete** (2026-03-29 UTC) |
 | M39 | Remaining legacy surface narrowing | **Planned** |
 | M40 | Coverage wave on legacy/high-value modules | **Planned** |
 | M41 | Performance SLOs and regression guardrails | **Planned** |
+
+**Progress (Phase IX):** **M38** — **`processing_types` / `processing_helpers` / `processing_infotext`** split; **`processing.py`** orchestration + re-exports; **PR [#94](https://github.com/m-cahill/serena/pull/94)** merge **`17c21be669942518ab4683ba504c87c1ad58900e`** (**2026-03-29T03:45:35Z**); approval tip **`3654f8a3`** (`pull_request` Linter **`23700334490`**, Smoke **`23700334489`**); **main:** Linter **`23700723142`**, Quality **`23700723134`** (**217** pass, **48%** cov). **`docs/milestones/M38/`** closeout; **`docs/milestones/M39/`** stubs.
 
 **Program intent:** Tightly scoped post-Phase VIII internal score-lift. Goal is to improve the M37 audit score (4.6/5) by addressing remaining internal structural drag — `processing.py` concentration, residual allowed-legacy surfaces, coverage plateau at ~48%, and lack of enforced performance SLO thresholds — **without** weakening CI, changing behavior silently, destabilizing extension compatibility, or reopening broad speculative architecture work. Authoritative input: **`docs/serenam37audit.md`**.
 
@@ -205,8 +207,8 @@ Core principles:
 | M35 | Remove tolerated `shared.sd_model` orchestration coupling | **Completed** | `m35-remove-shared-sd-model-orchestration` | **[#91](https://github.com/m-cahill/serena/pull/91)** | merge **`45e6f4fbfb8f6ed2dfc336423d1f414f66c77549`**; binding CI tip **`45e6f4fb`** | PR approval: Linter **`23673315409`**, Smoke **`23673315420`** (head **`564ebd27`**); **main:** Linter **`23673838902`**, **Quality** **`23673838908`** (**203** pass, **48%** cov) | **`_orchestration_model`**, allowed-legacy update; **`M35_run1.md`**, **`M35_summary.md`**, **`M35_audit.md`** | **2026-03-28 ~01:00 UTC** |
 | M36 | Coverage lift and gate recalibration | **Completed** | `m36-coverage-lift-gate-recalibration` | **[#92](https://github.com/m-cahill/serena/pull/92)** | merge **`ab4c4679397091ef8de2d46db3afadf3113a6979`** | PR tip **`c410771f`**: Linter **`23676919831`**, Smoke **`23676919933`**; **main:** Linter **`23677054517`**, **Quality** **`23677054515`** (**213** pass, **48%** cov); gate **42%** unchanged | **`M36_run1.md`**, **`M36_summary.md`**, **`M36_audit.md`** | **2026-03-28 ~04:15 UTC** |
 | M37 | Security deferral closure and final 5/5 re-audit | **Completed** | `m37-security-deferral-final-audit` | **[#93](https://github.com/m-cahill/serena/pull/93)** | merge **`18c13a59b73de16f85c7dacd57162ac55713b1aa`** | PR head **`b9166a0d`**: Linter **`23677809650`**, Smoke **`23677809662`**; **main:** Linter **`23677884602`**, **Quality** **`23677884594`** (**213** pass, **48%** cov); **pip-audit** **2 ignored** (unchanged CVEs) | **M37** run1/summary/audit; **Phase VIII** closed; deferrals **retained** (no PyPI fixes) | **2026-03-28 UTC** |
-| M38 | `processing.py` class and helper decomposition | **In progress** | `m38-processing-class-helper-decomposition` | — | — | — | Split: `processing_types.py`, `processing_helpers.py`, `processing_infotext.py`; `processing.py` ~201 LOC | — |
-| M39 | Remaining legacy surface narrowing | **Planned** | — | — | — | — | — | — |
+| M38 | `processing.py` class and helper decomposition | **Completed** | `m38-processing-class-helper-decomposition` | **[#94](https://github.com/m-cahill/serena/pull/94)** | merge **`17c21be669942518ab4683ba504c87c1ad58900e`** | Approval tip **`3654f8a3`**: Linter **`23700334490`**, Smoke **`23700334489`**; **main:** Linter **`23700723142`**, Quality **`23700723134`** (**217** pass, **48%** cov) | **`processing_types` / helpers / infotext**; **`processing.py`** re-exports; hooks in **`processing.py`**; **`M38_run1.md`** §B lag note — approval used **`3654f8a3`**; **`M38_summary.md`**, **`M38_audit.md`** | **2026-03-29 UTC** |
+| M39 | Remaining legacy surface narrowing | **Planned** | — | — | — | — | **`M39_plan.md`**, **`M39_toolcalls.md`** stub | — |
 | M40 | Coverage wave on legacy/high-value modules | **Planned** | — | — | — | — | — | — |
 | M41 | Performance SLOs and regression guardrails | **Planned** | — | — | — | — | — | — |
 
