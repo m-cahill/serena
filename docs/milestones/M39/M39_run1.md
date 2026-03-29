@@ -10,17 +10,17 @@ Local `pytest` on `test/quality/test_m39_eff_opts_snapshot.py` was used for fast
 
 ---
 
-## A. PR head (merge-ready — includes doc closeout)
+## A. PR head (authoritative merge approval tip)
 
-**Commit:** `c83e14cda42d4f33fe0603bedb9fbbc0dec4d9d2`  
-**Tip message:** `docs(M39): run1 summary audit ledger M40 stubs; serena PR #95 CI` (follows **`eee9af2a`** — `refactor(M39): route supported-path opts reads via _eff_opts`)
+**Commit:** `fe2494fba0563e4f4085b2d6497c132a2a8e8d44`  
+**Message:** `docs(M39): binding PR CI on c83e14cd (Linter 23719231700, Smoke 23719231692)` — follows **`eee9af2a`** (refactor) + **`c83e14cd`** (first doc closeout).
 
 | Workflow | Run ID | Event | `headSha` | Conclusion |
 |----------|--------|-------|-----------|------------|
-| **Linter** | **23719231700** | `pull_request` | `c83e14cda42d4f33fe0603bedb9fbbc0dec4d9d2` | **success** |
-| **Smoke Tests** | **23719231692** | `pull_request` | `c83e14cda42d4f33fe0603bedb9fbbc0dec4d9d2` | **success** |
+| **Linter** | **23719300652** | `pull_request` | `fe2494fba0563e4f4085b2d6497c132a2a8e8d44` | **success** |
+| **Smoke Tests** | **23719300655** | `pull_request` | `fe2494fba0563e4f4085b2d6497c132a2a8e8d44` | **success** |
 
-**Earlier code-only tip (superseded for merge approval):** `eee9af2a` — Linter **`23719147857`**, Smoke **`23719147871`**.
+**Superseded tips (historical):** `c83e14cd` — Linter **`23719231700`**, Smoke **`23719231692`**; `eee9af2a` — Linter **`23719147857`**, Smoke **`23719147871`**.
 
 Validated via `gh run view <run_id> --repo m-cahill/serena --json headSha,conclusion,event`.
 
