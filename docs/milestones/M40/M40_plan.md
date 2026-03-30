@@ -1,32 +1,25 @@
 # M40 — Coverage wave on legacy/high-value modules
 
-**Status:** In progress  
-**Branch:** `m40-coverage-wave-legacy-modules`
+**Status:** **Complete** (2026-03-30 UTC)  
+**Primary PR:** [#96](https://github.com/m-cahill/serena/pull/96) (recovery PRs [#97](https://github.com/m-cahill/serena/pull/97)–[#100](https://github.com/m-cahill/serena/pull/100) — see `M40_run1.md`)
 
 ## Intent
 
 Phase IX internal score-lift: **test-first** coverage on recently stabilized surfaces (M38 splits, M39 `_eff_opts` / snapshot behavior), without structural refactors or threshold chasing.
 
-## Scope
+## Scope (delivered)
 
 **In**
 
-- Add `test/quality` regression and contract tests for agreed targets (`processing_helpers`, `processing_infotext`, `processing_types`, `processing_runtime`).
-- Record before/after evidence in `M40_run1.md` and closeout artifacts.
-- Optional **small** gate increase (e.g. 42% → 44%) only if post-merge Quality shows a **stable, earned** improvement with buffer; default is **no gate change**.
+- `test/quality/test_m40_*.py` for `processing_helpers`, `processing_infotext`, `processing_types`, `processing_runtime`.
+- Milestone documentation and ledger updates.
+- **Gate:** left at **42%** (binding `main` **49%** TOTAL — see `M40_run1.md` §F).
 
 **Out**
 
-- Broad `processing.py` rewrites, new architecture seams (except tiny test-driven seams documented in milestone docs).
-- M41 performance SLO work, M42 conditional security deferrals, packaging/workflow redesign.
+- Broad `processing.py` rewrites, M41 performance SLO enforcement, CI weakening.
 
 ## Verification
 
-- PR: Linter + Smoke green.
-- Post-merge `main`: Linter + Quality green; binding run ID and coverage % recorded in `docs/serena.md` and this milestone folder.
-
-## Closeout checklist (when done)
-
-- [ ] `M40_summary.md`, `M40_audit.md` per prompts
-- [ ] `docs/serena.md` ledger row + UTC completion time
-- [ ] Seed `docs/milestones/M41/M41_plan.md`, `M41_toolcalls.md`
+- PRs: Linter + Smoke green.
+- Post-merge `main`: Linter + Quality green — **Quality `23722341901`**, **243** pass, **49%** TOTAL.
