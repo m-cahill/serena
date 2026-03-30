@@ -111,6 +111,8 @@
 
 ## Canonical References
 
-- **PR #103:** https://github.com/m-cahill/serena/pull/103  
-- **Runs:** Linter **`23728560305`**, Smoke **`23728560308`**; post-merge Linter **`23728637287`**, Quality **`23728637285`**  
-- **Merge:** `8e7736f0b53c93fe13f0aab4e3cc7d188acc2408`
+- **PR #103 (implementation):** https://github.com/m-cahill/serena/pull/103  
+- **PR #104 (doc closeout):** https://github.com/m-cahill/serena/pull/104  
+- **Runs (#103):** Linter **`23728560305`**, Smoke **`23728560308`**; post-merge Linter **`23728637287`**, Quality **`23728637285`**  
+- **Runs (#104 post-merge):** Linter **`23728891095`**, Quality **`23728891097`**  
+- **Merge SHAs:** `8e7736f0b53c93fe13f0aab4e3cc7d188acc2408` (implementation); `4cccde03e6714e039ca9b4470898c7d0b0df6421` (ledger + closeout bundle)
