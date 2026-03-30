@@ -34,6 +34,10 @@
 
 ---
 
-## 4. Audit Prompt
+## 4. Documentation merge
+
+Milestone artifacts (this file, `M40_summary.md`, filled `M40_run1.md`, `serena.md`, M41 stubs) landed via **[PR #101](https://github.com/m-cahill/serena/pull/101)** (`e07b31ed`). Post-merge **`main`** Quality **`23722553628`** — **243** pass, **49%** TOTAL.
+
+## 5. Audit Prompt
 
 **Prompt file:** `docs/prompts/unifiedmilestoneauditpromptV2.md`
