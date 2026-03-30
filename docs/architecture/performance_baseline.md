@@ -40,4 +40,10 @@ Use snapshots to compare **trends** on the same runner class, not as absolute SL
 - Concurrent jobs on shared CI hosts
 - Torch / CUDA / driver versions (see `ci_environment_contract.md` for the Quality manifest)
 
-M29 does **not** fail CI on performance; thresholds may be introduced in a later milestone after baselines stabilize.
+M29 does **not** fail CI on performance by itself; **M41** adds a **warn-first** regression check (see below).
+
+## M41 — Regression warnings (Quality)
+
+After **`performance_snapshot.txt`** is written, **`scripts/ci/check_performance_regression.py`** compares **`sample_runner_execute_time_s`** and **`sample_runner_total_time_s`** to committed anchors in **`scripts/ci/performance_snapshot_baseline.txt`**. If either metric exceeds the baseline by more than **20%** (configurable ratio in the script), the workflow prints a **`::warning`** annotation. The job **still succeeds**; this is **not** a blocking SLO.
+
+**Updating the baseline:** Change **`performance_snapshot_baseline.txt`** only when the probe (`write_performance_snapshot.py`) or runner timing semantics change intentionally—not to silence noise from CI load variance without cause.

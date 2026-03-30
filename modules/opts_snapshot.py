@@ -2,7 +2,7 @@
 
 M07: Deterministic snapshot of shared.opts for the duration of a run.
 Behavior-preserving: shallow copy of opts.data.
-Not yet threaded through runtime.
+Threaded on `p.opts_snapshot` (M07–M08); snapshot-first reads use `_eff_opts` / helpers (M39).
 """
 from types import SimpleNamespace
 

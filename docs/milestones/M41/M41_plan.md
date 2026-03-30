@@ -1,16 +1,25 @@
-# M41 — Performance SLOs and regression guardrails
+# M41 — Final performance guardrails and release polish
 
-**Status:** **Planned** (stub — seeded at M40 closeout **2026-03-30 UTC**)
+## Objective
 
-## Intent
+Add a **truthful, warn-first** performance regression signal on Quality (M29 snapshot + baseline comparison), align workflow security and `pip-audit` posture with governance docs, improve onboarding (README, `opts_snapshot.py` comment), and keep code-health edits to **Serena-governed** surfaces only (`processing.py`).
 
-Phase IX: enforce **performance** and **regression** guardrails aligned with **`docs/serenam37audit.md`** and existing **`performance_snapshot.txt`** / runtime metrics — **without** weakening CI or broad architectural churn.
+## In scope
 
-## Scope (TBD)
+- `scripts/ci/check_performance_regression.py` + `scripts/ci/performance_snapshot_baseline.txt`; Quality step after `write_performance_snapshot.py`.
+- Explicit workflow permissions (`contents: read`, `actions: write` for artifact uploads).
+- Nightly: blocking `pip-audit` with same `--ignore-vuln` as Quality; report artifact; JUnit upload.
+- Smoke: JUnit artifact upload.
+- README Serena identity block; `modules/opts_snapshot.py` header.
+- `raise ValueError` for missing refiner checkpoint in `processing.py` (was `Exception`).
 
-- Define SLO surfaces and thresholds in milestone planning before execution.
-- **Out of scope at M41 planning time:** ad hoc refactors unrelated to measurement/enforcement.
+## Out of scope
 
-## Verification (TBD)
+- Bare `except:` in upstream training modules.
+- `raise Exception` cleanup outside Serena-governed surfaces (e.g. not `sd_models.py` / `sd_vae.py` in this milestone).
+- Blocking performance gate, branch coverage gate, `processing_types.py` split.
 
-- Binding **`main`** Quality + agreed performance checks per milestone plan.
+## Definition of done
+
+- PR: Linter + Smoke green; post-merge Quality green on `main`.
+- Closeout: `M41_summary.md`, `M41_audit.md`, ledger update in `docs/serena.md` with UTC completion time.

@@ -121,7 +121,7 @@ def process_images_inner(p: StableDiffusionProcessing) -> Processed:
     if p.refiner_checkpoint not in (None, "", "None", "none"):
         p.refiner_checkpoint_info = sd_models.get_closet_checkpoint_match(p.refiner_checkpoint)
         if p.refiner_checkpoint_info is None:
-            raise Exception(f'Could not find checkpoint with name {p.refiner_checkpoint}')
+            raise ValueError(f'Could not find checkpoint with name {p.refiner_checkpoint}')
 
     m = _orchestration_model(p)
     if hasattr(m, 'fix_dimensions'):

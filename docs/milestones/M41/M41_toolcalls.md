@@ -1,5 +1,5 @@
-# M41 tool calls
+# M41 — Tool call log
 
-| Timestamp (UTC) | Tool | Purpose | Files |
-|-----------------|------|---------|-------|
-| 2026-03-30 | write | Milestone stub (seeded at M40 closeout) | `M41_plan.md`, `M41_toolcalls.md` |
+| Timestamp (UTC) | Tool / action | Purpose | Files |
+|-----------------|-----------------|---------|-------|
+| 2026-03-30 | Implementation | M41 branch, scripts, workflows, docs | see git diff |

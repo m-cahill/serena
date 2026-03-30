@@ -10,6 +10,9 @@ jobs:
   nightly:
     name: nightly tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - name: Verify repository
         run: |
@@ -44,10 +47,6 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           pip install setuptools wheel
-      - name: Dependency vulnerability scan
-        run: |
-          pip install pip-audit
-          pip-audit || true
       - name: Install runtime dependencies
         run: |
           pip install torch==2.1.2 torchvision==0.16.2 --extra-index-url https://download.pytorch.org/whl/cpu
@@ -72,6 +71,19 @@ jobs:
           python launch.py --skip-prepare-environment --skip-torch-cuda-test --test-server --use-cpu all --exit
       - name: Print installed packages
         run: pip freeze
+      # Aligned with Quality: blocking pip-audit with governed M28 deferrals (same --ignore-vuln IDs).
+      - name: Dependency vulnerability scan
+        shell: bash
+        run: |
+          pip install pip-audit
+          set -o pipefail
+          pip-audit \
+            --ignore-vuln CVE-2025-69872 \
+            --ignore-vuln CVE-2026-4539 \
+            | tee pip_audit_report.txt
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+          PIP_PROGRESS_BAR: "off"
       - name: Start test server
         run: >
           python -m coverage run
@@ -111,3 +123,17 @@ jobs:
         with:
           name: htmlcov
           path: htmlcov
+      - name: Upload JUnit results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: junit-nightly
+          path: test/results.xml
+          if-no-files-found: warn
+      - name: Upload pip-audit report
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pip-audit-report
+          path: pip_audit_report.txt
+          if-no-files-found: warn
