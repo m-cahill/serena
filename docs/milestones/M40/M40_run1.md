@@ -61,4 +61,16 @@ Pre-M40 per-file baselines were not recorded in a prior artifact; **TOTAL** move
 
 ### Closeout
 
-**M40 closed:** **2026-03-30T00:07:07Z** UTC (merge commit **`15dcdb59`** for PR **#100**); binding Quality **`23722341901`** on push to **`main`** (Linter **`23722341896`**).
+**M40 implementation closed:** **2026-03-30T00:07:07Z** UTC (merge commit **`15dcdb59`** for PR **#100**); binding Quality **`23722341901`** on push to **`main`** (Linter **`23722341896`**).
+
+## G. Documentation closeout PR (ledger, summary, audit, M41 stubs)
+
+| Field | Value |
+|--------|--------|
+| **PR** | [#101](https://github.com/m-cahill/serena/pull/101) |
+| **Merge commit** | `e07b31edcd58e1bf9a99887a8fef7058e5dce15d` |
+| **Approval head** | `dfcbfa5c215532e61ed969d491e9ce07ded372a4` |
+| **PR CI** | Linter **`23722485873`** (ruff + eslint **success**); Smoke **`23722485863`** (**success**) |
+| **Post-merge `main` Quality** | **`23722553628`** — https://github.com/m-cahill/serena/actions/runs/23722553628 (**243** collected items, **49%** TOTAL, **`--fail-under=42`** satisfied) |
+
+Doc-only; confirms **`main`** remains green after milestone artifacts land.
