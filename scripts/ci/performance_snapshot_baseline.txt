@@ -1,0 +1,6 @@
+# Committed baseline for M41 warn-first regression checks (ProcessingRunner probe).
+# Update only when the probe or runner timing semantics change intentionally.
+# Anchors are intentionally conservative (slightly above typical ubuntu-latest probe times)
+# so shared runners do not flap; CI warns if any metric exceeds baseline by >20%.
+sample_runner_execute_time_s=0.0015
+sample_runner_total_time_s=0.0016

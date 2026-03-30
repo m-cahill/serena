@@ -8,6 +8,9 @@ jobs:
   quality:
     name: quality tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - name: Verify repository
         run: |
@@ -118,6 +121,8 @@ jobs:
           python -m pytest test/smoke test/quality -vv --junitxml=test/results.xml --cov . --cov-report=xml --cov-report=term --verify-base-url
       - name: Write performance snapshot (M29)
         run: python scripts/ci/write_performance_snapshot.py
+      - name: Check performance regression vs baseline (M41 warn-first)
+        run: python scripts/ci/check_performance_regression.py
       - name: Kill test server
         if: always()
         run: curl -vv -XPOST http://127.0.0.1:7860/sdapi/v1/server-stop && sleep 10

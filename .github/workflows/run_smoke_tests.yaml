@@ -14,6 +14,9 @@ jobs:
   smoke:
     name: smoke tests
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: write
     steps:
       - name: Verify repository
         run: |
@@ -105,3 +108,10 @@ jobs:
         with:
           name: output
           path: output.txt
+      - name: Upload JUnit results
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: junit-smoke
+          path: test/results.xml
+          if-no-files-found: warn

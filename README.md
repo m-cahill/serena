@@ -1,4 +1,9 @@
 # Stable Diffusion web UI
+
+**Serena** is a governed, behavior-preserving refactor program applied to this fork of [AUTOMATIC1111/stable-diffusion-webui](https://github.com/AUTOMATIC1111/stable-diffusion-webui). For program phases, milestones, CI policy, and the source-of-truth ledger, see [`docs/serena.md`](docs/serena.md). Contributor workflow and fork conventions are in [`CONTRIBUTING.md`](CONTRIBUTING.md). The approved steady-state architecture and boundaries are documented in [`docs/architecture/serena_architecture_lock.md`](docs/architecture/serena_architecture_lock.md).
+
+---
+
 A web interface for Stable Diffusion, implemented using Gradio library.
 
 ![](screenshot.png)
