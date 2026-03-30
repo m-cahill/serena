@@ -41,8 +41,8 @@ def test_get_token_merging_ratio_non_hr_uses_instance_value(initialize, tmp_path
         do_not_save_grid=True,
         restore_faces=False,
         do_not_reload_embeddings=True,
-        token_merging_ratio=0.37,
     )
+    p.token_merging_ratio = 0.37
     assert p.get_token_merging_ratio() == 0.37
 
 
@@ -71,7 +71,7 @@ def test_get_token_merging_ratio_hr_prefers_hr_field(initialize, tmp_path):
         do_not_save_grid=True,
         restore_faces=False,
         do_not_reload_embeddings=True,
-        token_merging_ratio=0.1,
-        token_merging_ratio_hr=0.55,
     )
+    p.token_merging_ratio = 0.1
+    p.token_merging_ratio_hr = 0.55
     assert p.get_token_merging_ratio(for_hr=True) == 0.55

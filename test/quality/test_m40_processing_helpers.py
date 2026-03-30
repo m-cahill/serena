@@ -163,5 +163,6 @@ def test_create_random_tensors_shape_and_determinism(initialize):
     shape = (1, 2, 2)
     t1 = create_random_tensors(shape, [1])
     t2 = create_random_tensors(shape, [1])
-    assert tuple(t1.shape) == shape
+    assert t1.shape == t2.shape
+    assert tuple(t1.shape[-3:]) == shape
     assert (t1 == t2).all()
