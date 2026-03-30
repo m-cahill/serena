@@ -64,7 +64,33 @@
 
 ---
 
+## Doc closeout (PR #104)
+
+| Item | Value |
+|------|--------|
+| **PR URL** | https://github.com/m-cahill/serena/pull/104 |
+| **Merge commit (`main`)** | **`4cccde03e6714e039ca9b4470898c7d0b0df6421`** |
+| **Merged at (GitHub)** | **2026-03-30T05:07:26Z** |
+
+### Authoritative CI (doc-only; merge-blocking on PR)
+
+| Workflow | Run ID | Result | URL |
+|----------|--------|--------|-----|
+| **Linter** | **`23728811492`** | **success** | https://github.com/m-cahill/serena/actions/runs/23728811492 |
+| **Smoke Tests** | **`23728811530`** | **success** | https://github.com/m-cahill/serena/actions/runs/23728811530 |
+
+### Post-merge `main` (binding tip including ledger + closeout bundle)
+
+| Workflow | Run ID | Result | URL |
+|----------|--------|--------|-----|
+| **Linter** | **`23728891095`** | **success** | https://github.com/m-cahill/serena/actions/runs/23728891095 |
+| **Quality Tests** | **`23728891097`** | **success** | https://github.com/m-cahill/serena/actions/runs/23728891097 |
+
+**Note:** **246 passed**, **49%** TOTAL (unchanged vs **#103** binding Quality); performance check step **success**.
+
+---
+
 ## Closeout
 
-- **`M41_summary.md`**, **`M41_audit.md`**: this closeout commit.
+- **`M41_summary.md`**, **`M41_audit.md`**: merged via **PR #104** (**`4cccde03`**).
 - **Ledger:** `docs/serena.md` updated — **Phase IX complete**; **M41** = **final** Serena program milestone (see ledger narrative).

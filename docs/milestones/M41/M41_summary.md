@@ -109,8 +109,11 @@ Close Phase IX by adding a **truthful, non-blocking** performance regression sig
 
 ## 12. Canonical References
 
-- **PR:** https://github.com/m-cahill/serena/pull/103  
-- **Merge commit:** `8e7736f0b53c93fe13f0aab4e3cc7d188acc2408`  
+- **Implementation PR:** https://github.com/m-cahill/serena/pull/103  
+- **Implementation merge:** `8e7736f0b53c93fe13f0aab4e3cc7d188acc2408`  
 - **Implementation commit:** `5efdcc83e76081e55194e727367fd7ddf37d7216`  
-- **Binding Quality:** run `23728637285`  
+- **Binding Quality (implementation):** run **`23728637285`**  
+- **Doc closeout PR:** https://github.com/m-cahill/serena/pull/104  
+- **Doc merge / current `main` tip (ledger + M41 bundle):** `4cccde03e6714e039ca9b4470898c7d0b0df6421`  
+- **Binding Quality (post–#104):** run **`23728891097`**  
 - **Docs:** `M41_plan.md`, `M41_run1.md`, `M41_summary.md`, `M41_audit.md`, `docs/serena.md`
